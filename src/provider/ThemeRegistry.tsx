@@ -7,8 +7,15 @@ import { useMemo, useState } from "react";
 import { experimental_extendTheme as extendTheme } from "@mui/material/styles";
 import { Experimental_CssVarsProvider as CssVarsProvider } from "@mui/material/styles";
 import { ModeToggle } from "@/components/modeToggle/ModeToggle";
+import { cyan, pink } from "@mui/material/colors";
 
 const borderRadius = "15px";
+export const heightHeader = "80px";
+// declare module "@mui/system" {
+//     interface Theme {
+//         heightHeader: string;
+//     }
+// }
 
 export default function ThemeRegistry(props: any) {
     const theme = useMemo(
@@ -16,10 +23,40 @@ export default function ThemeRegistry(props: any) {
             extendTheme({
                 colorSchemes: {
                     light: {
-                        palette: {},
+                        palette: {
+                            primary: {
+                                main: cyan[500],
+                            },
+                            secondary: {
+                                main: cyan["A400"],
+                            },
+                        },
                     },
                     dark: {
-                        palette: {},
+                        palette: {
+                            primary: {
+                                main: cyan[500],
+                            },
+                            secondary: {
+                                main: cyan["A400"],
+                            },
+                        },
+                    },
+                },
+                components: {
+                    MuiButton: {
+                        styleOverrides: {
+                            root: {
+                                borderRadius,
+                            },
+                        },
+                    },
+                    MuiAppBar: {
+                        styleOverrides: {
+                            root: {
+                                height: heightHeader,
+                            },
+                        },
                     },
                 },
             }),
@@ -71,7 +108,6 @@ export default function ThemeRegistry(props: any) {
     return (
         <CacheProvider value={cache}>
             <CssVarsProvider theme={theme}>
-                <ModeToggle />
                 <CssBaseline />
                 {children}
             </CssVarsProvider>

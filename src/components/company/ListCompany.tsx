@@ -17,7 +17,8 @@ function ListCompany({ dataListCompany }: { dataListCompany: IDataListCompany })
                                 src={`${BASE_URL_SERVER}/${FOLDER_IMAGE_COMPANY}/${company.logo}`}
                                 width={160}
                                 height={160}
-                                alt="Picture of the author"
+                                alt={`image logo company ${company.name}`}
+                                priority={true}
                             />
                             <CardContent>
                                 <h3 className="text-lg font-bold text-center mb-5">{company.name}</h3>

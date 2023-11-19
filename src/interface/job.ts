@@ -1,6 +1,6 @@
 export interface IDataListJob {
     meta: Meta;
-    result: Result[];
+    result: Ijob[];
 }
 
 export interface Meta {
@@ -10,7 +10,7 @@ export interface Meta {
     totalItems: number;
 }
 
-export interface Result {
+export interface Ijob {
     _id: string;
     name: string;
     skills: string[];

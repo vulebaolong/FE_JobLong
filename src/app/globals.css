@@ -1,6 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
 .css-sghohy-MuiButtonBase-root-MuiButton-root {
     background-color: #1976d2 !important;
 }
