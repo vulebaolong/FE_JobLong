@@ -5,7 +5,7 @@ import { Card, CardActionArea } from "@mui/material";
 import Image from "next/image";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import PaidOutlinedIcon from "@mui/icons-material/PaidOutlined";
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { useRouter } from "next/navigation";
@@ -32,17 +32,19 @@ function ItemJob({ job }: { job: Ijob }) {
                     alt={`image logo company ${job.company.name}`}
                     priority={true}
                 />
-                <div className="w-full">
-                    <h3 className="text-base font-semibold text-start mb-3">{job.name}</h3>
-                    <p className="flex items-center gap-2 mb-2">
-                        <LocationOnOutlinedIcon fontSize="small" />
-                        <span className="font-medium text-sm">{job.location}</span>
-                    </p>
-                    <p className="flex items-center gap-2 mb-3">
-                        <PaidOutlinedIcon fontSize="small" />
-                        <span className="font-medium text-sm">{job.salary}</span>
-                    </p>
-                    <p className="text-end ">
+                <div className="flex flex-col w-full h-full">
+                    <div>
+                        <h3 className="text-base font-semibold text-start mb-3">{job.name}</h3>
+                        <p className="flex items-center gap-2 mb-2">
+                            <LocationOnOutlinedIcon fontSize="small" />
+                            <span className="font-medium text-sm">{job.location}</span>
+                        </p>
+                        <p className="flex items-center gap-2">
+                            <PaidOutlinedIcon fontSize="small" />
+                            <span className="font-medium text-sm">{job.salary}</span>
+                        </p>
+                    </div>
+                    <p className="text-end mt-auto block">
                         <AccessTimeIcon fontSize="small" />
                         <span className="text-xs italic">{dayjs(job.updatedAt).fromNow()}</span>
                     </p>

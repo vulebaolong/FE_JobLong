@@ -5,41 +5,40 @@ import { useState, useEffect, useRef } from "react";
 
 export function ModeToggle() {
     const { mode, setMode } = useColorScheme();
-    const [colorSchemeValue, setColorSchemeValue] = useState<string>();
-    const observerRef = useRef<MutationObserver | null>(null);
+    // const [colorSchemeValue, setColorSchemeValue] = useState<string>();
+    // const observerRef = useRef<MutationObserver | null>(null);
 
-    useEffect(() => {
-        const element = document.querySelector("html");
+    // useEffect(() => {
+    //     const element = document.querySelector("html");
 
-        if (!observerRef.current && element) {
-            const observer = new MutationObserver((mutationsList) => {
-                for (let mutation of mutationsList) {
-                    if (mutation.type === "attributes" && mutation.attributeName === "data-mui-color-scheme") {
-                        const targetElement = mutation.target as HTMLElement;
-                        const newValue = targetElement.getAttribute("data-mui-color-scheme");
-                        if (newValue) {
-                            setColorSchemeValue(newValue);
-                        }
-                    }
-                }
-            });
+    //     if (!observerRef.current && element) {
+    //         const observer = new MutationObserver((mutationsList) => {
+    //             for (let mutation of mutationsList) {
+    //                 if (mutation.type === "attributes" && mutation.attributeName === "data-mui-color-scheme") {
+    //                     const targetElement = mutation.target as HTMLElement;
+    //                     const newValue = targetElement.getAttribute("data-mui-color-scheme");
+    //                     if (newValue) {
+    //                         setColorSchemeValue(newValue);
+    //                     }
+    //                 }
+    //             }
+    //         });
 
-            observer.observe(element, { attributes: true });
-            observerRef.current = observer;
-        }
+    //         observer.observe(element, { attributes: true });
+    //         observerRef.current = observer;
+    //     }
 
-        return () => {
-            if (observerRef.current) {
-                observerRef.current.disconnect();
-                observerRef.current = null;
-            }
-        };
-    }, []);
+    //     return () => {
+    //         if (observerRef.current) {
+    //             observerRef.current.disconnect();
+    //             observerRef.current = null;
+    //         }
+    //     };
+    // }, []);
 
     const handleToggle = () => {
         setMode(mode === "light" ? "dark" : "light");
     };
-
     return (
         <>
             <Switch
@@ -63,12 +62,12 @@ export function ModeToggle() {
                             },
                             "& + .MuiSwitch-track": {
                                 opacity: 1,
-                                backgroundColor: colorSchemeValue === "dark" ? "#8796A5" : "#aab4be",
+                                backgroundColor: mode === "dark" ? "#8796A5" : "#aab4be",
                             },
                         },
                     },
                     "& .MuiSwitch-thumb": {
-                        "backgroundColor": colorSchemeValue === "dark" ? "#003892" : "#001e3c",
+                        "backgroundColor": mode === "dark" ? "#003892" : "#001e3c",
                         "width": "32px",
                         "height": "32px",
                         "&:before": {
@@ -87,11 +86,11 @@ export function ModeToggle() {
                     },
                     "& .MuiSwitch-track": {
                         opacity: 1,
-                        backgroundColor: colorSchemeValue === "dark" ? "#8796A5" : "#aab4be",
+                        backgroundColor: mode === "dark" ? "#8796A5" : "#aab4be",
                         borderRadius: 20 / 2,
                     },
                 }}
-                checked={colorSchemeValue === "dark" ? true : false}
+                checked={mode === "dark" ? true : false}
             ></Switch>
         </>
     );

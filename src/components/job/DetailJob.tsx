@@ -26,7 +26,7 @@ function DetailJob({ job }: { job: Ijob }) {
 
                     {/* INFO */}
                     <div className="space-y-5">
-                        <div>{job.skills.map((skill, index) => {
+                        <div className="space-x-2">{job.skills.map((skill, index) => {
                             return <Chip key={index} variant="outlined" color="info" size="small" label={skill} />;
                         })}</div>
                         <p className="flex items-center gap-2">

@@ -7,9 +7,9 @@ import { useMemo, useState } from "react";
 import { experimental_extendTheme as extendTheme } from "@mui/material/styles";
 import { Experimental_CssVarsProvider as CssVarsProvider } from "@mui/material/styles";
 import { ModeToggle } from "@/components/modeToggle/ModeToggle";
-import { cyan, pink } from "@mui/material/colors";
+import { cyan, lightBlue, pink } from "@mui/material/colors";
 
-const borderRadius = "15px";
+export const borderRadius = "15px";
 export const heightHeader = "80px";
 // declare module "@mui/system" {
 //     interface Theme {
@@ -25,20 +25,23 @@ export default function ThemeRegistry(props: any) {
                     light: {
                         palette: {
                             primary: {
-                                main: cyan[500],
+                                main: cyan["700"],
                             },
                             secondary: {
-                                main: cyan["A400"],
+                                main: lightBlue["500"],
                             },
+                            AppBar: {
+                                darkBg: 'white'
+                            }
                         },
                     },
                     dark: {
                         palette: {
                             primary: {
-                                main: cyan[500],
+                                main: cyan["A400"],
                             },
                             secondary: {
-                                main: cyan["A400"],
+                                main: lightBlue["500"],
                             },
                         },
                     },
@@ -58,6 +61,13 @@ export default function ThemeRegistry(props: any) {
                             },
                         },
                     },
+                    MuiOutlinedInput: {
+                        styleOverrides: {
+                            root: {
+                                borderRadius,
+                            }
+                        }
+                    }
                 },
             }),
         []
