@@ -1,57 +1,71 @@
-import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { Button, IconButton, InputAdornment, TextField } from "@mui/material"
+import "@/api/apiConfig";
+
+
+import { Button, TextField } from "@mui/material"
 import { useFormik } from "formik";
-import { MouseEvent, useState } from "react";
+import InputNumber from "../InputNumber/InputNumber";
+import * as Yup from "yup";
+import { authApi } from "@/api/authApi";
+import { ILoginRequest } from "@/interface/auth";
+import { toast } from "react-toastify";
+import { toastSuccess } from "@/provider/ToastProvider";
 
 function FormLogin() {
-    const [showPassword, setShowPassword] = useState(false);
-
-    const handleClickShowPassword = () => setShowPassword((show) => !show);
-
-    const handleMouseDownPassword = (event: MouseEvent<HTMLButtonElement>) => {
-        event.preventDefault();
-    };
 
     const formLogin = useFormik({
         initialValues: {
             email: '',
+            password: ''
         },
-        onSubmit: values => {
-            console.log(values);
+        validationSchema: Yup.object({
+            email: Yup.string().required("Vui lòng nhập email").email("Vui lòng nhập đúng định dạng email"),
+            password: Yup.string().required("Vui lòng nhập password")
+        }),
+        onSubmit: async (values) => {
+            const loginRequest: ILoginRequest = {
+                username: values.email,
+                password: values.password
+            }
+            const { data } = await authApi.login(loginRequest)
+            console.log(data);
+            toastSuccess("Đăng nhập thành công")
         },
     });
+
+    const handleAutoField = () => {
+        formLogin.setValues({
+            email: 'vulebaolongdeptrai@gmail.com',
+            password: '123456'
+        })
+    }
+
     return (
         <div className="space-y-5">
             <TextField
                 name="email"
                 label="email"
+                value={formLogin.values.email}
                 variant="outlined"
                 fullWidth
                 onChange={formLogin.handleChange}
+                error={formLogin.errors.email ? true : false && formLogin.touched.email}
+                helperText={formLogin.errors.email}
             />
-            <TextField
+            <InputNumber
                 name="password"
                 label="mật khẩu"
+                value={formLogin.values.password}
                 variant="outlined"
                 fullWidth
                 onChange={formLogin.handleChange}
-                type={showPassword ? "text" : "password"}
-                InputProps={{
-                    endAdornment: <InputAdornment position="end">
-                        <IconButton
-                            aria-label="toggle password visibility"
-                            onClick={handleClickShowPassword}
-                            onMouseDown={handleMouseDownPassword}
-                            edge="end"
-                            size="small"
-                        >
-                            {showPassword ? <VisibilityOff /> : <Visibility />}
-                        </IconButton>
-                    </InputAdornment>
-                }}
-                error={true}
-                helperText={'123'}
+                password
+                error={formLogin.errors.password ? true : false && formLogin.touched.password}
+                helperText={formLogin.errors.password}
             />
+            <div >
+                <Button onClick={handleAutoField} type="button" variant="outlined">Tài khoản dùng thử</Button>
+            </div>
+
             <Button onClick={formLogin.submitForm} variant="contained">Đăng nhập</Button>
         </div>
     )

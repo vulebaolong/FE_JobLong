@@ -52,12 +52,11 @@ function FormRegister() {
                     variant="outlined"
                 />
                 <FormControl className="basis-1/2">
-                    <InputLabel id="demo-simple-select-label">Giới tính</InputLabel>
+                    <InputLabel id="age">Giới tính</InputLabel>
                     <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
+                        labelId="age"
                         value={age}
-                        label="Age"
+                        label="Giới tính"
                         onChange={handleChange}
                     >
                         <MenuItem value={10}>Nam</MenuItem>
@@ -65,6 +64,7 @@ function FormRegister() {
                     </Select>
                 </FormControl>
             </div>
+            
             <TextField id="outlined-basic" label="Địa chỉ" variant="outlined" fullWidth />
             <Button variant="contained">Đăng ký</Button>
         </div>
