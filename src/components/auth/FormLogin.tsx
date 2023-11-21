@@ -1,20 +1,16 @@
+
 import "@/api/apiConfig";
 import { Button, TextField } from "@mui/material"
 import { useFormik } from "formik";
 import InputNumber from "../InputNumber/InputNumber";
 import * as Yup from "yup";
-import { authApi } from "@/api/authApi";
-import { ILoginRequest } from "@/interface/auth";
-import { toastSuccess } from "@/provider/ToastProvider";
-import { lcStorage } from "@/helpers/localStorage";
-import { ACCESS_TOKEN, USER_LOGIN } from "@/constant/userContants";
-import { useDispatch } from "react-redux";
-import { DispatchType } from "@/redux/store";
-import { setAuth } from "@/redux/slices/authSlice";
+import { toastError, toastSuccess } from "@/provider/ToastProvider";
+import { signIn, useSession } from "next-auth/react"
+import { useRouter } from "next/navigation";
 
 function FormLogin() {
 
-    const dispatch: DispatchType = useDispatch()
+    const router = useRouter()
 
     const formLogin = useFormik({
         initialValues: {
@@ -26,20 +22,33 @@ function FormLogin() {
             password: Yup.string().required("Vui lòng nhập password")
         }),
         onSubmit: async (values) => {
-            const loginRequest: ILoginRequest = {
+            signIn('credentials', {
                 username: values.email,
-                password: values.password
-            }
-            const result = await authApi.login(loginRequest)
-            toastSuccess("Đăng nhập thành công")
+                password: values.password,
+                redirect: false,
+                callbackUrl: '/'
+            }).then((res) => {
+                // console.log(res);
+                if (res?.error) return toastError("Đăng nhập không thành công")
 
-            lcStorage.set(ACCESS_TOKEN, result.data.data.access_token)
-            lcStorage.set(USER_LOGIN, result.data.data.user)
+                toastSuccess("Đăng nhập thành công")
+                router.push('/')
+            })
+            // const loginRequest: ILoginRequest = {
+            //     username: values.email,
+            //     password: values.password
+            // }
+            // const result = await authApi.login(loginRequest)
+            // console.log(result)
+            // toastSuccess("Đăng nhập thành công")
 
-            dispatch(setAuth({
-                userLogin: result.data.data.user,
-                accessToken: result.data.data.access_token
-            }))
+            // lcStorage.set(ACCESS_TOKEN, result.data.data.access_token)
+            // lcStorage.set(USER_LOGIN, result.data.data.user)
+
+            // dispatch(setAuth({
+            //     userLogin: result.data.data.user,
+            //     accessToken: result.data.data.access_token
+            // }))
         },
     });
 

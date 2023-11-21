@@ -16,11 +16,15 @@ import { MouseEvent, useEffect, useState } from "react";
 import { ModeToggle } from "../modeToggle/ModeToggle";
 import Logo from "./Logo";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 const pages = ["Products", "Pricing", "Blog"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 function Header() {
+    const { data: session, status } = useSession()
+    console.log("status", status);
+    console.log("session", session);
     const router = useRouter();
     const [isClient, setIsClient] = useState(false);
     const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
@@ -47,10 +51,12 @@ function Header() {
 
     const handleLogin = () => {
         router.push("/auth/login");
+        // signIn()
     };
 
     const handleRegister = () => {
         router.push("/auth/register");
+        // signIn()
     };
 
     return (
