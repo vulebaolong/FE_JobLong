@@ -1,16 +1,20 @@
 import "@/api/apiConfig";
-
-
 import { Button, TextField } from "@mui/material"
 import { useFormik } from "formik";
 import InputNumber from "../InputNumber/InputNumber";
 import * as Yup from "yup";
 import { authApi } from "@/api/authApi";
 import { ILoginRequest } from "@/interface/auth";
-import { toast } from "react-toastify";
 import { toastSuccess } from "@/provider/ToastProvider";
+import { lcStorage } from "@/helpers/localStorage";
+import { ACCESS_TOKEN, USER_LOGIN } from "@/constant/userContants";
+import { useDispatch } from "react-redux";
+import { DispatchType } from "@/redux/store";
+import { setAuth } from "@/redux/slices/authSlice";
 
 function FormLogin() {
+
+    const dispatch: DispatchType = useDispatch()
 
     const formLogin = useFormik({
         initialValues: {
@@ -26,9 +30,16 @@ function FormLogin() {
                 username: values.email,
                 password: values.password
             }
-            const { data } = await authApi.login(loginRequest)
-            console.log(data);
+            const result = await authApi.login(loginRequest)
             toastSuccess("Đăng nhập thành công")
+
+            lcStorage.set(ACCESS_TOKEN, result.data.data.access_token)
+            lcStorage.set(USER_LOGIN, result.data.data.user)
+
+            dispatch(setAuth({
+                userLogin: result.data.data.user,
+                accessToken: result.data.data.access_token
+            }))
         },
     });
 
@@ -43,7 +54,7 @@ function FormLogin() {
         <div className="space-y-5">
             <TextField
                 name="email"
-                label="email"
+                label="Email"
                 value={formLogin.values.email}
                 variant="outlined"
                 fullWidth
@@ -53,7 +64,7 @@ function FormLogin() {
             />
             <InputNumber
                 name="password"
-                label="mật khẩu"
+                label="Mật khẩu"
                 value={formLogin.values.password}
                 variant="outlined"
                 fullWidth

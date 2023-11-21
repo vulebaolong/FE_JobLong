@@ -1,10 +1,10 @@
-import axios from "axios";
+import api from "./apiConfig";
 
 export const jobApi = {
     getListJob: (currentPage: number = 1, limit: number = 10) => {
-        return axios.get(`/jobs?currentPage=${currentPage}&limit=${limit}`);
+        return api.get(`/jobs?currentPage=${currentPage}&limit=${limit}`);
     },
     getJobById: (id: string) => {
-        return axios.get(`/jobs/${id}`);
+        return api.get(`/jobs/${id}`);
     },
 };
