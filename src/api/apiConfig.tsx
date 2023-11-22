@@ -2,6 +2,9 @@ import axios from "axios";
 import { lcStorage } from "@/helpers/localStorage";
 import { ACCESS_TOKEN } from "@/constant/userContants";
 import { BASE_URL_API } from "@/constant/apiContants";
+import { useSession } from "next-auth/react";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 const api = axios.create({
     baseURL: process.env.REACT_APP_API_BASE_URL,
@@ -32,7 +35,7 @@ api.interceptors.request.use(async (config) => {
     return config;
 });
 
-api.interceptors.response.use(function (response) {
+api.interceptors.response.use(async function (response) {
 
     if (isServer) {
         console.log(`==>Gửi về từ server ${response.config.url}`);
@@ -40,7 +43,6 @@ api.interceptors.response.use(function (response) {
     };
 
     console.log(`==>Gửi về từ client ${response.config.url}`);
-    // console.log(document.cookie); // Lấy thông tin từ các cookies
     return response;
 }, function (error) {
 

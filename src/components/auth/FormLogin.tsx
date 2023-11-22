@@ -7,8 +7,18 @@ import * as Yup from "yup";
 import { toastError, toastSuccess } from "@/provider/ToastProvider";
 import { signIn, useSession } from "next-auth/react"
 import { useRouter } from "next/navigation";
+import { ILoginRequest } from "@/interface/auth";
+import { authApi } from "@/api/authApi";
+import { lcStorage } from "@/helpers/localStorage";
+import { ACCESS_TOKEN, USER_LOGIN } from "@/constant/userContants";
+import { useDispatch } from "react-redux";
+import { DispatchType } from "@/redux/store";
+import { setAuth } from "@/redux/slices/authSlice";
+import { setSessionUser } from "@/helpers/cookies";
 
 function FormLogin() {
+
+    const dispatch: DispatchType = useDispatch()
 
     const router = useRouter()
 
@@ -34,6 +44,8 @@ function FormLogin() {
                 toastSuccess("Đăng nhập thành công")
                 router.push('/')
             })
+
+
             // const loginRequest: ILoginRequest = {
             //     username: values.email,
             //     password: values.password
@@ -42,12 +54,18 @@ function FormLogin() {
             // console.log(result)
             // toastSuccess("Đăng nhập thành công")
 
-            // lcStorage.set(ACCESS_TOKEN, result.data.data.access_token)
-            // lcStorage.set(USER_LOGIN, result.data.data.user)
+            // lcStorage.set(ACCESS_TOKEN, result.data.data[ACCESS_TOKEN])
+            // lcStorage.set(USER_LOGIN, result.data.data.[USER_LOGIN])
+
+            // setSessionUser({
+            //     access_token: result.data.data.access_token,
+            //     refresh_token: "",
+            //     user_login: result.data.data.user
+            // })
 
             // dispatch(setAuth({
-            //     userLogin: result.data.data.user,
-            //     accessToken: result.data.data.access_token
+            //     userLogin: result.data.data.[USER_LOGIN],
+            //     accessToken: result.data.data[ACCESS_TOKEN]
             // }))
         },
     });

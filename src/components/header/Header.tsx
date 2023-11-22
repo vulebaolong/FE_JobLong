@@ -16,15 +16,40 @@ import { MouseEvent, useEffect, useState } from "react";
 import { ModeToggle } from "../modeToggle/ModeToggle";
 import Logo from "./Logo";
 import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 
 const pages = ["Products", "Pricing", "Blog"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+const settings = [
+    {
+        index: 1,
+        title: "Profile",
+        onClick: () => { console.log('click Profile') }
+    },
+    {
+        index: 2,
+        title: "Account",
+        onClick: () => { console.log('click Account') }
+    },
+    {
+        index: 3,
+        title: "Dashboard",
+        onClick: () => { console.log('click Dashboard') }
+    },
+    {
+        index: 4,
+        title: "Logout",
+        onClick: () => {
+            console.log('click Logout')
+            signOut()
+        }
+    }
+];
 
 function Header() {
     const { data: session, status } = useSession()
-    console.log("status", status);
+    // console.log("status", status);
     console.log("session", session);
+
     const router = useRouter();
     const [isClient, setIsClient] = useState(false);
     const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
@@ -129,43 +154,55 @@ function Header() {
 
                                 {/* USER CONTROL */}
                                 <Box className="flex items-center">
-                                    <Box sx={{ flexGrow: 0 }}>
-                                        <Tooltip title="Open settings">
-                                            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                                <Avatar alt="Remy Sharp" />
-                                            </IconButton>
-                                        </Tooltip>
-                                        <Menu
-                                            sx={{ mt: "45px" }}
-                                            id="menu-appbar"
-                                            anchorEl={anchorElUser}
-                                            anchorOrigin={{
-                                                vertical: "top",
-                                                horizontal: "right",
-                                            }}
-                                            keepMounted
-                                            transformOrigin={{
-                                                vertical: "top",
-                                                horizontal: "right",
-                                            }}
-                                            open={Boolean(anchorElUser)}
-                                            onClose={handleCloseUserMenu}
-                                        >
-                                            {settings.map((setting) => (
-                                                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                                                    <Typography textAlign="center">{setting}</Typography>
-                                                </MenuItem>
-                                            ))}
-                                        </Menu>
-                                    </Box>
-                                    <Box sx={{ flexGrow: 0 }}>
-                                        <Button onClick={handleLogin} variant="outlined" color="primary" size="small">
-                                            Đăng nhập
-                                        </Button>
-                                        <Button onClick={handleRegister} size="small">
-                                            Đăng ký
-                                        </Button>
-                                    </Box>
+                                    {/* LOGGED */}
+                                    {status === 'authenticated' &&
+                                        <Box sx={{ flexGrow: 0 }}>
+                                            <Tooltip title="Open settings">
+                                                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                                                    <Avatar alt="Remy Sharp" />
+                                                </IconButton>
+                                            </Tooltip>
+                                            <Menu
+                                                sx={{ mt: "45px" }}
+                                                id="menu-appbar"
+                                                anchorEl={anchorElUser}
+                                                anchorOrigin={{
+                                                    vertical: "top",
+                                                    horizontal: "right",
+                                                }}
+                                                keepMounted
+                                                transformOrigin={{
+                                                    vertical: "top",
+                                                    horizontal: "right",
+                                                }}
+                                                open={Boolean(anchorElUser)}
+                                                onClose={handleCloseUserMenu}
+                                            >
+                                                {settings.map((setting) => (
+                                                    <MenuItem key={setting.index} onClick={
+                                                        () => {
+                                                            handleCloseUserMenu()
+                                                            setting.onClick()
+                                                        }
+                                                    }>
+                                                        <Typography textAlign="center">{setting.title}</Typography>
+                                                    </MenuItem>
+                                                ))}
+                                            </Menu>
+                                        </Box>
+                                    }
+
+                                    {/* NOT LOGGED  */}
+                                    {status === 'unauthenticated' &&
+                                        <Box sx={{ flexGrow: 0 }}>
+                                            <Button onClick={handleLogin} variant="outlined" color="primary" size="small">
+                                                Đăng nhập
+                                            </Button>
+                                            <Button onClick={handleRegister} size="small">
+                                                Đăng ký
+                                            </Button>
+                                        </Box>
+                                    }
                                     <ModeToggle />
                                 </Box>
                             </Box>

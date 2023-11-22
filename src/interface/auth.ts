@@ -8,5 +8,10 @@ export interface IUserLogin {
     name: string
     email: string
     role: string
-  }
-  
+}
+
+export interface ISessionUser {
+    user_login: IUserLogin
+    access_token: string
+    refresh_token: string
+}
