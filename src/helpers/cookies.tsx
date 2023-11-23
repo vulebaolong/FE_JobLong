@@ -6,7 +6,7 @@ import { redirect } from "next/navigation";
 export const setSessionUser = (sessionUser: ISessionUser) => {
     cookies().set(ACCESS_TOKEN, sessionUser.access_token);
     cookies().set(REFRESH_TOKEN, sessionUser.refresh_token);
-    cookies().set(USER_LOGIN, JSON.stringify(sessionUser.user_login));
+    cookies().set(USER_LOGIN, JSON.stringify(sessionUser.user));
 };
 
 export const getSessionUser = async () => {
@@ -22,6 +22,28 @@ export const getSessionUser = async () => {
         user_login,
     }
 };
+
+export const getCookies = (cookieString: string) => {
+    const cookies = cookieString.split('; ').map((item) => {
+        const arr = item.split(', ')
+        const isArrToken = arr.length === 3
+
+        if (isArrToken) {
+            const [name, value] = arr[2].split('=')
+            return { [name]: value }
+        }
+        const [name, value] = item.split('=');
+        return { [name]: value }
+    })
+
+    return cookies.reduce((acc, obj) => {
+        const [key, value] = Object.entries(obj)[0] || [];
+        if (value !== '' && value !== undefined) {
+            acc = Object.assign(acc, { [key]: value });
+        }
+        return acc;
+    }, {});
+}
 
 export const deleteSessionUser = () => {
     cookies().delete(ACCESS_TOKEN);

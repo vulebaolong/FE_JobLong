@@ -1,3 +1,5 @@
+import { User } from "next-auth"
+
 export interface ILoginRequest {
     username: string
     password: string
@@ -10,8 +12,8 @@ export interface IUserLogin {
     role: string
 }
 
-export interface ISessionUser {
-    user_login: IUserLogin
+export interface ISessionUser  extends User{
+    user: IUserLogin
     access_token: string
     refresh_token: string
 }

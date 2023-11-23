@@ -17,6 +17,8 @@ import { ModeToggle } from "../modeToggle/ModeToggle";
 import Logo from "./Logo";
 import { useRouter } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
+import { Divider, ListItemIcon } from "@mui/material";
+import { Logout, PersonAdd, Settings } from "@mui/icons-material";
 
 const pages = ["Products", "Pricing", "Blog"];
 const settings = [
@@ -48,12 +50,13 @@ const settings = [
 function Header() {
     const { data: session, status } = useSession()
     // console.log("status", status);
-    console.log("session", session);
+    // console.log("session", session);
 
     const router = useRouter();
     const [isClient, setIsClient] = useState(false);
     const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
-    const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const open = Boolean(anchorEl);
 
     useEffect(() => {
         setIsClient(true);
@@ -63,7 +66,7 @@ function Header() {
         setAnchorElNav(event.currentTarget);
     };
     const handleOpenUserMenu = (event: MouseEvent<HTMLElement>) => {
-        setAnchorElUser(event.currentTarget);
+        setAnchorEl(event.currentTarget);
     };
 
     const handleCloseNavMenu = () => {
@@ -71,7 +74,7 @@ function Header() {
     };
 
     const handleCloseUserMenu = () => {
-        setAnchorElUser(null);
+        setAnchorEl(null);
     };
 
     const handleLogin = () => {
@@ -163,31 +166,65 @@ function Header() {
                                                 </IconButton>
                                             </Tooltip>
                                             <Menu
-                                                sx={{ mt: "45px" }}
-                                                id="menu-appbar"
-                                                anchorEl={anchorElUser}
-                                                anchorOrigin={{
-                                                    vertical: "top",
-                                                    horizontal: "right",
-                                                }}
-                                                keepMounted
-                                                transformOrigin={{
-                                                    vertical: "top",
-                                                    horizontal: "right",
-                                                }}
-                                                open={Boolean(anchorElUser)}
+                                                anchorEl={anchorEl}
+                                                id="account-menu"
+                                                open={open}
                                                 onClose={handleCloseUserMenu}
+                                                onClick={handleCloseUserMenu}
+                                                sx={{
+                                                    overflow: 'visible',
+                                                    filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+                                                    mt: 1.5,
+                                                    '& .MuiAvatar-root': {
+                                                        width: 32,
+                                                        height: 32,
+                                                        ml: -0.5,
+                                                        mr: 1,
+                                                    },
+                                                    '&:before': {
+                                                        content: '""',
+                                                        display: 'block',
+                                                        position: 'absolute',
+                                                        top: 0,
+                                                        right: 14,
+                                                        width: 10,
+                                                        height: 10,
+                                                        bgcolor: 'background.paper',
+                                                        transform: 'translateY(-50%) rotate(45deg)',
+                                                        zIndex: 0,
+                                                    },
+                                                }}
+                                                transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+                                                anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
                                             >
-                                                {settings.map((setting) => (
-                                                    <MenuItem key={setting.index} onClick={
-                                                        () => {
-                                                            handleCloseUserMenu()
-                                                            setting.onClick()
-                                                        }
-                                                    }>
-                                                        <Typography textAlign="center">{setting.title}</Typography>
-                                                    </MenuItem>
-                                                ))}
+                                                <MenuItem onClick={handleCloseUserMenu}>
+                                                    <Avatar /> Profile
+                                                </MenuItem>
+                                                <MenuItem onClick={handleCloseUserMenu}>
+                                                    <Avatar /> My account
+                                                </MenuItem>
+                                                <Divider />
+                                                <MenuItem onClick={handleCloseUserMenu}>
+                                                    <ListItemIcon>
+                                                        <PersonAdd fontSize="small" />
+                                                    </ListItemIcon>
+                                                    Add another account
+                                                </MenuItem>
+                                                <MenuItem onClick={handleCloseUserMenu}>
+                                                    <ListItemIcon>
+                                                        <Settings fontSize="small" />
+                                                    </ListItemIcon>
+                                                    Settings
+                                                </MenuItem>
+                                                <MenuItem onClick={() => {
+                                                    signOut()
+                                                    handleCloseUserMenu()
+                                                }}>
+                                                    <ListItemIcon>
+                                                        <Logout fontSize="small" />
+                                                    </ListItemIcon>
+                                                    Logout
+                                                </MenuItem>
                                             </Menu>
                                         </Box>
                                     }
@@ -208,8 +245,9 @@ function Header() {
                             </Box>
                         </Toolbar>
                     </Container>
-                </AppBar>
-            )}
+                </AppBar >
+            )
+            }
         </>
     );
 }
