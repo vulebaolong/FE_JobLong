@@ -1,12 +1,33 @@
+'use client'
+
+import { sendRequest } from "@/api/api";
+import { userApi } from "@/api/userApi";
 import { BASE_URL_SERVER, FOLDER_IMAGE_COMPANY } from "@/constant/apiContants";
 import { IDataListCompany } from "@/interface/company";
+import { IUserInfo } from "@/interface/user";
 import { Button, Card, CardContent, CardMedia, Typography } from "@mui/material";
 import CardActions from "@mui/material/CardActions";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 
-function ListCompany({ dataListCompany }: { dataListCompany: IDataListCompany }) {
+function ListCompany({ dataListCompany, listUser }: { dataListCompany: IDataListCompany, listUser: IModelPaginate<IUserInfo> }) {
+    const { data: session } = useSession()
+
+    const handleFetchListUser = async () => {
+        const listUser = await userApi.getListUser(1, 3)
+        console.log(listUser);
+    }
+
+    const handleShowSession = () => {
+        console.log(session);
+    }
+
     return (
         <div className="container">
+            <div className="flex gap-5">
+                <Button onClick={handleFetchListUser} variant="contained">fetch list user</Button>
+                <Button onClick={handleShowSession} variant="contained">show session</Button>
+            </div>
             <h2 className="font-bold text-3xl text-center mb-20">Nhà tuyển dụng hàng đầu</h2>
             <div className="grid grid-cols-3 gap-4">
                 {dataListCompany.result.map((company) => {
@@ -32,6 +53,9 @@ function ListCompany({ dataListCompany }: { dataListCompany: IDataListCompany })
                     );
                 })}
             </div>
+            {listUser?.data?.result.map((item) => {
+                return <p key={item._id}>{item.name}</p>
+            })}
         </div>
     );
 }

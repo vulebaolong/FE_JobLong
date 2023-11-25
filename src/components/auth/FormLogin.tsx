@@ -14,7 +14,7 @@ import { ACCESS_TOKEN, USER_LOGIN } from "@/constant/userContants";
 import { useDispatch } from "react-redux";
 import { DispatchType } from "@/redux/store";
 import { setAuth } from "@/redux/slices/authSlice";
-import { setSessionUser } from "@/helpers/cookies";
+import { setSessionUser } from "@/helpers/jwt";
 
 function FormLogin() {
 

@@ -1,6 +1,10 @@
-import { getCookies } from "./../helpers/cookies";
+import jwt from "jsonwebtoken";
 import { getServerSession } from '@/app/api/auth/[...nextauth]/auth';
-import { BASE_URL_API } from '@/constant/apiContants';
+import { API_LOGIN, API_REFRESH_TOKEN, BASE_URL_API } from '@/constant/apiContants';
+import { getSession } from 'next-auth/react';
+import { decodeJWT } from "@/helpers/jwt";
+import dayjs from "dayjs";
+import { log } from "@/helpers/log";
 
 export { };
 // https://bobbyhadz.com/blog/typescript-make-types-global#declare-global-types-in-typescript
@@ -10,10 +14,9 @@ declare global {
         url: string;
         method: string;
         body?: { [key: string]: any };
-        queryParams?: any;
         useCredentials?: boolean;
-        headers?: any;
-        nextOption?: any;
+        headers?: object;
+        nextOption?: object;
         isJsonParse?: boolean
     }
 
@@ -25,48 +28,51 @@ declare global {
     }
 
     interface IModelPaginate<T> {
-        meta: {
-            currentPage: number;
-            pageSize: number;
-            totalPages: number;
-            totalItems: number;
-        },
-        result: T[]
+        statusCode: number,
+        message: string,
+        data: {
+            meta: {
+                currentPage: number;
+                pageSize: number;
+                totalPages: number;
+                totalItems: number;
+            },
+            result: T[]
+        }
     }
 
 }
 
+const isServer = typeof window === "undefined";
 
 export const sendRequest = async <T>(props: IRequest) => {
     let {
         url,
         method,
         body,
-        // queryParams = {},
-        useCredentials = false,
         headers = {},
         nextOption = {},
         isJsonParse = true
     } = props;
 
-    const session = await getServerSession()
-    console.log("session: ", session);
+    const session = isServer ? (await getServerSession()) : (await getSession())
+    if (isServer) log(`sendRequest/session :::>>>`, session, "RED")
+
+    if (session?.access_token) {
+        decodeJWT(session?.access_token, 'sendRequest/access_token')
+    }
 
     const options: any = {
         method: method,
         headers: new Headers({
             'content-type': 'application/json',
             'Authorization': `Bearer ${session?.access_token}`,
+            Cookie: `refresh_token=${session?.refresh_token}`,
             ...headers
         }),
         body: body ? JSON.stringify(body) : null,
         ...nextOption
     };
-    if (useCredentials) options.credentials = "include";
-
-    // if (queryParams) {
-    //     url = `${url}?${queryString.stringify(queryParams)}`;
-    // }
 
     try {
         const res = await fetch(`${BASE_URL_API}/${url}`, options);
@@ -78,8 +84,8 @@ export const sendRequest = async <T>(props: IRequest) => {
                 message: json?.message ?? "",
                 error: json?.error ?? ""
             } as T;
-        } 
-        
+        }
+
         if (!isJsonParse) return res as T
 
         return res.json() as T

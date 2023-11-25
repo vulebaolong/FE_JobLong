@@ -13,6 +13,7 @@ declare module "next-auth" {
         user: IUserLogin & DefaultSession["user"]
         [ACCESS_TOKEN]: string;
         [REFRESH_TOKEN]: string;
+        error?: string
     }
 
     interface User {
@@ -29,6 +30,7 @@ declare module "next-auth/jwt" {
         [USER_LOGIN]: IUserLogin;
         [ACCESS_TOKEN]: string;
         [REFRESH_TOKEN]: string;
+        error?: string
     }
 }
 

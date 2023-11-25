@@ -16,7 +16,7 @@ import { MouseEvent, useEffect, useState } from "react";
 import { ModeToggle } from "../modeToggle/ModeToggle";
 import Logo from "./Logo";
 import { useRouter } from "next/navigation";
-import { useSession, signOut } from "next-auth/react";
+import { useSession, signOut, signIn } from "next-auth/react";
 import { Divider, ListItemIcon } from "@mui/material";
 import { Logout, PersonAdd, Settings } from "@mui/icons-material";
 
@@ -48,9 +48,9 @@ const settings = [
 ];
 
 function Header() {
-    const { data: session, status } = useSession()
-    // console.log("status", status);
-    // console.log("session", session);
+    const { data: session, status } = useSession();
+
+
 
     const router = useRouter();
     const [isClient, setIsClient] = useState(false);
@@ -62,6 +62,13 @@ function Header() {
         setIsClient(true);
     }, []);
 
+    useEffect(() => {
+        if (session?.error === "RefreshAccessTokenError") {
+            console.log('đăng nhập lại');
+            signOut()
+        }
+    }, [session]);
+
     const handleOpenNavMenu = (event: MouseEvent<HTMLElement>) => {
         setAnchorElNav(event.currentTarget);
     };
@@ -72,7 +79,6 @@ function Header() {
     const handleCloseNavMenu = () => {
         setAnchorElNav(null);
     };
-
     const handleCloseUserMenu = () => {
         setAnchorEl(null);
     };
@@ -81,11 +87,15 @@ function Header() {
         router.push("/auth/login");
         // signIn()
     };
-
     const handleRegister = () => {
         router.push("/auth/register");
         // signIn()
     };
+
+    const handleLogout = () => {
+        signOut()
+        handleCloseUserMenu()
+    }
 
     return (
         <>
@@ -216,10 +226,7 @@ function Header() {
                                                     </ListItemIcon>
                                                     Settings
                                                 </MenuItem>
-                                                <MenuItem onClick={() => {
-                                                    signOut()
-                                                    handleCloseUserMenu()
-                                                }}>
+                                                <MenuItem onClick={handleLogout}>
                                                     <ListItemIcon>
                                                         <Logout fontSize="small" />
                                                     </ListItemIcon>
