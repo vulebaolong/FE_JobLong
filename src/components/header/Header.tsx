@@ -65,7 +65,7 @@ function Header() {
     useEffect(() => {
         if (session?.error === "RefreshAccessTokenError") {
             console.log('đăng nhập lại');
-            signOut()
+            // signOut()
         }
     }, [session]);
 

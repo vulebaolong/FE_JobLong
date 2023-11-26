@@ -1,51 +1,12 @@
-import jwt from "jsonwebtoken";
 import { getServerSession } from '@/app/api/auth/[...nextauth]/auth';
-import { API_LOGIN, API_REFRESH_TOKEN, BASE_URL_API } from '@/constant/apiContants';
+import { BASE_URL_API } from '@/constant/apiContants';
 import { getSession } from 'next-auth/react';
 import { decodeJWT } from "@/helpers/jwt";
-import dayjs from "dayjs";
 import { log } from "@/helpers/log";
-
-export { };
-// https://bobbyhadz.com/blog/typescript-make-types-global#declare-global-types-in-typescript
-
-declare global {
-    interface IRequest {
-        url: string;
-        method: string;
-        body?: { [key: string]: any };
-        useCredentials?: boolean;
-        headers?: object;
-        nextOption?: object;
-        isJsonParse?: boolean
-    }
-
-    interface IBackendRes<T> extends Response {
-        error?: string | string[];
-        message: string;
-        statusCode: number | string;
-        data: T;
-    }
-
-    interface IModelPaginate<T> {
-        statusCode: number,
-        message: string,
-        data: {
-            meta: {
-                currentPage: number;
-                pageSize: number;
-                totalPages: number;
-                totalItems: number;
-            },
-            result: T[]
-        }
-    }
-
-}
 
 const isServer = typeof window === "undefined";
 
-export const sendRequest = async <T>(props: IRequest) => {
+export const sendRequest = async <T>(props: IRequest): Promise<T> => {
     let {
         url,
         method,
@@ -56,11 +17,10 @@ export const sendRequest = async <T>(props: IRequest) => {
     } = props;
 
     const session = isServer ? (await getServerSession()) : (await getSession())
-    if (isServer) log(`sendRequest/session :::>>>`, session, "RED")
-
-    if (session?.access_token) {
-        decodeJWT(session?.access_token, 'sendRequest/access_token')
-    }
+    // if (isServer) log(`sendRequest/session :::>>>`, session, "RED")
+    // if (session?.access_token) decodeJWT(session?.access_token, 'sendRequest/access_token')
+    if (isServer) log(`sendRequest`, `${BASE_URL_API}/${url}`, "GREEN")
+    if (isServer) log(`sendRequest/session`, session, "GREEN")
 
     const options: any = {
         method: method,
@@ -77,18 +37,11 @@ export const sendRequest = async <T>(props: IRequest) => {
     try {
         const res = await fetch(`${BASE_URL_API}/${url}`, options);
 
-        if (!res.ok) {
-            const json = await res.json();
-            return {
-                statusCode: res.status,
-                message: json?.message ?? "",
-                error: json?.error ?? ""
-            } as T;
-        }
+        if (!res.ok) return await res.json() as T;
 
         if (!isJsonParse) return res as T
 
-        return res.json() as T
+        return await res.json() as T
     } catch (error) {
         console.error('Error (sendRequest):', error);
         throw error;

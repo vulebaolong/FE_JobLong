@@ -1,20 +1,13 @@
-
-import "@/api/apiConfig";
 import { Button, TextField } from "@mui/material"
 import { useFormik } from "formik";
 import InputNumber from "../InputNumber/InputNumber";
 import * as Yup from "yup";
 import { toastError, toastSuccess } from "@/provider/ToastProvider";
-import { signIn, useSession } from "next-auth/react"
+import { signIn } from "next-auth/react"
 import { useRouter } from "next/navigation";
-import { ILoginRequest } from "@/interface/auth";
-import { authApi } from "@/api/authApi";
-import { lcStorage } from "@/helpers/localStorage";
-import { ACCESS_TOKEN, USER_LOGIN } from "@/constant/userContants";
+
 import { useDispatch } from "react-redux";
 import { DispatchType } from "@/redux/store";
-import { setAuth } from "@/redux/slices/authSlice";
-import { setSessionUser } from "@/helpers/jwt";
 
 function FormLogin() {
 

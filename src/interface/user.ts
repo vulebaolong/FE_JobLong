@@ -1,16 +1,8 @@
-
-
 export interface IDataListUser {
-    meta: Meta;
+    meta: IMeta;
     result: IUserInfo[];
 }
 
-export interface Meta {
-    currentPage: number;
-    pageSize: number;
-    totalPages: number;
-    totalItems: number;
-}
 export interface IUserInfo {
     _id: string
     name: string

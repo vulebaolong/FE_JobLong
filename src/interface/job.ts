@@ -1,13 +1,6 @@
 export interface IDataListJob {
-    meta: Meta;
+    meta: IMeta;
     result: Ijob[];
-}
-
-export interface Meta {
-    currentPage: number;
-    pageSize: number;
-    totalPages: number;
-    totalItems: number;
 }
 
 export interface Ijob {

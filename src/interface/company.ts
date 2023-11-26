@@ -1,18 +1,4 @@
-
-
-export interface IDataListCompany {
-    meta: Meta;
-    result: Result[];
-}
-
-export interface Meta {
-    currentPage: number;
-    pageSize: number;
-    totalPages: number;
-    totalItems: number;
-}
-
-export interface Result {
+export interface ICompany {
     _id: string;
     name: string;
     address: string;
