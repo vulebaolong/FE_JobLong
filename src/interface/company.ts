@@ -16,3 +16,10 @@ export interface CreatedBy {
     _id: string;
     email: string;
 }
+
+export interface dataCreateCompany {
+    name: string;
+    address: string;
+    description: string;
+    logo: string;
+}

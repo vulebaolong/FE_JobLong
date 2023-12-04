@@ -1,5 +1,9 @@
-import { IDataListJob, Ijob } from "@/interface/job";
+'use client'
+
+import { Ijob } from "@/interface/job";
 import ItemJob from "./ItemJob";
+import { Button } from "@mui/material";
+import { getListJobsAction } from "@/app/(customer)/job/actions";
 
 interface IProps {
     dataJob: IModelPaginate<Ijob[]>
@@ -7,7 +11,7 @@ interface IProps {
 
 function ListJob({ dataJob }: IProps) {
 
-    const { meta, result: jobs } = dataJob.data
+    const jobs = dataJob.data?.result || []
 
     return (
         <div className="container">

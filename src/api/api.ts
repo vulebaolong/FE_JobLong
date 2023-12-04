@@ -3,6 +3,7 @@ import { BASE_URL_API } from '@/constant/apiContants';
 import { getSession } from 'next-auth/react';
 import { decodeJWT } from "@/helpers/jwt";
 import { log } from "@/helpers/log";
+import { cookies } from 'next/headers'
 
 const isServer = typeof window === "undefined";
 
@@ -19,8 +20,9 @@ export const sendRequest = async <T>(props: IRequest): Promise<T> => {
     const session = isServer ? (await getServerSession()) : (await getSession())
     // if (isServer) log(`sendRequest/session :::>>>`, session, "RED")
     // if (session?.access_token) decodeJWT(session?.access_token, 'sendRequest/access_token')
-    if (isServer) log(`sendRequest`, `${BASE_URL_API}/${url}`, "GREEN")
-    if (isServer) log(`sendRequest/session`, session, "GREEN")
+    // if (isServer) log(`sendRequest`, `${BASE_URL_API}/${url}`, "GREEN")
+    // if (!isServer) log(`sendRequest`, cookies().getAll(), "GREEN")
+    // if (isServer) log(`sendRequest/session`, session, "GREEN")
 
     const options: any = {
         method: method,

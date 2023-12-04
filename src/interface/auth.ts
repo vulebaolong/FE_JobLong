@@ -10,10 +10,19 @@ export interface IUserLogin {
     name: string
     email: string
     role: string
+    permissions: IPermissions[]
 }
 
 export interface ISessionUser  extends User{
     user: IUserLogin
     access_token: string
     refresh_token: string
+}
+
+export interface IPermissions {
+    _id: string,
+    name: string,
+    apiPath: string,
+    method: string,
+    module: string
 }

@@ -21,37 +21,9 @@ import { Divider, ListItemIcon } from "@mui/material";
 import { Logout, PersonAdd, Settings } from "@mui/icons-material";
 
 const pages = ["Products", "Pricing", "Blog"];
-const settings = [
-    {
-        index: 1,
-        title: "Profile",
-        onClick: () => { console.log('click Profile') }
-    },
-    {
-        index: 2,
-        title: "Account",
-        onClick: () => { console.log('click Account') }
-    },
-    {
-        index: 3,
-        title: "Dashboard",
-        onClick: () => { console.log('click Dashboard') }
-    },
-    {
-        index: 4,
-        title: "Logout",
-        onClick: () => {
-            console.log('click Logout')
-            signOut()
-        }
-    }
-];
 
 function Header() {
     const { data: session, status } = useSession();
-
-
-
     const router = useRouter();
     const [isClient, setIsClient] = useState(false);
     const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
@@ -85,11 +57,9 @@ function Header() {
 
     const handleLogin = () => {
         router.push("/auth/login");
-        // signIn()
     };
     const handleRegister = () => {
         router.push("/auth/register");
-        // signIn()
     };
 
     const handleLogout = () => {
@@ -100,7 +70,7 @@ function Header() {
     return (
         <>
             {isClient && (
-                <AppBar position="fixed" className="justify-center">
+                <AppBar position="fixed" className="justify-center" sx={{height: "80px"}}>
                     <Container maxWidth="xl">
                         <Toolbar disableGutters>
                             <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%" }}>
@@ -207,11 +177,11 @@ function Header() {
                                                 transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                                                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
                                             >
-                                                <MenuItem onClick={handleCloseUserMenu}>
+                                                {/* <MenuItem onClick={handleCloseUserMenu}>
                                                     <Avatar /> Profile
-                                                </MenuItem>
+                                                </MenuItem> */}
                                                 <MenuItem onClick={handleCloseUserMenu}>
-                                                    <Avatar /> My account
+                                                    <Avatar /> {session.user.name}
                                                 </MenuItem>
                                                 <Divider />
                                                 <MenuItem onClick={handleCloseUserMenu}>

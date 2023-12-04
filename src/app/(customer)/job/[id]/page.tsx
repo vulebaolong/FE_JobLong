@@ -3,10 +3,11 @@ import DetailJob from "@/components/job/DetailJob";
 
 async function Page({ params }: { params: { id: string } }) {
     const { id } = params;
-    const { data } = await jobApi.getJobById(id);
+    const  dataJob  = await jobApi.getJobById(id);
+    
     return (
         <div>
-            <DetailJob job={data.data} />
+            <DetailJob dataJob={dataJob} />
         </div>
     );
 }

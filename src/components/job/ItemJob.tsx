@@ -14,7 +14,7 @@ dayjs.extend(relativeTime);
 function ItemJob({ job }: { job: Ijob }) {
     const router = useRouter();
     const handleClick = (id: string) => {
-        router.push(`/job/detail/${id}`);
+        router.push(`/job/${id}`);
     };
     return (
         <Card
@@ -26,7 +26,7 @@ function ItemJob({ job }: { job: Ijob }) {
             <CardActionArea className="!rounded-xl !flex !justify-start !items-start gap-4 !p-5 h-full">
                 <Image
                     className="rounded-xl"
-                    src={`${BASE_URL_SERVER}/${FOLDER_IMAGE_COMPANY}/${job.company.logo}`}
+                    src={`${job.company.logo}`}
                     width={50}
                     height={50}
                     alt={`image logo company ${job.company.name}`}

@@ -23,7 +23,7 @@ async function refreshAccessToken(token: JWT) {
         }
     } catch (error: any) {
         if (error.message === 'jwt expired') {
-            log(`refreshAccessToken :::>>>`, 'kiểm tra access_token đã hết hạn', "GREEN")
+            // log(`refreshAccessToken :::>>>`, 'kiểm tra access_token đã hết hạn', "GREEN")
 
             // log(`refreshAccessToken :::>>>`, 'ACCESS_TOKEN hết hạn', "RED")
 
@@ -43,7 +43,7 @@ async function refreshAccessToken(token: JWT) {
             const result: IBackendRes<ISessionUser> = await resultJson.json();
 
             if (result.statusCode === 200) {
-                log('refreshAccessToken/refresh_token :::>>>', refresh_token, "RED");
+                // log('refreshAccessToken/refresh_token :::>>>', refresh_token, "RED");
 
                 // result.data.refresh_token = refresh_token
 
@@ -98,26 +98,15 @@ export const authOptions: NextAuthOptions = {
                 return null;
             }
         }),
-        // GithubProvider({
-        //     clientId: process.env.GITHUB_ID!,
-        //     clientSecret: process.env.GITHUB_SECRET!,
-        // }),
-        // FacebookProvider({
-        //     clientId: process.env.FACEBOOK_ID!,
-        //     clientSecret: process.env.FACEBOOK_SECRET!,
-        // }),
-        // GoogleProvider({
-        //     clientId: process.env.GOOGLE_ID!,
-        //     clientSecret: process.env.GOOGLE_SECRET!,
-        // }),
     ],
     callbacks: {
-        jwt({ token, user, trigger, session, account, profile }) {
+        async jwt({ token, user, trigger, session, account, profile }) {
             // console.log("jwt/trigger: ", trigger);
 
-            // https://github.com/nextauthjs/next-auth/discussions/6642#discussioncomment-5942013
+            // https://github.com/nextauthjs/next-auth/discussions/6642
             // https://github.com/nextauthjs/next-auth/issues/7558
-            log('jwt/token :::>>>', token, "RED");
+            // https://github.com/nextauthjs/next-auth/issues/ 7522
+            // log('jwt/token :::>>>', token, "RED");
 
             if (user) {
                 token.access_token = user.access_token
@@ -129,7 +118,7 @@ export const authOptions: NextAuthOptions = {
             return refreshAccessToken(token)
         },
         async session({ session, token, trigger }) {
-            log('session/token :::>>>', token.refresh_token, "RED");
+            // log('session/token :::>>>', token.refresh_token, "RED");
 
             // log('session/trigger :::>>>', trigger, "YELLOW");
             // log('session/token :::>>>', token, "YELLOW");
@@ -144,11 +133,4 @@ export const authOptions: NextAuthOptions = {
             return session
         },
     },
-    // pages: {
-    //     signIn: '/auth/login',
-    //     signOut: '/auth/signout',
-    //     // error: '/auth/error', // Error code passed in query string as ?error=
-    //     // verifyRequest: '/auth/verify-request', // (used for check email message)
-    //     newUser: '/auth/register',
-    // }
 }

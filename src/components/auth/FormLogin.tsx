@@ -35,7 +35,8 @@ function FormLogin() {
                 if (res?.error) return toastError("Đăng nhập không thành công")
 
                 toastSuccess("Đăng nhập thành công")
-                router.push('/')
+                // router.push('/')
+                router.back()
             })
 
 
@@ -65,7 +66,7 @@ function FormLogin() {
 
     const handleAutoField = () => {
         formLogin.setValues({
-            email: 'vulebaolongdeptrai@gmail.com',
+            email: 'vulebaolong@gmail.com',
             password: '123456'
         })
     }
