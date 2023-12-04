@@ -36,7 +36,7 @@ function Header() {
 
     useEffect(() => {
         if (session?.error === "RefreshAccessTokenError") {
-            console.log('đăng nhập lại');
+            console.log("đăng nhập lại");
             // signOut()
         }
     }, [session]);
@@ -63,17 +63,24 @@ function Header() {
     };
 
     const handleLogout = () => {
-        signOut()
-        handleCloseUserMenu()
-    }
+        signOut();
+        handleCloseUserMenu();
+    };
 
     return (
         <>
             {isClient && (
-                <AppBar position="fixed" className="justify-center" sx={{height: "80px"}}>
+                <AppBar position="fixed" className="justify-center" sx={{ height: "80px" }}>
                     <Container maxWidth="xl">
                         <Toolbar disableGutters>
-                            <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%" }}>
+                            <Box
+                                sx={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "space-between",
+                                    width: "100%",
+                                }}
+                            >
                                 {/* LOGO DESKTOP */}
                                 <Box sx={{ display: { xs: "none", md: "flex" } }}>
                                     <Logo />
@@ -84,7 +91,11 @@ function Header() {
                                         <Button
                                             key={page}
                                             onClick={handleCloseNavMenu}
-                                            sx={{ my: 2, color: (theme) => theme.palette.primary.light, display: "block" }}
+                                            sx={{
+                                                my: 2,
+                                                color: (theme) => theme.palette.primary.light,
+                                                display: "block",
+                                            }}
                                         >
                                             {page}
                                         </Button>
@@ -123,7 +134,13 @@ function Header() {
                                     >
                                         {pages.map((page) => (
                                             <MenuItem key={page} onClick={handleCloseNavMenu}>
-                                                <Typography sx={{ color: (theme) => theme.palette.primary.light }} textAlign="center">
+                                                <Typography
+                                                    sx={{
+                                                        color: (theme) =>
+                                                            theme.palette.primary.light,
+                                                    }}
+                                                    textAlign="center"
+                                                >
                                                     {page}
                                                 </Typography>
                                             </MenuItem>
@@ -138,10 +155,13 @@ function Header() {
                                 {/* USER CONTROL */}
                                 <Box className="flex items-center">
                                     {/* LOGGED */}
-                                    {status === 'authenticated' &&
+                                    {status === "authenticated" && (
                                         <Box sx={{ flexGrow: 0 }}>
                                             <Tooltip title="Open settings">
-                                                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                                                <IconButton
+                                                    onClick={handleOpenUserMenu}
+                                                    sx={{ p: 0 }}
+                                                >
                                                     <Avatar alt="Remy Sharp" />
                                                 </IconButton>
                                             </Tooltip>
@@ -152,30 +172,37 @@ function Header() {
                                                 onClose={handleCloseUserMenu}
                                                 onClick={handleCloseUserMenu}
                                                 sx={{
-                                                    overflow: 'visible',
-                                                    filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-                                                    mt: 1.5,
-                                                    '& .MuiAvatar-root': {
+                                                    "overflow": "visible",
+                                                    "filter":
+                                                        "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+                                                    "mt": 1.5,
+                                                    "& .MuiAvatar-root": {
                                                         width: 32,
                                                         height: 32,
                                                         ml: -0.5,
                                                         mr: 1,
                                                     },
-                                                    '&:before': {
+                                                    "&:before": {
                                                         content: '""',
-                                                        display: 'block',
-                                                        position: 'absolute',
+                                                        display: "block",
+                                                        position: "absolute",
                                                         top: 0,
                                                         right: 14,
                                                         width: 10,
                                                         height: 10,
-                                                        bgcolor: 'background.paper',
-                                                        transform: 'translateY(-50%) rotate(45deg)',
+                                                        bgcolor: "background.paper",
+                                                        transform: "translateY(-50%) rotate(45deg)",
                                                         zIndex: 0,
                                                     },
                                                 }}
-                                                transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-                                                anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                                                transformOrigin={{
+                                                    horizontal: "right",
+                                                    vertical: "top",
+                                                }}
+                                                anchorOrigin={{
+                                                    horizontal: "right",
+                                                    vertical: "bottom",
+                                                }}
                                             >
                                                 {/* <MenuItem onClick={handleCloseUserMenu}>
                                                     <Avatar /> Profile
@@ -204,27 +231,31 @@ function Header() {
                                                 </MenuItem>
                                             </Menu>
                                         </Box>
-                                    }
+                                    )}
 
                                     {/* NOT LOGGED  */}
-                                    {status === 'unauthenticated' &&
+                                    {status === "unauthenticated" && (
                                         <Box sx={{ flexGrow: 0 }}>
-                                            <Button onClick={handleLogin} variant="outlined" color="primary" size="small">
+                                            <Button
+                                                onClick={handleLogin}
+                                                variant="outlined"
+                                                color="primary"
+                                                size="small"
+                                            >
                                                 Đăng nhập
                                             </Button>
                                             <Button onClick={handleRegister} size="small">
                                                 Đăng ký
                                             </Button>
                                         </Box>
-                                    }
+                                    )}
                                     <ModeToggle />
                                 </Box>
                             </Box>
                         </Toolbar>
                     </Container>
-                </AppBar >
-            )
-            }
+                </AppBar>
+            )}
         </>
     );
 }

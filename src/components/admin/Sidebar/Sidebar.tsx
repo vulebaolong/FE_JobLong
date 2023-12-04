@@ -69,12 +69,12 @@ function Sidebar() {
 
     const uniqueModules: string[] = extractUniqueModules(session?.user?.permissions);
 
-    const sidebarMenus = rootSidebarMenus.filter((item) => { 
-        if(item.module === "") return  true
-        if (uniqueModules.includes(item.module) ) {
-            return  true
+    const sidebarMenus = rootSidebarMenus.filter((item) => {
+        if (item.module === "") return true;
+        if (uniqueModules.includes(item.module)) {
+            return true;
         }
-     })
+    });
 
     useEffect(() => {
         setActiveState(pathname);
@@ -82,8 +82,8 @@ function Sidebar() {
 
     return (
         <Drawer variant="permanent" open={sidebarOpen}>
-            <Toolbar sx={{height: "80px"}}/>
-            <List sx={{paddingTop: 0}}>
+            <Toolbar sx={{ height: "80px" }} />
+            <List sx={{ paddingTop: 0 }}>
                 {sidebarMenus.map((item, index) => {
                     return (
                         <ListItem key={index} disablePadding sx={{ display: "block" }}>

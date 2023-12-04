@@ -29,25 +29,29 @@ export const rootSidebarMenus: ISidebarMenus[] = [
         icon: <BiCategory size="1.25em" />,
         url: "/admin/permissions",
         role: "admin",
-    },{
+    },
+    {
         title: "Roles",
         module: "ROLES",
         icon: <BiCategory size="1.25em" />,
         url: "/admin/roles",
         role: "admin",
-    },{
+    },
+    {
         title: "Jobs",
         module: "JOBS",
         icon: <BiCategory size="1.25em" />,
         url: "/admin/jobs",
         role: "admin",
-    },{
+    },
+    {
         title: "Companies",
         module: "COMPANIES",
         icon: <BiCategory size="1.25em" />,
         url: "/admin/companies",
         role: "admin",
-    },{
+    },
+    {
         title: "Resumes",
         module: "RESUMES",
         icon: <BiCategory size="1.25em" />,
@@ -60,5 +64,5 @@ export const rootSidebarMenus: ISidebarMenus[] = [
         icon: <BiCategory size="1.25em" />,
         url: "/admin/subscribers",
         role: "admin",
-    }
+    },
 ];
