@@ -18,13 +18,15 @@ const authSlice = createSlice({
     name: "authSlice",
     initialState,
     reducers: {
-        setAuth: (state, { payload }) => {
+        loginAuth: (state, { payload }) => {
             state.userLogin = payload.userLogin
             state.accessToken = payload.accessToken
-        },
+
+           
+        }
     },
 });
 
-export const { setAuth } = authSlice.actions;
+export const { loginAuth } = authSlice.actions;
 
 export default authSlice.reducer;

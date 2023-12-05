@@ -1,28 +1,27 @@
-import { User } from "next-auth"
+import { User } from "next-auth";
 
 export interface ILoginRequest {
-    username: string
-    password: string
+    username: string;
+    password: string;
 }
 
 export interface IUserLogin {
-    _id: string
-    name: string
-    email: string
-    role: string
-    permissions: IPermissions[]
+    _id: string;
+    name: string;
+    email: string;
+    role: string;
 }
 
-export interface ISessionUser  extends User{
-    user: IUserLogin
-    access_token: string
-    refresh_token: string
+export interface ISessionUser extends User {
+    user: IUserLogin;
+    access_token: string;
+    refresh_token: string;
 }
 
 export interface IPermissions {
-    _id: string,
-    name: string,
-    apiPath: string,
-    method: string,
-    module: string
+    _id: string;
+    name: string;
+    apiPath: string;
+    method: string;
+    module: string;
 }

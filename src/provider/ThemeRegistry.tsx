@@ -9,7 +9,7 @@ import { Experimental_CssVarsProvider as CssVarsProvider } from "@mui/material/s
 import { ModeToggle } from "@/components/modeToggle/ModeToggle";
 import { cyan, lightBlue, pink } from "@mui/material/colors";
 
-export const borderRadius = "15px";
+export const borderRadius = "10px";
 export const heightHeader = "80px";
 // declare module "@mui/system" {
 //     interface Theme {
@@ -38,7 +38,7 @@ export default function ThemeRegistry(props: any) {
                     dark: {
                         palette: {
                             primary: {
-                                main: cyan["A400"],
+                                main: cyan["400"],
                             },
                             secondary: {
                                 main: lightBlue["500"],
@@ -65,6 +65,33 @@ export default function ThemeRegistry(props: any) {
                         styleOverrides: {
                             root: {
                                 borderRadius,
+                            }
+                        }
+                    },
+                    MuiCard: {
+                        styleOverrides: {
+                            root: {
+                                borderRadius,
+                            }
+                        }
+                    },
+                    MuiTable: {
+                        styleOverrides: {
+                          root: {
+                            "& .MuiTableCell-head": {
+                              fontWeight: 600,
+                              paddingTop: 16,
+                              paddingBottom: 16
+                            }
+                          }
+                        }
+                      },
+                    MuiList: {
+                        styleOverrides: {
+                            root: {
+                                "& .MuiListItemButton-root": {
+                                    borderRadius
+                                }
                             }
                         }
                     }

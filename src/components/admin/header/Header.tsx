@@ -13,16 +13,17 @@ import MenuItem from "@mui/material/MenuItem";
 import { MouseEvent, useEffect, useState } from "react";
 import { ModeToggle } from "@/components/modeToggle/ModeToggle";
 import { useRouter } from "next/navigation";
-import { useSession, signOut } from "next-auth/react";
 import { Divider, ListItemIcon } from "@mui/material";
 import { Logout, PersonAdd, Settings } from "@mui/icons-material";
-import { useDispatch } from "react-redux";
-import { DispatchType } from "@/redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { DispatchType, RootState } from "@/redux/store";
 import { setSidebarOpen } from "@/redux/slices/sidebarSlice";
+import { lcStorage } from "@/helpers/localStorage";
+import { ACCESS_TOKEN, USER_LOGIN } from "@/constant/userContants";
 
 function Header() {
-    const { data: session, status } = useSession();
     const router = useRouter();
+    const { userLogin } = useSelector((state: RootState) => state.authSlice)
     const [isClient, setIsClient] = useState(false);
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
@@ -36,13 +37,6 @@ function Header() {
     useEffect(() => {
         setIsClient(true);
     }, []);
-
-    useEffect(() => {
-        if (session?.error === "RefreshAccessTokenError") {
-            console.log("đăng nhập lại");
-            // signOut()
-        }
-    }, [session]);
 
     const handleOpenUserMenu = (event: MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
@@ -60,7 +54,9 @@ function Header() {
     };
 
     const handleLogout = () => {
-        signOut();
+        lcStorage.remove(USER_LOGIN)
+        lcStorage.remove(ACCESS_TOKEN)
+        window.location.reload()
         handleCloseUserMenu();
     };
 
@@ -88,7 +84,7 @@ function Header() {
                             {/* USER CONTROL */}
                             <Box className="flex items-center">
                                 {/* LOGGED */}
-                                {status === "authenticated" && (
+                                {userLogin && (
                                     <Box sx={{ flexGrow: 0 }}>
                                         <Tooltip title="Open settings">
                                             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -138,7 +134,7 @@ function Header() {
                                                     <Avatar /> Profile
                                                 </MenuItem> */}
                                             <MenuItem onClick={handleCloseUserMenu}>
-                                                <Avatar /> {session.user.name}
+                                                <Avatar /> {userLogin.name}
                                             </MenuItem>
                                             <Divider />
                                             <MenuItem onClick={handleCloseUserMenu}>
@@ -164,7 +160,7 @@ function Header() {
                                 )}
 
                                 {/* NOT LOGGED  */}
-                                {status === "unauthenticated" && (
+                                {!userLogin && (
                                     <Box sx={{ flexGrow: 0 }}>
                                         <Button
                                             onClick={handleLogin}

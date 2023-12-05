@@ -1,20 +1,15 @@
-// import api from "@/api/apiConfig";
-import { companyApi } from "@/api/companyApi";
-import { jobApi } from "@/api/jobApi";
 import ListCompany from "@/components/company/ListCompany";
-import ListJob from "@/components/job/ListJob";
+import { getListCompanyAction } from "./company/action";
 
-export default async function Page() {
-    const dataCompany = await companyApi.getListCompany(1, 3);
+export default async function CustomerPage() {
+    const dataCompany = await getListCompanyAction(1, 10)
 
-    const dataJob = await jobApi.getListJob(1, 10);
+    // const dataJob = undefined;
 
     return (
         <div className="space-y-60 py-24">
-            {!dataCompany.error && (
-                <ListCompany dataCompany={dataCompany}  />
-            )}
-            {!dataJob.error && <ListJob dataJob={dataJob} />}
+            <ListCompany dataCompany={dataCompany} />
+            {/* {!dataJob && <ListJob dataJob={dataJob} />} */}
         </div>
     );
 }

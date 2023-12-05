@@ -1,16 +1,18 @@
-import Sidebar from "@/components/admin/Sidebar/Sidebar";
-import Header from "@/components/admin/Header/Header";
+import Sidebar from "@/components/admin/sidebar/Sidebar";
+import Header from "@/components/admin/header/Header";
+import { getListPermissionsAction } from "../action";
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+    const dataPermission = await getListPermissionsAction();
     return (
         <div className="flex">
-            <Sidebar />
+            <Sidebar dataPermission={dataPermission} />
 
-            <div className="bg-gray-300/10 basis-full h-screen flex flex-col">
+            <div className="bg-gray-300/10 basis-full h-screen flex flex-col overflow-hidden">
                 <div className="bg-green-400/10">
                     <Header />
                 </div>
-                <div className="bg-red-400/10 flex-grow">{children}</div>
+                <div className="flex-grow p-5">{children}</div>
             </div>
         </div>
     );

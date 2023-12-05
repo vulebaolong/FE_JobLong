@@ -6,12 +6,12 @@ import { Button } from "@mui/material";
 import { getListJobsAction } from "@/app/(customer)/job/actions";
 
 interface IProps {
-    dataJob: IModelPaginate<Ijob[]>
+    dataJob?: IModelPaginate<Ijob[]>
 }
 
 function ListJob({ dataJob }: IProps) {
 
-    const jobs = dataJob.data?.result || []
+    const jobs = dataJob?.data?.result || []
 
     return (
         <div className="container">

@@ -1,3 +1,5 @@
+'use client'
+
 import { Button, TextField } from "@mui/material"
 import { useFormik } from "formik";
 import InputNumber from "../InputNumber/InputNumber";
@@ -8,6 +10,11 @@ import { useRouter } from "next/navigation";
 
 import { useDispatch } from "react-redux";
 import { DispatchType } from "@/redux/store";
+import { ILoginRequest } from "@/interface/auth";
+import { loginAction } from "@/app/auth/[id]/action";
+import { loginAuth } from "@/redux/slices/authSlice";
+import { lcStorage } from "@/helpers/localStorage";
+import { ACCESS_TOKEN, USER_LOGIN } from "@/constant/userContants";
 
 function FormLogin() {
 
@@ -25,42 +32,47 @@ function FormLogin() {
             password: Yup.string().required("Vui lòng nhập password")
         }),
         onSubmit: async (values) => {
-            signIn('credentials', {
-                username: values.email,
-                password: values.password,
-                redirect: false,
-                callbackUrl: '/'
-            }).then((res) => {
-                // console.log(res);
-                if (res?.error) return toastError("Đăng nhập không thành công")
-
-                toastSuccess("Đăng nhập thành công")
-                // router.push('/')
-                router.back()
-            })
-
-
-            // const loginRequest: ILoginRequest = {
+            // signIn('credentials', {
             //     username: values.email,
-            //     password: values.password
-            // }
-            // const result = await authApi.login(loginRequest)
-            // console.log(result)
-            // toastSuccess("Đăng nhập thành công")
+            //     password: values.password,
+            //     redirect: false,
+            //     callbackUrl: '/'
+            // }).then((res) => {
+            //     console.log(res);
+            //     if (res?.error) return toastError("Đăng nhập không thành công")
 
-            // lcStorage.set(ACCESS_TOKEN, result.data.data[ACCESS_TOKEN])
-            // lcStorage.set(USER_LOGIN, result.data.data.[USER_LOGIN])
+            //     toastSuccess("Đăng nhập thành công")
+            //     // router.push('/')
+            //     router.back()
 
-            // setSessionUser({
-            //     access_token: result.data.data.access_token,
-            //     refresh_token: "",
-            //     user_login: result.data.data.user
+            //     // setTimeout(() => {
+            //     //     window.location.reload()
+            //     // }, 100);
+                
             // })
 
-            // dispatch(setAuth({
-            //     userLogin: result.data.data.[USER_LOGIN],
-            //     accessToken: result.data.data[ACCESS_TOKEN]
-            // }))
+
+            const loginRequest: ILoginRequest = {
+                username: values.email,
+                password: values.password
+            }
+
+            const result = await loginAction(loginRequest)
+            console.log(result)
+
+            if(result.statusCode !== 201) return toastError("Đăng nhập không thành công")
+
+            dispatch(loginAuth({
+                userLogin: result.data.user,
+                accessToken: result.data.access_token
+            }))
+
+            lcStorage.set(USER_LOGIN, result.data.user)
+            lcStorage.set(ACCESS_TOKEN, result.data.access_token)
+
+            toastSuccess("Đăng nhập thành công")
+            router.back()
+            
         },
     });
 

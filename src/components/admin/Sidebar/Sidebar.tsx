@@ -1,5 +1,6 @@
 "use client";
 
+import { getListPermissionsAction } from "@/app/action";
 import { rootSidebarMenus } from "@/configs/sidebar.config";
 import { extractUniqueModules } from "@/helpers/function";
 import { IPermissions } from "@/interface/auth";
@@ -14,6 +15,7 @@ import {
     colors,
 } from "@mui/material";
 import MuiDrawer from "@mui/material/Drawer";
+import { cyan } from "@mui/material/colors";
 import { styled } from "@mui/material/styles";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
@@ -61,13 +63,16 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== "open" 
     })
 );
 
-function Sidebar() {
-    const { data: session, status } = useSession();
+interface IProps {
+    dataPermission: IBackendRes<IPermissions[]>
+}
+
+function Sidebar({dataPermission}:IProps) {
     const pathname = usePathname();
     const { sidebarOpen } = useSelector((state: RootState) => state.sidebarSlice);
     const [activeState, setActiveState] = useState("");
 
-    const uniqueModules: string[] = extractUniqueModules(session?.user?.permissions);
+    const uniqueModules: string[] = extractUniqueModules(dataPermission.data);
 
     const sidebarMenus = rootSidebarMenus.filter((item) => {
         if (item.module === "") return true;
@@ -97,12 +102,12 @@ function Sidebar() {
                                         "justifyContent": sidebarOpen ? "initial" : "center",
                                         "px": 2.5,
                                         "backgroundColor":
-                                            item.url === activeState ? "#199fff" : "unset",
+                                            item.url === activeState ? cyan["400"] : "unset",
                                         "color": item.url === activeState ? "#fff" : "unset",
                                         "&:hover": {
                                             backgroundColor:
                                                 item.url === activeState
-                                                    ? "#199fff"
+                                                    ? cyan["600"]
                                                     : colors.grey[900],
                                             color: item.url === activeState ? "#fff" : "inherit",
                                         },

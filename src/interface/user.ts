@@ -11,7 +11,7 @@ export interface IUserInfo {
     gender: string
     address: string
     company: Company
-    role: string
+    role: { _id: string, name:string }
     isDeleted: boolean
     deletedAt: any
     createdBy: CreatedBy

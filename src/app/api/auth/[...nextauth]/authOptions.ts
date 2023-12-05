@@ -1,8 +1,7 @@
 import { ILoginRequest, ISessionUser } from "@/interface/auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { NextAuthOptions } from "next-auth";
-import { sendRequest } from "@/api/api";
-import { getCookies } from "@/helpers/cookies";
+import { parserCookies } from "@/helpers/cookies";
 import { REFRESH_TOKEN } from "@/constant/userContants";
 import { JWT } from "next-auth/jwt";
 import jwt from 'jsonwebtoken'
@@ -22,43 +21,43 @@ async function refreshAccessToken(token: JWT) {
             ...token,
         }
     } catch (error: any) {
-        if (error.message === 'jwt expired') {
-            // log(`refreshAccessToken :::>>>`, 'kiểm tra access_token đã hết hạn', "GREEN")
+        // if (error.message === 'jwt expired') {
+        //     // log(`refreshAccessToken :::>>>`, 'kiểm tra access_token đã hết hạn', "GREEN")
 
-            // log(`refreshAccessToken :::>>>`, 'ACCESS_TOKEN hết hạn', "RED")
+        //     // log(`refreshAccessToken :::>>>`, 'ACCESS_TOKEN hết hạn', "RED")
 
-            const resultJson = await fetch(`${BASE_URL_API}/auth/refresh`, {
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded",
-                    Cookie: `refresh_token=${token?.refresh_token}`
-                },
-                method: "GET",
-            })
+        //     const resultJson = await fetch(`${BASE_URL_API}/auth/refresh`, {
+        //         headers: {
+        //             "Content-Type": "application/x-www-form-urlencoded",
+        //             Cookie: `refresh_token=${token?.refresh_token}`
+        //         },
+        //         method: "GET",
+        //     })
 
-            const cookiesHeader = resultJson.headers.get('set-cookie');
-            // console.log('cookiesHeader', cookiesHeader);
-            let refresh_token = ''
-            if (cookiesHeader) refresh_token = getCookies(cookiesHeader)[REFRESH_TOKEN];
+        //     const cookiesHeader = resultJson.headers.get('set-cookie');
+        //     // console.log('cookiesHeader', cookiesHeader);
+        //     let refresh_token = ''
+        //     if (cookiesHeader) refresh_token = getCookies(cookiesHeader)[REFRESH_TOKEN];
 
-            const result: IBackendRes<ISessionUser> = await resultJson.json();
+        //     const result: IBackendRes<ISessionUser> = await resultJson.json();
 
-            if (result.statusCode === 200) {
-                // log('refreshAccessToken/refresh_token :::>>>', refresh_token, "RED");
+        //     if (result.statusCode === 200) {
+        //         // log('refreshAccessToken/refresh_token :::>>>', refresh_token, "RED");
 
-                // result.data.refresh_token = refresh_token
+        //         // result.data.refresh_token = refresh_token
 
-                // decodeJWT(result.data.refresh_token, 'refreshAccessToken/refresh_token')
-                // decodeJWT(result.data.access_token, 'refreshAccessToken/access_token')
+        //         // decodeJWT(result.data.refresh_token, 'refreshAccessToken/refresh_token')
+        //         // decodeJWT(result.data.access_token, 'refreshAccessToken/access_token')
 
-                return {
-                    ...token,
-                    access_token: result.data.access_token,
-                    refresh_token: refresh_token,
-                }
-            } else {
-                // log('refreshAccessToken/refresh :::>>>', 'refresh token không thành công', "RED");
-            };
-        }
+        //         return {
+        //             ...token,
+        //             access_token: result.data.access_token,
+        //             refresh_token: refresh_token,
+        //         }
+        //     } else {
+        //         // log('refreshAccessToken/refresh :::>>>', 'refresh token không thành công', "RED");
+        //     };
+        // }
 
         return {
             ...token,
@@ -75,25 +74,25 @@ export const authOptions: NextAuthOptions = {
             async authorize(credentials: ILoginRequest | Record<never, string> | undefined, req) {
                 if (!credentials) return null;
 
-                const { username, password } = credentials as ILoginRequest;
+                // const { username, password } = credentials as ILoginRequest;
 
-                const resultJson = await sendRequest<IBackendRes<ISessionUser>>({
-                    url: 'auth/login',
-                    method: 'POST',
-                    body: { username, password },
-                    isJsonParse: false
-                })
+                // const resultJson = await sendRequest<IBackendRes<ISessionUser>>({
+                //     url: 'auth/login',
+                //     method: 'POST',
+                //     body: { username, password },
+                //     isJsonParse: false
+                // })
 
-                const cookiesHeader = resultJson.headers.get('set-cookie');
-                let refresh_token = ''
-                if (cookiesHeader) refresh_token = getCookies(cookiesHeader)[REFRESH_TOKEN];
+                // const cookiesHeader = resultJson.headers.get('set-cookie');
+                // let refresh_token = ''
+                // if (cookiesHeader) refresh_token = getCookies(cookiesHeader)[REFRESH_TOKEN];
 
-                const result: IBackendRes<ISessionUser> = await resultJson.json();
+                // const result: IBackendRes<ISessionUser> = await resultJson.json();
 
-                if (result.statusCode === 201) {
-                    result.data.refresh_token = refresh_token
-                    return result.data
-                };
+                // if (result.statusCode === 201) {
+                //     result.data.refresh_token = refresh_token
+                //     return result.data
+                // };
 
                 return null;
             }

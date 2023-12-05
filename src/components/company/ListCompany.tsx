@@ -1,11 +1,6 @@
 "use client";
 
-import { companyApi } from "@/api/companyApi";
-import { jobApi } from "@/api/jobApi";
 import { ICompany } from "@/interface/company";
-import { IUserInfo } from "@/interface/user";
-import { Button } from "@mui/material";
-import { useSession } from "next-auth/react";
 import ItemCompany from "./ItemCompany";
 
 interface IProps {
@@ -13,7 +8,7 @@ interface IProps {
 }
 
 function ListCompany({ dataCompany }: IProps) {
-    const companies = dataCompany.data?.result || [];
+    const companies = dataCompany?.data?.result || [];
 
     return (
         <div className="container">
