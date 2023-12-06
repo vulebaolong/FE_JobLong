@@ -31,8 +31,8 @@ export default function ThemeRegistry(props: any) {
                                 main: lightBlue["500"],
                             },
                             AppBar: {
-                                darkBg: 'white'
-                            }
+                                darkBg: "white",
+                            },
                         },
                     },
                     dark: {
@@ -51,6 +51,7 @@ export default function ThemeRegistry(props: any) {
                         styleOverrides: {
                             root: {
                                 borderRadius,
+                                textTransform: "none",
                             },
                         },
                     },
@@ -65,36 +66,36 @@ export default function ThemeRegistry(props: any) {
                         styleOverrides: {
                             root: {
                                 borderRadius,
-                            }
-                        }
+                            },
+                        },
                     },
                     MuiCard: {
                         styleOverrides: {
                             root: {
                                 borderRadius,
-                            }
-                        }
+                            },
+                        },
                     },
                     MuiTable: {
                         styleOverrides: {
-                          root: {
-                            "& .MuiTableCell-head": {
-                              fontWeight: 600,
-                              paddingTop: 16,
-                              paddingBottom: 16
-                            }
-                          }
-                        }
-                      },
+                            root: {
+                                "& .MuiTableCell-head": {
+                                    fontWeight: 600,
+                                    paddingTop: 16,
+                                    paddingBottom: 16,
+                                },
+                            },
+                        },
+                    },
                     MuiList: {
                         styleOverrides: {
                             root: {
                                 "& .MuiListItemButton-root": {
-                                    borderRadius
-                                }
-                            }
-                        }
-                    }
+                                    borderRadius,
+                                },
+                            },
+                        },
+                    },
                 },
             }),
         []

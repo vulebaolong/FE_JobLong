@@ -75,8 +75,8 @@ function ListPermissions({ dataPermissions }: IProps) {
                         // count={totalPages}
                         // page={parseInt(searchForm.values.page)}
                         // onChange={onPageChange}
-                        count={dataPermissions.data?.meta?.totalPages}
-                        page={dataPermissions.data?.meta?.currentPage}
+                        totalPages={dataPermissions.data?.meta?.totalPages}
+                        currentPage={dataPermissions.data?.meta?.currentPage}
                         onChange={onPageChange}
                     />
                 </CardActions>

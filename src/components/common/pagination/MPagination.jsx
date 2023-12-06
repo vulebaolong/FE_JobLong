@@ -2,9 +2,15 @@
 
 import { Pagination } from "@mui/material";
 
-const MPagination = ({ count, page, onChange }) => {
+const MPagination = ({ totalPages, currentPage, onChange }) => {
     return (
-        <Pagination color="primary" shape="rounded" count={count} page={page} onChange={onChange} />
+        <Pagination
+            color="primary"
+            shape="rounded"
+            count={totalPages}
+            page={currentPage}
+            onChange={onChange}
+        />
     );
 };
 

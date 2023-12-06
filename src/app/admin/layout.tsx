@@ -12,7 +12,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                 <div className="bg-green-400/10">
                     <Header />
                 </div>
-                <div className="flex-grow p-5">{children}</div>
+                <div className="flex-grow">{children}</div>
             </div>
         </div>
     );
