@@ -81,6 +81,7 @@ function Sidebar() {
     useEffect(() => {
         const fetchData = async () => {
             const dataPermission = await getListPermissionsAction();
+            console.log(dataPermission);
             if (dataPermission.error) router.push(ROUTES.ADMIN.DASHBOARD.INDEX)
             setPermission(dataPermission.data);
         };

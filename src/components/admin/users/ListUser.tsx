@@ -1,5 +1,6 @@
 "use client";
 
+import * as React from "react";
 import {
     Autocomplete,
     Button,
@@ -15,7 +16,6 @@ import {
     TableContainer,
     TableHead,
     TableRow,
-    TextField,
 } from "@mui/material";
 import MPagination from "@/components/common/pagination/MPagination";
 import GotoEditButton from "@/components/common/button/GotoEditButton";
@@ -23,6 +23,9 @@ import { IUserInfo } from "@/interface/user";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { routerReplace } from "@/helpers/router.helper";
 import { TEXT } from "@/constant/text.contants";
+import { useFormik } from "formik";
+import { NumericFormatCustom } from "@/helpers/numericFormat.helper";
+import TextField from "@/components/common/textField/TextField";
 
 interface IProps {
     dataUser: IModelPaginate<IUserInfo[]>;
@@ -33,6 +36,22 @@ function ListUser({ dataUser }: IProps) {
     const pathname = usePathname();
     const searchParams = useSearchParams();
 
+    const searchForm = useFormik({
+        initialValues: {
+            name: searchParams.get("name") || "",
+            address: searchParams.get("address") || "",
+            age: searchParams.get("age") || "",
+            company: searchParams.get("company") || "",
+            email: searchParams.get("email") || "",
+            gender: searchParams.get("gender") || "",
+            role: searchParams.get("role") || "",
+            page: searchParams.get("page") || 1,
+        },
+        onSubmit: (values) => {
+            routerReplace({ router, pathname, searchParams, newSearchParams: { ...values } });
+        },
+    });
+
     const onPageChange = (_: any, page: number) => {
         routerReplace({
             router,
@@ -42,7 +61,10 @@ function ListUser({ dataUser }: IProps) {
         });
     };
 
-    const onSearch = () => {};
+    const onSearch = () => {
+        searchForm.setFieldValue("page", 1);
+        searchForm.submitForm();
+    };
 
     const onResetSearch = () => {};
 
@@ -59,8 +81,8 @@ function ListUser({ dataUser }: IProps) {
                             variant="outlined"
                             label="Name"
                             name="name"
-                            // value={searchForm.values.organizationId}
-                            // onChange={searchForm.handleChange}
+                            value={searchForm.values.name}
+                            onChange={searchForm.handleChange}
                         />
 
                         {/* Address */}
@@ -70,19 +92,20 @@ function ListUser({ dataUser }: IProps) {
                             variant="outlined"
                             label="Address"
                             name="address"
-                            // value={searchForm.values.name}
-                            // onChange={searchForm.handleChange}
+                            value={searchForm.values.address}
+                            onChange={searchForm.handleChange}
                         />
 
                         {/* Age */}
                         <TextField
+                            type="number"
                             sx={{ width: "300px" }}
                             size="small"
                             variant="outlined"
-                            label="Age"
                             name="age"
-                            // value={searchForm.values.lastName}
-                            // onChange={searchForm.handleChange}
+                            label="Age"
+                            value={searchForm.values.age}
+                            onChange={searchForm.handleChange}
                         />
 
                         {/* Company */}
@@ -92,8 +115,8 @@ function ListUser({ dataUser }: IProps) {
                             variant="outlined"
                             label="Company"
                             name="company"
-                            // value={searchForm.values.firstName}
-                            // onChange={searchForm.handleChange}
+                            value={searchForm.values.company}
+                            onChange={searchForm.handleChange}
                         />
 
                         {/* Email */}
@@ -103,8 +126,8 @@ function ListUser({ dataUser }: IProps) {
                             variant="outlined"
                             label="Email"
                             name="email"
-                            // value={searchForm.values.tel}
-                            // onChange={searchForm.handleChange}
+                            value={searchForm.values.email}
+                            onChange={searchForm.handleChange}
                         />
 
                         {/* Gender */}
@@ -114,19 +137,19 @@ function ListUser({ dataUser }: IProps) {
                             variant="outlined"
                             label="Gender"
                             name="gender"
-                            // value={searchForm.values.tel}
-                            // onChange={searchForm.handleChange}
+                            value={searchForm.values.gender}
+                            onChange={searchForm.handleChange}
                         />
-                        
-                        {/* Gender */}
+
+                        {/* Role */}
                         <TextField
                             sx={{ width: "300px" }}
                             size="small"
                             variant="outlined"
-                            label="Gender"
-                            name="gender"
-                            // value={searchForm.values.tel}
-                            // onChange={searchForm.handleChange}
+                            label="Role"
+                            name="role"
+                            value={searchForm.values.role}
+                            onChange={searchForm.handleChange}
                         />
                     </Stack>
                 </CardContent>
