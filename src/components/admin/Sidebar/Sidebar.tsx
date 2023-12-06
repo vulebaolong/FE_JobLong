@@ -2,24 +2,17 @@
 
 import { getListPermissionsAction } from "@/app/action";
 import { rootSidebarMenus } from "@/configs/sidebar.config";
+import { ROUTES } from "@/constant/routes.contants";
 import { extractUniqueModules } from "@/helpers/function";
 import { IPermissions } from "@/interface/auth";
 import { RootState } from "@/redux/store";
-import {
-    List,
-    ListItem,
-    ListItemButton,
-    ListItemIcon,
-    ListItemText,
-    Toolbar,
-    colors,
-} from "@mui/material";
+import { List, ListItem, ListItemButton, ListItemIcon, ListItemText, Toolbar, colors } from "@mui/material";
 import MuiDrawer from "@mui/material/Drawer";
 import { cyan } from "@mui/material/colors";
 import { styled } from "@mui/material/styles";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname,useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
@@ -46,33 +39,33 @@ const closedMixin = (theme: any) => ({
     },
 });
 
-const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== "open" })(
-    ({ theme, open }: any) => ({
-        width: drawerWidth,
-        flexShrink: 0,
-        whiteSpace: "nowrap",
-        boxSizing: "border-box",
-        ...(open && {
-            ...openedMixin(theme),
-            "& .MuiDrawer-paper": openedMixin(theme),
-        }),
-        ...(!open && {
-            ...closedMixin(theme),
-            "& .MuiDrawer-paper": closedMixin(theme),
-        }),
-    })
-);
+const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== "open" })(({ theme, open }: any) => ({
+    width: drawerWidth,
+    flexShrink: 0,
+    whiteSpace: "nowrap",
+    boxSizing: "border-box",
+    ...(open && {
+        ...openedMixin(theme),
+        "& .MuiDrawer-paper": openedMixin(theme),
+    }),
+    ...(!open && {
+        ...closedMixin(theme),
+        "& .MuiDrawer-paper": closedMixin(theme),
+    }),
+}));
 
 interface IProps {
-    dataPermission: IBackendRes<IPermissions[]>
+    dataPermission: IBackendRes<IPermissions[]>;
 }
 
-function Sidebar({dataPermission}:IProps) {
+function Sidebar() {
     const pathname = usePathname();
+    const router = useRouter()
     const { sidebarOpen } = useSelector((state: RootState) => state.sidebarSlice);
     const [activeState, setActiveState] = useState("");
+    const [permission, setPermission] = useState<IPermissions[]>([]);
 
-    const uniqueModules: string[] = extractUniqueModules(dataPermission.data);
+    const uniqueModules: string[] = extractUniqueModules(permission);
 
     const sidebarMenus = rootSidebarMenus.filter((item) => {
         if (item.module === "") return true;
@@ -85,6 +78,15 @@ function Sidebar({dataPermission}:IProps) {
         setActiveState(pathname);
     }, [pathname]);
 
+    useEffect(() => {
+        const fetchData = async () => {
+            const dataPermission = await getListPermissionsAction();
+            if (dataPermission.error) router.push(ROUTES.ADMIN.DASHBOARD.INDEX)
+            setPermission(dataPermission.data);
+        };
+        fetchData();
+    }, []);
+
     return (
         <Drawer variant="permanent" open={sidebarOpen}>
             <Toolbar sx={{ height: "80px" }} />
@@ -92,23 +94,16 @@ function Sidebar({dataPermission}:IProps) {
                 {sidebarMenus.map((item, index) => {
                     return (
                         <ListItem key={index} disablePadding sx={{ display: "block" }}>
-                            <Link
-                                href={item.url}
-                                style={{ textDecoration: "none", color: "unset" }}
-                            >
+                            <Link href={item.url} style={{ textDecoration: "none", color: "unset" }}>
                                 <ListItemButton
                                     sx={{
                                         "minHeight": 48,
                                         "justifyContent": sidebarOpen ? "initial" : "center",
                                         "px": 2.5,
-                                        "backgroundColor":
-                                            item.url === activeState ? cyan["400"] : "unset",
+                                        "backgroundColor": item.url === activeState ? cyan["400"] : "unset",
                                         "color": item.url === activeState ? "#fff" : "unset",
                                         "&:hover": {
-                                            backgroundColor:
-                                                item.url === activeState
-                                                    ? cyan["600"]
-                                                    : colors.grey[900],
+                                            backgroundColor: item.url === activeState ? cyan["600"] : colors.grey[900],
                                             color: item.url === activeState ? "#fff" : "inherit",
                                         },
                                     }}
@@ -123,10 +118,7 @@ function Sidebar({dataPermission}:IProps) {
                                     >
                                         {item.icon}
                                     </ListItemIcon>
-                                    <ListItemText
-                                        primary={item.title}
-                                        sx={{ opacity: sidebarOpen ? 1 : 0 }}
-                                    />
+                                    <ListItemText primary={item.title} sx={{ opacity: sidebarOpen ? 1 : 0 }} />
                                 </ListItemButton>
                             </Link>
                         </ListItem>

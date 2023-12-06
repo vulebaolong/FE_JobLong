@@ -1,7 +1,7 @@
 "use server";
 
 import { sendRequestAction } from "@/app/action";
-import { getSessionUser, parserCookies, setSessionUser } from "@/helpers/cookies";
+import { deleteSessionUser, getSessionUser, parserCookies, setSessionUser } from "@/helpers/cookies";
 import { ILoginRequest, ISessionUser, IUserLogin } from "@/interface/auth";
 
 export const loginAction = async (value: ILoginRequest) => {
@@ -25,4 +25,15 @@ export const loginAction = async (value: ILoginRequest) => {
     }
 
     return result;
+};
+
+export const logoutAction = async () => {
+    await sendRequestAction<IBackendRes<ISessionUser>>({
+        url: `auth/logout`,
+        method: "POST",
+    });
+
+    deleteSessionUser()
+    
+
 };

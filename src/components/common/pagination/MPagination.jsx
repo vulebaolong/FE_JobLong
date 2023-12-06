@@ -7,8 +7,8 @@ const MPagination = ({ totalPages, currentPage, onChange }) => {
         <Pagination
             color="primary"
             shape="rounded"
-            count={totalPages}
-            page={currentPage}
+            count={totalPages || 1}
+            page={currentPage || 1}
             onChange={onChange}
         />
     );

@@ -20,6 +20,7 @@ import { DispatchType, RootState } from "@/redux/store";
 import { setSidebarOpen } from "@/redux/slices/sidebarSlice";
 import { lcStorage } from "@/helpers/localStorage";
 import { ACCESS_TOKEN, USER_LOGIN } from "@/constant/userContants";
+import { logoutAction } from "@/app/auth/[id]/action";
 
 function Header() {
     const router = useRouter();
@@ -53,7 +54,8 @@ function Header() {
         router.push("/auth/register");
     };
 
-    const handleLogout = () => {
+    const handleLogout = async () => {
+        await logoutAction()
         lcStorage.remove(USER_LOGIN)
         lcStorage.remove(ACCESS_TOKEN)
         window.location.reload()
@@ -63,7 +65,7 @@ function Header() {
     return (
         <>
             {isClient && (
-                <AppBar className="justify-center px-5" sx={{ position: "unset", height: "80px" }}>
+                <AppBar className="justify-center px-5" sx={{ position: "unset", height: "80px", backgroundImage: "none" }}>
                     <Toolbar disableGutters>
                         <Box
                             sx={{
