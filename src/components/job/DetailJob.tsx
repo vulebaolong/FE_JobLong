@@ -13,14 +13,13 @@ import DOMPurify from "isomorphic-dompurify";
 import { useRouter } from "next/navigation";
 
 interface IProps {
-    dataJob: IBackendRes<Ijob>;
+    dataJob?: IBackendRes<Ijob>;
 }
 
 function DetailJob({ dataJob }: IProps) {
     const router = useRouter();
 
-    const job = dataJob.data;
-    let cleanDescription = DOMPurify.sanitize(job?.description, { USE_PROFILES: { html: true } });
+    let cleanDescription = DOMPurify.sanitize("job?.description", { USE_PROFILES: { html: true } });
 
     const handleBack = () => {
         router.back();
@@ -34,7 +33,7 @@ function DetailJob({ dataJob }: IProps) {
                 <div className="basis-[70%] space-y-10">
                     {/* TITLE */}
                     <div className="space-y-5">
-                        <h1 className="text-3xl font-bold">{job?.name}</h1>
+                        <h1 className="text-3xl font-bold">{"job?.name"}</h1>
                         <Button className="w-full" variant="contained">
                             Apply now
                         </Button>
@@ -43,7 +42,7 @@ function DetailJob({ dataJob }: IProps) {
                     {/* INFO */}
                     <div className="space-y-5">
                         <div className="space-x-2">
-                            {job?.skills.map((skill, index) => {
+                            {[].map((skill, index) => {
                                 return (
                                     <Chip
                                         key={index}
@@ -57,16 +56,16 @@ function DetailJob({ dataJob }: IProps) {
                         </div>
                         <p className="flex items-center gap-2">
                             <LocationOnOutlinedIcon fontSize="small" />
-                            <span className="font-medium text-sm">{job?.location}</span>
+                            <span className="font-medium text-sm">{"job?.location"}</span>
                         </p>
                         <p className="flex items-center gap-2">
                             <PaidOutlinedIcon fontSize="small" />
-                            <span className="font-medium text-sm">{job?.salary}</span>
+                            <span className="font-medium text-sm">{"job?.salary"}</span>
                         </p>
                         <p className="flex items-center gap-2">
                             <AccessTimeIcon fontSize="small" />
                             <span className="text-xs italic">
-                                {dayjs(job?.updatedAt).fromNow()}
+                                {/* {dayjs(job?.updatedAt).fromNow()} */}
                             </span>
                         </p>
                     </div>
@@ -78,14 +77,14 @@ function DetailJob({ dataJob }: IProps) {
                 </div>
 
                 <div className="basis-[30%]">
-                    <Image
+                    {/* <Image
                         className="rounded-xl mx-auto"
                         src={`${job?.company.logo}`}
                         width={150}
                         height={150}
                         alt={`image logo company ${job?.company.name}`}
                         priority={true}
-                    />
+                    /> */}
                 </div>
             </div>
         </div>
