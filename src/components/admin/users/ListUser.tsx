@@ -29,7 +29,7 @@ import { routerReplace } from "@/helpers/router.helper";
 import { TEXT } from "@/constant/text.contants";
 import { useFormik } from "formik";
 import TextField from "@/components/common/textField/TextField";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import {
     IOptionAutocomplete,
     convertStringToBoolean,
@@ -39,6 +39,8 @@ import { ROUTES } from "@/constant/routes.contants";
 import DeleteButton from "@/components/common/button/DeleteButton";
 import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
+import AutorenewIcon from "@mui/icons-material/Autorenew";
+import { useFormStatus } from "react-dom";
 
 interface IProps {
     dataUser: IModelPaginate<IUserInfo[]>;
@@ -48,12 +50,15 @@ interface IProps {
 }
 
 function ListUser({ dataUser, initialCompaies, initialRole, initialGender }: IProps) {
+    
+    const { pending } = useFormStatus();
     const router = useRouter();
     const pathname = usePathname();
     const searchParams = useSearchParams();
     const [companiesList, setCompaniesList] = useState<IOptionAutocomplete[]>(initialCompaies);
     const [genderList, setGenderList] = useState<IOptionAutocomplete[]>(initialGender);
     const [roleList, setRoleList] = useState<IOptionAutocomplete[]>(initialRole);
+    const [loading, setLoading] = useState(false);
 
     const searchForm = useFormik({
         initialValues: {
@@ -68,7 +73,7 @@ function ListUser({ dataUser, initialCompaies, initialRole, initialGender }: IPr
             isDeleted: convertStringToBoolean(searchParams.get("isDeleted")),
         },
         onSubmit: (values) => {
-            // console.log("values", values)
+            setLoading(true)
             routerReplace({
                 router,
                 pathname,
@@ -117,6 +122,8 @@ function ListUser({ dataUser, initialCompaies, initialRole, initialGender }: IPr
 
     return (
         <Stack spacing={4}>
+            <Box>{pending && <AutorenewIcon className="animate-spin" />}</Box>
+
             {/* SEARCH */}
             <Card variant="outlined">
                 <CardContent>
@@ -244,7 +251,10 @@ function ListUser({ dataUser, initialCompaies, initialRole, initialGender }: IPr
                                     <TableCellNote
                                         dataUser={dataUser}
                                         onChange={handleCheckBox}
-                                        checked={convertStringToBoolean(searchForm.values.isDeleted)}
+                                        checked={convertStringToBoolean(
+                                            searchForm.values.isDeleted
+                                        )}
+                                        loading={loading}
                                     />
                                 </TableRow>
 
@@ -297,7 +307,7 @@ function ListUser({ dataUser, initialCompaies, initialRole, initialGender }: IPr
                                         </TableCell>
                                         <TableCell>
                                             {user.isDeleted ? (
-                                                <ThumbDownIcon color="error" />
+                                                <ThumbDownIcon fontSize="small" color="error" />
                                             ) : (
                                                 <ThumbUpIcon fontSize="small" color="primary" />
                                             )}
@@ -340,19 +350,30 @@ interface IPropsTableCellNote {
     dataUser: IModelPaginate<IUserInfo[]>;
     onChange: (_: any, value: boolean) => void;
     checked: boolean;
+    loading?: boolean;
 }
 
-function TableCellNote({ dataUser, onChange, checked }: IPropsTableCellNote) {
+function TableCellNote({ dataUser, onChange, checked, loading }: IPropsTableCellNote) {
     return (
-        <TableCell colSpan={2} sx={{ borderBottom: "none", paddingBottom: "0 !important" }}>
-            <Stack direction="row" justifyContent="flex-start" alignItems="center" spacing={3}>
-                <Box sx={{ fontSize: "1rem" }}>Total: {dataUser.data?.meta?.totalItems}</Box>
-                <Box>
-                    <FormControlLabel
-                        control={<Checkbox onChange={onChange} size="small" checked={checked} />}
-                        label={<Box sx={{ fontSize: "1rem", paddingTop: "1px" }}>label</Box>}
-                    />
-                </Box>
+        <TableCell colSpan={9} sx={{ borderBottom: "none", paddingBottom: "0 !important" }}>
+            <Stack
+                direction="row"
+                justifyContent="space-between"
+                alignItems="center"
+                width={"100%"}
+            >
+                <Stack direction="row" justifyContent="flex-start" alignItems="center" spacing={3}>
+                    <Box sx={{ fontSize: "1rem" }}>Total: {dataUser.data?.meta?.totalItems}</Box>
+                    <Box>
+                        <FormControlLabel
+                            control={
+                                <Checkbox onChange={onChange} size="small" checked={checked} />
+                            }
+                            label={<Box sx={{ fontSize: "1rem", paddingTop: "1px" }}>label</Box>}
+                        />
+                    </Box>
+                </Stack>
+                <Box>{loading && <AutorenewIcon className="animate-spin" />}</Box>
             </Stack>
         </TableCell>
     );

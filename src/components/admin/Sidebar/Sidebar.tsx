@@ -1,6 +1,7 @@
 "use client";
 
 import { getListPermissionsAction } from "@/app/action";
+import SlidebarSkeleton from "@/components/common/skeleton/slidebar.skeleton";
 import { rootSidebarMenus } from "@/configs/sidebar.config";
 import { ROUTES } from "@/constant/routes.contants";
 import { extractUniqueModules } from "@/helpers/function.helper";
@@ -74,7 +75,7 @@ function Sidebar() {
     const { sidebarOpen } = useSelector((state: RootState) => state.sidebarSlice);
     const [activeState, setActiveState] = useState("");
     const [permission, setPermission] = useState<IPermissions[]>([]);
-
+    const [loading, setLoading] = useState(false)
     const uniqueModules: string[] = extractUniqueModules(permission);
 
     const sidebarMenus = rootSidebarMenus.filter((item) => {
@@ -90,7 +91,10 @@ function Sidebar() {
 
     useEffect(() => {
         const fetchData = async () => {
+            setLoading(true)
             const dataPermission = await getListPermissionsAction();
+            setLoading(false)
+
             console.log(dataPermission);
             if (dataPermission.error) router.push(ROUTES.ADMIN.DASHBOARD.INDEX);
             setPermission(dataPermission.data);
@@ -101,6 +105,7 @@ function Sidebar() {
     return (
         <Drawer variant="permanent" open={sidebarOpen}>
             <Toolbar sx={{ height: "80px" }} />
+            {loading ? <SlidebarSkeleton sidebarOpen={sidebarOpen}/> :
             <List sx={{ paddingTop: 0 }}>
                 {sidebarMenus.map((item, index) => {
                     return (
@@ -145,7 +150,7 @@ function Sidebar() {
                         </ListItem>
                     );
                 })}
-            </List>
+            </List>}
         </Drawer>
     );
 }

@@ -1,6 +1,5 @@
 import Sidebar from "@/components/admin/sidebar/Sidebar";
 import Header from "@/components/admin/header/Header";
-import { getListPermissionsAction } from "../action";
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
     return (

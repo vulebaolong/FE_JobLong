@@ -8,6 +8,9 @@ import { getListCompanies } from "../companies/action";
 import { buildOptionsAutocomplete } from "@/helpers/function.helper";
 import { ICompany } from "@/interface/company";
 import { getListRole } from "../roles/action";
+import { Suspense } from "react";
+import { TableSkeleton } from "@/components/common/skeleton/table.skeleton";
+import { log } from "@/helpers/log";
 
 interface IProps {
     params: { slug: string };
@@ -44,22 +47,22 @@ const UsersPage = async ({ searchParams }: IProps) => {
     ];
 
     return (
-        <Content>
-            <ContentHeader
-                title={TEXT.TITLE.USER}
-                rightContent={
-                    <NavButton href={ROUTES.ADMIN.USERS.CREATE} text={TEXT.BUTTON_TEXT.ADD} />
-                }
-            />
-            <ContentBody>
-                <ListUser
-                    dataUser={dataUser}
-                    initialCompaies={initialCompaies}
-                    initialRole={initialRole}
-                    initialGender={initialGender}
+            <Content>
+                <ContentHeader
+                    title={TEXT.TITLE.USER}
+                    rightContent={
+                        <NavButton href={ROUTES.ADMIN.USERS.CREATE} text={TEXT.BUTTON_TEXT.ADD} />
+                    }
                 />
-            </ContentBody>
-        </Content>
+                <ContentBody>
+                    <ListUser
+                        dataUser={dataUser}
+                        initialCompaies={initialCompaies}
+                        initialRole={initialRole}
+                        initialGender={initialGender}
+                    />
+                </ContentBody>
+            </Content>
     );
 };
 export default UsersPage;
