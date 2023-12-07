@@ -1,6 +1,7 @@
 "use server";
 
 import { sendRequestAction } from "@/app/action";
+import { convertStringToBoolean } from "@/helpers/formik.helper";
 import { IUserInfo } from "@/interface/user";
 
 // interface IQuery {
@@ -24,6 +25,7 @@ export const getListUserAction = async ({ searchParams }: IProps) => {
     const query: string[] = [];
     if (searchParams.fields) query.push(`fields=${searchParams.fields.trim()}`);
     if (searchParams.populate) query.push(`populate=${searchParams.populate.trim()}`);
+    if (searchParams.sort) query.push(`sort=${searchParams.sort.trim()}`);
 
     if (searchParams.name) query.push(`name=${searchParams.name.trim()}`);
     if (searchParams.address) query.push(`address=${searchParams.address.trim()}`);
@@ -32,7 +34,9 @@ export const getListUserAction = async ({ searchParams }: IProps) => {
     if (searchParams.email) query.push(`email=${searchParams.email.trim()}`);
     if (searchParams.gender) query.push(`gender=${searchParams.gender.trim()}`);
     if (searchParams.role) query.push(`role=${searchParams.role.trim()}`);
-    console.log(query);
+    if (convertStringToBoolean(searchParams.isDeleted) === false) query.push(`isDeleted!=true`);
+
+    // console.log(query);
  
     return await sendRequestAction<IModelPaginate<IUserInfo[]>>({
         url: `users?currentPage=${currentPage}&limit=${limit}&${query.join('&')}`,

@@ -49,4 +49,3 @@ export const getListPermissionsAction =async () => {
         method: "GET"
     })
  }
-

@@ -10,6 +10,8 @@ const MPagination = ({ totalPages, currentPage, onChange }) => {
             count={totalPages || 1}
             page={currentPage || 1}
             onChange={onChange}
+            variant="outlined"
+            size="small"
         />
     );
 };

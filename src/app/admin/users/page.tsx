@@ -19,6 +19,7 @@ const UsersPage = async ({ searchParams }: IProps) => {
         searchParams: {
             populate: "role,company",
             fields: "role.name,company.name",
+            sort: "-createdAt",
             ...searchParams,
         },
     });

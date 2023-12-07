@@ -17,3 +17,15 @@ export const initValueFormik = (
         }
     );
 };
+
+export const convertStringToBoolean = (value: unknown): boolean => {
+    if (
+        value === undefined ||
+        value === null ||
+        value === false ||
+        String(value).toLowerCase() === "false"
+    ) {
+        return false;
+    }
+    return true;
+};

@@ -4,7 +4,7 @@ import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.share
 import { ReadonlyURLSearchParams } from "next/navigation";
 
 interface NewSearchParams {
-    [key: string]: string | number | undefined;
+    [key: string]: string | number | boolean | undefined;
 }
 
 interface IProps {

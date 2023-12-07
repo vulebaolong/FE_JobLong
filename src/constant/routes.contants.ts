@@ -8,7 +8,7 @@ export const ROUTES = {
         },
         USERS: {
             CREATE: `${ROUTE_BASE}users/create`,
-            DETAIL: (id: string) => `${ROUTE_BASE}organizations/${id}`,
+            DETAIL: (id: string) => `${ROUTE_BASE}users/${id}`,
         },
     },
 };

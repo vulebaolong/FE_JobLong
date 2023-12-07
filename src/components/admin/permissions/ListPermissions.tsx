@@ -1,6 +1,6 @@
 "use client";
 
-import GotoEditButton from "@/components/common/button/GotoEditButton";
+import EditButton from "@/components/common/button/EditButton";
 import MPagination from "@/components/common/pagination/MPagination";
 import { routerReplace } from "@/helpers/router.helper";
 import { IPermissions } from "@/interface/auth";
@@ -60,7 +60,7 @@ function ListPermissions({ dataPermissions }: IProps) {
                                 {dataPermissions.data?.result?.map((permission, index) => (
                                     <TableRow key={index}>
                                         <TableCell>
-                                            <GotoEditButton href={"/"} />
+                                            <EditButton href={"/"} />
                                         </TableCell>
                                         <TableCell>{permission.name}</TableCell>
                                     </TableRow>

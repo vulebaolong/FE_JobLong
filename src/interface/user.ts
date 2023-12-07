@@ -7,6 +7,7 @@ export interface IUserInfo {
     _id: string
     name: string
     email: string
+    avatar: string
     age: number
     gender: string
     address: string

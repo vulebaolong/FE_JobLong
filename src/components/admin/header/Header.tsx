@@ -5,7 +5,6 @@ import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
-import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
@@ -90,7 +89,7 @@ function Header() {
                                     <Box sx={{ flexGrow: 0 }}>
                                         <Tooltip title="Open settings">
                                             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                                <Avatar alt="Remy Sharp" />
+                                                <Avatar src={userLogin.avatar} />
                                             </IconButton>
                                         </Tooltip>
                                         <Menu
@@ -136,7 +135,7 @@ function Header() {
                                                     <Avatar /> Profile
                                                 </MenuItem> */}
                                             <MenuItem onClick={handleCloseUserMenu}>
-                                                <Avatar /> {userLogin.name}
+                                                <Avatar src={userLogin.avatar} /> {userLogin.name}
                                             </MenuItem>
                                             <Divider />
                                             <MenuItem onClick={handleCloseUserMenu}>
