@@ -10,13 +10,11 @@ interface CustomProps {
 interface IProps {
     type?: "number" | "text";
     prefix?: string;
+    min?: number;
+    max?: number;
 }
 
-export const TextField: React.FC<TextFieldProps & IProps> = ({
-    prefix,
-    type = "text",
-    ...props
-}) => {
+function TextField({ prefix, type = "text", min, max, ...props }: TextFieldProps & IProps) {
     const NumericFormatCustom = React.useMemo(() => {
         return React.forwardRef<NumericFormatProps, CustomProps>(function NumericFormatCustom(
             props,
@@ -39,6 +37,20 @@ export const TextField: React.FC<TextFieldProps & IProps> = ({
                     thousandSeparator
                     valueIsNumericString
                     prefix={prefix}
+                    allowNegative={false}
+                    isAllowed={(inputObj) => {
+                        const { value } = inputObj;
+                        if (min !== undefined && max !== undefined) {
+                            return +value >= min && +value <= max;
+                        }
+                        if (min !== undefined) {
+                            return +value >= min;
+                        }
+                        if (max !== undefined) {
+                            return +value <= max;
+                        }
+                        return true;
+                    }}
                 />
             );
         });
@@ -48,16 +60,19 @@ export const TextField: React.FC<TextFieldProps & IProps> = ({
         <>
             {type === "number" ? (
                 <TextFieldMui
-                    {...props}
+                    sx={{ width: "300px" }}
+                    variant="outlined"
+                    size="small"
                     InputProps={{
                         inputComponent: NumericFormatCustom as any,
                     }}
+                    {...props}
                 />
             ) : (
-                <TextFieldMui {...props} />
+                <TextFieldMui sx={{ width: "300px" }} variant="outlined" size="small" {...props} />
             )}
         </>
     );
-};
+}
 
 export default TextField;

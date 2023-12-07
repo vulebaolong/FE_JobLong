@@ -4,14 +4,44 @@ import Content, { ContentBody, ContentHeader } from "@/components/common/content
 import NavButton from "@/components/common/button/NavButton";
 import { TEXT } from "@/constant/text.contants";
 import { ROUTES } from "@/constant/routes.contants";
+import { getListCompanies } from "../companies/action";
+import { buildOptionsAutocomplete } from "@/helpers/function.helper";
+import { ICompany } from "@/interface/company";
+import { getListRole } from "../roles/action";
 
 interface IProps {
     params: { slug: string };
     searchParams: { [key: string]: string | undefined };
-  }
+}
 
 const UsersPage = async ({ searchParams }: IProps) => {
-    const dataUser = await getListUserAction({ searchParams });
+    const dataUser = await getListUserAction({
+        searchParams: {
+            populate: "role,company",
+            fields: "role.name,company.name",
+            ...searchParams,
+        },
+    });
+    const dataCompanies = await getListCompanies({
+        searchParams: { limit: "999", fields: "name" },
+    });
+    const dataRole = await getListRole({ searchParams: { limit: "999", fields: "name" } });
+
+    const initialCompaies = buildOptionsAutocomplete<ICompany>({
+        list: dataCompanies.data?.result || [],
+        keyId: "_id",
+        keyLabel: "name",
+    });
+    const initialRole = buildOptionsAutocomplete<ICompany>({
+        list: dataRole.data?.result || [],
+        keyId: "_id",
+        keyLabel: "name",
+    });
+    const initialGender = [
+        { label: TEXT.AUTOCOMPLETE.MALE, id: "1" },
+        { label: TEXT.AUTOCOMPLETE.FEMALE, id: "2" },
+    ];
+
     return (
         <Content>
             <ContentHeader
@@ -21,7 +51,12 @@ const UsersPage = async ({ searchParams }: IProps) => {
                 }
             />
             <ContentBody>
-                <ListUser dataUser={dataUser} />
+                <ListUser
+                    dataUser={dataUser}
+                    initialCompaies={initialCompaies}
+                    initialRole={initialRole}
+                    initialGender={initialGender}
+                />
             </ContentBody>
         </Content>
     );

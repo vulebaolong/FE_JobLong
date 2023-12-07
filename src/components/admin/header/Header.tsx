@@ -11,7 +11,7 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import { MouseEvent, useEffect, useState } from "react";
-import { ModeToggle } from "@/components/modeToggle/ModeToggle";
+import { ModeToggle } from "@/components/common/modeToggle/ModeToggle";
 import { useRouter } from "next/navigation";
 import { Divider, ListItemIcon } from "@mui/material";
 import { Logout, PersonAdd, Settings } from "@mui/icons-material";

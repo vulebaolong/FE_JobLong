@@ -12,7 +12,7 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import { MouseEvent, useEffect, useState } from "react";
-import { ModeToggle } from "../modeToggle/ModeToggle";
+import { ModeToggle } from "../common/modeToggle/ModeToggle";
 import Logo from "./Logo";
 import { useRouter } from "next/navigation";
 import { Divider, ListItemIcon } from "@mui/material";

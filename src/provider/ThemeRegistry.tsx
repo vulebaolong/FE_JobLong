@@ -6,7 +6,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import { useMemo, useState } from "react";
 import { experimental_extendTheme as extendTheme } from "@mui/material/styles";
 import { Experimental_CssVarsProvider as CssVarsProvider } from "@mui/material/styles";
-import { ModeToggle } from "@/components/modeToggle/ModeToggle";
+import { ModeToggle } from "@/components/common/modeToggle/ModeToggle";
 import { cyan, lightBlue, pink } from "@mui/material/colors";
 
 export const borderRadius = "10px";
@@ -59,6 +59,7 @@ export default function ThemeRegistry(props: any) {
                         styleOverrides: {
                             root: {
                                 height: heightHeader,
+                                boxShadow: "none",
                             },
                         },
                     },
@@ -66,6 +67,9 @@ export default function ThemeRegistry(props: any) {
                         styleOverrides: {
                             root: {
                                 borderRadius,
+                                    "&:hover .MuiOutlinedInput-notchedOutline": {
+                                        borderColor: cyan["500"],
+                                    },
                             },
                         },
                     },

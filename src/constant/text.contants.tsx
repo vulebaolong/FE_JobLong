@@ -9,5 +9,9 @@ export const TEXT = {
     },
     TITLE: {
         USER: "Users"
+    },
+    AUTOCOMPLETE: {
+        MALE: "Male",
+        FEMALE: "Female",
     }
 };
