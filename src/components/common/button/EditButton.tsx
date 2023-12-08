@@ -3,14 +3,16 @@
 import Link from "next/link";
 import React from "react";
 import EditIcon from "@mui/icons-material/Edit";
-import { IconButton } from "@mui/material";
+import { IconButton, Tooltip } from "@mui/material";
 
 const EditButton = ({ href = "#" }) => {
     return (
         <Link href={href}>
-            <IconButton size="small">
-                <EditIcon fontSize="small" />
-            </IconButton>
+            <Tooltip title="Edit" placement="top">
+                <IconButton size="small">
+                    <EditIcon fontSize="small" />
+                </IconButton>
+            </Tooltip>
         </Link>
     );
 };

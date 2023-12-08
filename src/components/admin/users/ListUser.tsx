@@ -41,6 +41,8 @@ import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
 import { useFormStatus } from "react-dom";
+import RestoreIcon from '@mui/icons-material/Restore';
+import RestoreButton from "@/components/common/button/RestoreButton";
 
 interface IProps {
     dataUser: IModelPaginate<IUserInfo[]>;
@@ -58,7 +60,6 @@ function ListUser({ dataUser, initialCompaies, initialRole, initialGender }: IPr
     const [companiesList, setCompaniesList] = useState<IOptionAutocomplete[]>(initialCompaies);
     const [genderList, setGenderList] = useState<IOptionAutocomplete[]>(initialGender);
     const [roleList, setRoleList] = useState<IOptionAutocomplete[]>(initialRole);
-    const [loading, setLoading] = useState(false);
 
     const searchForm = useFormik({
         initialValues: {
@@ -73,7 +74,6 @@ function ListUser({ dataUser, initialCompaies, initialRole, initialGender }: IPr
             isDeleted: convertStringToBoolean(searchParams.get("isDeleted")),
         },
         onSubmit: (values) => {
-            setLoading(true)
             routerReplace({
                 router,
                 pathname,
@@ -254,7 +254,7 @@ function ListUser({ dataUser, initialCompaies, initialRole, initialGender }: IPr
                                         checked={convertStringToBoolean(
                                             searchForm.values.isDeleted
                                         )}
-                                        loading={loading}
+                                        loading={true}
                                     />
                                 </TableRow>
 
@@ -314,9 +314,12 @@ function ListUser({ dataUser, initialCompaies, initialRole, initialGender }: IPr
                                         </TableCell>
                                         <TableCell>
                                             {user.isDeleted ? (
-                                                <EditButton
-                                                    href={ROUTES.ADMIN.USERS.DETAIL(user._id)}
-                                                />
+                                                <>
+                                                    <EditButton
+                                                        href={ROUTES.ADMIN.USERS.DETAIL(user._id)}
+                                                    />
+                                                    <RestoreButton />
+                                                </>
                                             ) : (
                                                 <>
                                                     <EditButton
