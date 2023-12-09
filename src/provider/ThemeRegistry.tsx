@@ -6,7 +6,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import { useMemo, useState } from "react";
 import { experimental_extendTheme as extendTheme } from "@mui/material/styles";
 import { Experimental_CssVarsProvider as CssVarsProvider } from "@mui/material/styles";
-import { ModeToggle } from "@/components/modeToggle/ModeToggle";
+import { ModeToggle } from "@/components/common/modeToggle/ModeToggle";
 import { cyan, lightBlue, pink } from "@mui/material/colors";
 
 export const borderRadius = "10px";
@@ -31,8 +31,8 @@ export default function ThemeRegistry(props: any) {
                                 main: lightBlue["500"],
                             },
                             AppBar: {
-                                darkBg: 'white'
-                            }
+                                darkBg: "white",
+                            },
                         },
                     },
                     dark: {
@@ -51,6 +51,7 @@ export default function ThemeRegistry(props: any) {
                         styleOverrides: {
                             root: {
                                 borderRadius,
+                                textTransform: "none",
                             },
                         },
                     },
@@ -58,6 +59,7 @@ export default function ThemeRegistry(props: any) {
                         styleOverrides: {
                             root: {
                                 height: heightHeader,
+                                boxShadow: "none",
                             },
                         },
                     },
@@ -65,36 +67,46 @@ export default function ThemeRegistry(props: any) {
                         styleOverrides: {
                             root: {
                                 borderRadius,
-                            }
-                        }
+                                "&:hover .MuiOutlinedInput-notchedOutline": {
+                                    borderColor: cyan["500"],
+                                },
+                            },
+                        },
                     },
                     MuiCard: {
                         styleOverrides: {
                             root: {
                                 borderRadius,
-                            }
-                        }
+                            },
+                        },
+                    },
+                    MuiTooltip: {
+                        styleOverrides: {
+                            tooltip: {
+                                borderRadius,
+                            },
+                        },
                     },
                     MuiTable: {
                         styleOverrides: {
-                          root: {
-                            "& .MuiTableCell-head": {
-                              fontWeight: 600,
-                              paddingTop: 16,
-                              paddingBottom: 16
-                            }
-                          }
-                        }
-                      },
+                            root: {
+                                "& .MuiTableCell-head": {
+                                    fontWeight: 600,
+                                    paddingTop: 16,
+                                    paddingBottom: 16,
+                                },
+                            },
+                        },
+                    },
                     MuiList: {
                         styleOverrides: {
                             root: {
                                 "& .MuiListItemButton-root": {
-                                    borderRadius
-                                }
-                            }
-                        }
-                    }
+                                    borderRadius,
+                                },
+                            },
+                        },
+                    },
                 },
             }),
         []

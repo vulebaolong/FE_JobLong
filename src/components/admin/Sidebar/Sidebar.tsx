@@ -1,8 +1,10 @@
 "use client";
 
 import { getListPermissionsAction } from "@/app/action";
+import SlidebarSkeleton from "@/components/common/skeleton/slidebar.skeleton";
 import { rootSidebarMenus } from "@/configs/sidebar.config";
-import { extractUniqueModules } from "@/helpers/function";
+import { ROUTES } from "@/constant/routes.contants";
+import { extractUniqueModules } from "@/helpers/function.helper";
 import { IPermissions } from "@/interface/auth";
 import { RootState } from "@/redux/store";
 import {
@@ -19,7 +21,7 @@ import { cyan } from "@mui/material/colors";
 import { styled } from "@mui/material/styles";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
@@ -64,15 +66,17 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== "open" 
 );
 
 interface IProps {
-    dataPermission: IBackendRes<IPermissions[]>
+    dataPermission: IBackendRes<IPermissions[]>;
 }
 
-function Sidebar({dataPermission}:IProps) {
+function Sidebar() {
     const pathname = usePathname();
+    const router = useRouter();
     const { sidebarOpen } = useSelector((state: RootState) => state.sidebarSlice);
     const [activeState, setActiveState] = useState("");
-
-    const uniqueModules: string[] = extractUniqueModules(dataPermission.data);
+    const [permission, setPermission] = useState<IPermissions[]>([]);
+    const [loading, setLoading] = useState(false)
+    const uniqueModules: string[] = extractUniqueModules(permission);
 
     const sidebarMenus = rootSidebarMenus.filter((item) => {
         if (item.module === "") return true;
@@ -85,9 +89,23 @@ function Sidebar({dataPermission}:IProps) {
         setActiveState(pathname);
     }, [pathname]);
 
+    useEffect(() => {
+        const fetchData = async () => {
+            setLoading(true)
+            const dataPermission = await getListPermissionsAction();
+            setLoading(false)
+
+            console.log(dataPermission);
+            if (dataPermission.error) router.push(ROUTES.ADMIN.DASHBOARD.INDEX);
+            setPermission(dataPermission.data);
+        };
+        fetchData();
+    }, []);
+
     return (
         <Drawer variant="permanent" open={sidebarOpen}>
             <Toolbar sx={{ height: "80px" }} />
+            {loading ? <SlidebarSkeleton sidebarOpen={sidebarOpen}/> :
             <List sx={{ paddingTop: 0 }}>
                 {sidebarMenus.map((item, index) => {
                     return (
@@ -108,7 +126,7 @@ function Sidebar({dataPermission}:IProps) {
                                             backgroundColor:
                                                 item.url === activeState
                                                     ? cyan["600"]
-                                                    : colors.grey[900],
+                                                    : "",
                                             color: item.url === activeState ? "#fff" : "inherit",
                                         },
                                     }}
@@ -132,7 +150,7 @@ function Sidebar({dataPermission}:IProps) {
                         </ListItem>
                     );
                 })}
-            </List>
+            </List>}
         </Drawer>
     );
 }

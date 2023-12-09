@@ -5,7 +5,7 @@ import { IPermissions } from "@/interface/auth"
 
 interface IProps {
     searchParams: { [key: string]: string  | undefined };
-  }
+}
 
 export const getListPermissionsAction = async ({ searchParams }: IProps) => { 
 

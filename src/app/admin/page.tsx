@@ -1,5 +1,8 @@
 function Page() {
-  
-    return <div>Dashboard</div>;
+    return (
+        <div>
+            <div>Dashboard</div>
+        </div>
+    );
 }
 export default Page;

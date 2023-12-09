@@ -1,5 +1,6 @@
 "use client";
 import { Switch } from "@mui/material";
+import { cyan } from "@mui/material/colors";
 import { useColorScheme } from "@mui/material/styles";
 import { useState, useEffect, useRef } from "react";
 
@@ -67,7 +68,7 @@ export function ModeToggle() {
                         },
                     },
                     "& .MuiSwitch-thumb": {
-                        "backgroundColor": mode === "dark" ? "#003892" : "#001e3c",
+                        "backgroundColor": mode === "dark" ? "#003892" : cyan["700"],
                         "width": "32px",
                         "height": "32px",
                         "&:before": {

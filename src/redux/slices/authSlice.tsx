@@ -1,7 +1,6 @@
 import { ACCESS_TOKEN, USER_LOGIN } from "@/constant/userContants";
 import { lcStorage } from "@/helpers/localStorage";
 import { IUserLogin } from "@/interface/auth";
-import { PaletteMode } from "@mui/material";
 import { createSlice } from "@reduxjs/toolkit";
 
 interface IInitialState {
@@ -21,8 +20,6 @@ const authSlice = createSlice({
         loginAuth: (state, { payload }) => {
             state.userLogin = payload.userLogin
             state.accessToken = payload.accessToken
-
-           
         }
     },
 });

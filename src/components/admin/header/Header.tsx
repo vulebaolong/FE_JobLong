@@ -5,13 +5,12 @@ import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
-import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import { MouseEvent, useEffect, useState } from "react";
-import { ModeToggle } from "@/components/modeToggle/ModeToggle";
+import { ModeToggle } from "@/components/common/modeToggle/ModeToggle";
 import { useRouter } from "next/navigation";
 import { Divider, ListItemIcon } from "@mui/material";
 import { Logout, PersonAdd, Settings } from "@mui/icons-material";
@@ -20,6 +19,7 @@ import { DispatchType, RootState } from "@/redux/store";
 import { setSidebarOpen } from "@/redux/slices/sidebarSlice";
 import { lcStorage } from "@/helpers/localStorage";
 import { ACCESS_TOKEN, USER_LOGIN } from "@/constant/userContants";
+import { logoutAction } from "@/app/auth/[id]/action";
 
 function Header() {
     const router = useRouter();
@@ -53,7 +53,8 @@ function Header() {
         router.push("/auth/register");
     };
 
-    const handleLogout = () => {
+    const handleLogout = async () => {
+        await logoutAction()
         lcStorage.remove(USER_LOGIN)
         lcStorage.remove(ACCESS_TOKEN)
         window.location.reload()
@@ -63,7 +64,7 @@ function Header() {
     return (
         <>
             {isClient && (
-                <AppBar className="justify-center px-5" sx={{ position: "unset", height: "80px" }}>
+                <AppBar className="justify-center px-5" sx={{ position: "unset", height: "80px", backgroundImage: "none" }}>
                     <Toolbar disableGutters>
                         <Box
                             sx={{
@@ -88,7 +89,7 @@ function Header() {
                                     <Box sx={{ flexGrow: 0 }}>
                                         <Tooltip title="Open settings">
                                             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                                <Avatar alt="Remy Sharp" />
+                                                <Avatar src={userLogin.avatar} />
                                             </IconButton>
                                         </Tooltip>
                                         <Menu
@@ -134,7 +135,7 @@ function Header() {
                                                     <Avatar /> Profile
                                                 </MenuItem> */}
                                             <MenuItem onClick={handleCloseUserMenu}>
-                                                <Avatar /> {userLogin.name}
+                                                <Avatar src={userLogin.avatar} /> {userLogin.name}
                                             </MenuItem>
                                             <Divider />
                                             <MenuItem onClick={handleCloseUserMenu}>
