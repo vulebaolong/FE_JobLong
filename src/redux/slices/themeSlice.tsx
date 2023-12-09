@@ -1,22 +1,22 @@
-import { PaletteMode } from "@mui/material";
-import { createSlice } from "@reduxjs/toolkit";
+import { PaletteMode } from '@mui/material';
+import { createSlice } from '@reduxjs/toolkit';
 
 interface IInitialState {
-  mode: PaletteMode;
+    mode: PaletteMode;
 }
 
 const initialState: IInitialState = {
-  mode: "dark",
+    mode: 'dark',
 };
 
 const themeSlice = createSlice({
-  name: "themeSlice",
-  initialState,
-  reducers: {
-    setMode: (state) => {
-      state.mode = state.mode === "dark" ? "light" : "dark";
+    name: 'themeSlice',
+    initialState,
+    reducers: {
+        setMode: (state) => {
+            state.mode = state.mode === 'dark' ? 'light' : 'dark';
+        },
     },
-  },
 });
 
 export const { setMode } = themeSlice.actions;
