@@ -7,6 +7,7 @@ import {
     CardActions,
     CardContent,
     Divider,
+    Grid,
     MenuItem,
     Stack,
 } from '@mui/material';
@@ -19,13 +20,21 @@ import AlertError from '@/components/common/alert/AlertError';
 import { useRouter } from 'next/navigation';
 import TextField from '@/components/common/textField/TextField';
 import InputPassword from '@/components/common/InputPassword/InputPassword';
+import { IOptionAutocomplete } from '@/helpers/formik.helper';
+import Autocomplete from '@/components/common/autocomplete/Autocomplete';
 
-const CreateUser = () => {
+interface IProps {
+    initialGender: IOptionAutocomplete[];
+}
+
+const CreateUser = ({ initialGender }: IProps) => {
     const router = useRouter();
 
     const [errMessage, setErrMessage] = useState('');
     const [ownerTenants, setOwnerTenants] = useState([]);
     const [onRequest, setOnRequest] = useState(false);
+
+    const [genderList, setGenderList] = useState<IOptionAutocomplete[]>(initialGender);
 
     const userCreateForm = useFormik({
         initialValues: {
@@ -33,6 +42,8 @@ const CreateUser = () => {
             email: '',
             password: '',
             address: '',
+            age: '',
+            gender: { label: '', id: '' },
         },
         validationSchema: Yup.object({
             name: Yup.string().required(TEXT.MESSAGE.REQUIRED_FIELD('Name')),
@@ -41,6 +52,10 @@ const CreateUser = () => {
                 .required(TEXT.MESSAGE.REQUIRED_FIELD('Email')),
             password: Yup.string().required(TEXT.MESSAGE.REQUIRED_FIELD('Password')),
             address: Yup.string().required(TEXT.MESSAGE.REQUIRED_FIELD('Address')),
+            age: Yup.string().required(TEXT.MESSAGE.REQUIRED_FIELD('Age')),
+            gender: Yup.object().shape({
+                label: Yup.string().required(TEXT.MESSAGE.REQUIRED_FIELD('Gender')),
+            }),
         }),
         onSubmit: async (values) => {
             console.log(values);
@@ -78,9 +93,9 @@ const CreateUser = () => {
 
                             {/* Email */}
                             <TextField
-                                fullWidth
-                                label="Email"
                                 name="email"
+                                label="Email"
+                                fullWidth
                                 value={userCreateForm.values.email}
                                 onChange={userCreateForm.handleChange}
                                 error={
@@ -92,21 +107,79 @@ const CreateUser = () => {
                                 }
                             />
 
+                            {/* password */}
                             <InputPassword
                                 name="password"
-                                label="Mật khẩu"
-                                value={userCreateForm.values.password}
-                                variant="outlined"
-                                fullWidth
-                                onChange={userCreateForm.handleChange}
+                                label="Password"
                                 password
+                                fullWidth
+                                value={userCreateForm.values.password}
+                                onChange={userCreateForm.handleChange}
                                 error={
-                                    userCreateForm.errors.password
-                                        ? true
-                                        : false && userCreateForm.touched.password
+                                    userCreateForm.touched.password &&
+                                    userCreateForm.errors.password !== undefined
                                 }
-                                helperText={userCreateForm.errors.password}
+                                helperText={
+                                    userCreateForm.touched.password &&
+                                    userCreateForm.errors.password
+                                }
                             />
+
+                            {/* Age / Gender */}
+                            <Grid container spacing={2}>
+                                {/* Age */}
+                                <Grid item xs={6}>
+                                    <TextField
+                                        fullWidth
+                                        type="number"
+                                        max={199}
+                                        name="age"
+                                        label="Age"
+                                        value={userCreateForm.values.age}
+                                        onChange={userCreateForm.handleChange}
+                                        error={
+                                            userCreateForm.touched.age &&
+                                            userCreateForm.errors.age !== undefined
+                                        }
+                                        helperText={
+                                            userCreateForm.touched.age && userCreateForm.errors.age
+                                        }
+                                    />
+                                </Grid>
+
+                                {/* Gender */}
+                                <Grid item xs={6}>
+                                    <Autocomplete
+                                        fullWidth
+                                        options={genderList}
+                                        value={userCreateForm.values.gender}
+                                        renderInput={(params) => {
+                                            return (
+                                                <TextField
+                                                    {...params}
+                                                    label="Gender"
+                                                    error={
+                                                        userCreateForm.touched.gender &&
+                                                        Boolean(userCreateForm.errors.gender)
+                                                    }
+                                                    helperText={
+                                                        userCreateForm.touched.gender &&
+                                                        userCreateForm.errors.gender
+                                                            ? userCreateForm.errors.gender.label
+                                                            : ''
+                                                    }
+                                                />
+                                            );
+                                        }}
+                                        onChange={(_, value) => {
+                                            userCreateForm.setFieldValue(
+                                                'gender',
+                                                value || { label: '', id: '' },
+                                            );
+                                        }}
+                                    />
+                                </Grid>
+                            </Grid>
 
                             {/* Address */}
                             <TextField

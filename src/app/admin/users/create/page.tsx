@@ -5,11 +5,16 @@ import { TEXT } from '@/constant/text.contants';
 const UserCreatePage = async () => {
     //   const organizations = await actionGetAllOrganizations();
 
+    const initialGender = [
+        { label: TEXT.AUTOCOMPLETE.MALE, id: '1' },
+        { label: TEXT.AUTOCOMPLETE.FEMALE, id: '2' },
+    ];
+
     return (
         <Content>
             <ContentHeader title={TEXT.TITLE.USER} backButton />
             <ContentBody>
-                <CreateUser />
+                <CreateUser initialGender={initialGender} />
             </ContentBody>
         </Content>
     );

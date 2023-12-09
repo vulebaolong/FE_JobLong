@@ -12,6 +12,7 @@ export const TEXT = {
         SEARCH: 'Search',
         RESET: 'Reset',
         REGISTER: 'Register',
+        LOGIN: 'Login',
     },
     TITLE: {
         USER: 'Users',

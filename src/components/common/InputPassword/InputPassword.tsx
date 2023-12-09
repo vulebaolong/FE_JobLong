@@ -34,14 +34,14 @@ function InputPassword({ password, ...props }: InputNumberProps) {
         : {};
 
     return (
-        <form>
-            <TextField
-                {...props}
-                type={showPassword && password ? 'text' : 'password'}
-                InputProps={inputProps}
-                autoComplete="off"
-            />
-        </form>
+        <TextField
+            {...props}
+            type={showPassword && password ? 'text' : 'password'}
+            InputProps={inputProps}
+            autoComplete="off"
+            variant="outlined"
+            size="small"
+        />
     );
 }
 

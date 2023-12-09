@@ -1,12 +1,10 @@
 'use client';
 
-import { Button, TextField } from '@mui/material';
+import { Button } from '@mui/material';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { toastError, toastSuccess } from '@/provider/ToastProvider';
-import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-
 import { useDispatch } from 'react-redux';
 import { DispatchType } from '@/redux/store';
 import { ILoginRequest } from '@/interface/auth';
@@ -16,6 +14,7 @@ import { lcStorage } from '@/helpers/localStorage';
 import { ACCESS_TOKEN, USER_LOGIN } from '@/constant/userContants';
 import InputPassword from '../common/InputPassword/InputPassword';
 import { TEXT } from '@/constant/text.contants';
+import TextField from '../common/textField/TextField';
 
 function FormLogin() {
     const dispatch: DispatchType = useDispatch();
@@ -30,7 +29,7 @@ function FormLogin() {
         validationSchema: Yup.object({
             email: Yup.string()
                 .email(TEXT.MESSAGE.EMAIL_FIELD)
-                .required(TEXT.MESSAGE.REQUIRED_FIELD('email')),
+                .required(TEXT.MESSAGE.REQUIRED_FIELD('Email')),
             password: Yup.string().required(TEXT.MESSAGE.REQUIRED_FIELD('Password')),
         }),
         onSubmit: async (values) => {
@@ -86,38 +85,38 @@ function FormLogin() {
     };
 
     return (
-        <div className="space-y-5">
+        <form className="space-y-5">
             <TextField
                 name="email"
                 label="Email"
-                value={formLogin.values.email}
-                variant="outlined"
                 fullWidth
+                value={formLogin.values.email}
                 onChange={formLogin.handleChange}
-                error={formLogin.errors.email ? true : false && formLogin.touched.email}
-                helperText={formLogin.errors.email}
+                error={formLogin.touched.email && formLogin.errors.email !== undefined}
+                helperText={formLogin.touched.email && formLogin.errors.email}
             />
+
             <InputPassword
                 name="password"
-                label="Mật khẩu"
-                value={formLogin.values.password}
-                variant="outlined"
-                fullWidth
-                onChange={formLogin.handleChange}
+                label="Password"
                 password
-                error={formLogin.errors.password ? true : false && formLogin.touched.password}
-                helperText={formLogin.errors.password}
+                fullWidth
+                value={formLogin.values.password}
+                onChange={formLogin.handleChange}
+                error={formLogin.touched.password && formLogin.errors.password !== undefined}
+                helperText={formLogin.touched.password && formLogin.errors.password}
             />
+
             <div>
                 <Button onClick={handleAutoField} type="button" variant="outlined">
-                    Tài khoản dùng thử
+                    Trial account
                 </Button>
             </div>
 
             <Button onClick={formLogin.submitForm} variant="contained">
-                Đăng nhập
+                {TEXT.BUTTON_TEXT.LOGIN}
             </Button>
-        </div>
+        </form>
     );
 }
 export default FormLogin;
