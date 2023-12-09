@@ -56,18 +56,14 @@ function ListPermissions({ dataPermissions }: IProps) {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {dataPermissions.data?.result?.map(
-                                    (permission, index) => (
-                                        <TableRow key={index}>
-                                            <TableCell>
-                                                <EditButton href={'/'} />
-                                            </TableCell>
-                                            <TableCell>
-                                                {permission.name}
-                                            </TableCell>
-                                        </TableRow>
-                                    ),
-                                )}
+                                {dataPermissions.data?.result?.map((permission, index) => (
+                                    <TableRow key={index}>
+                                        <TableCell>
+                                            <EditButton href={'/'} />
+                                        </TableCell>
+                                        <TableCell>{permission.name}</TableCell>
+                                    </TableRow>
+                                ))}
                             </TableBody>
                         </Table>
                     </TableContainer>

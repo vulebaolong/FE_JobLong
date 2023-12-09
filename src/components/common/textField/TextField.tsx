@@ -14,13 +14,7 @@ interface IProps {
     max?: number;
 }
 
-function TextField({
-    prefix,
-    type = 'text',
-    min,
-    max,
-    ...props
-}: TextFieldProps & IProps) {
+function TextField({ prefix, type = 'text', min, max, ...props }: TextFieldProps & IProps) {
     const NumericFormatCustom = React.useMemo(() => {
         return React.forwardRef<NumericFormatProps, CustomProps>(
             function NumericFormatCustom(props, ref) {
@@ -65,7 +59,6 @@ function TextField({
         <>
             {type === 'number' ? (
                 <TextFieldMui
-                    sx={{ width: '300px' }}
                     variant="outlined"
                     size="small"
                     InputProps={{
@@ -74,12 +67,7 @@ function TextField({
                     {...props}
                 />
             ) : (
-                <TextFieldMui
-                    sx={{ width: '300px' }}
-                    variant="outlined"
-                    size="small"
-                    {...props}
-                />
+                <TextFieldMui variant="outlined" size="small" {...props} />
             )}
         </>
     );

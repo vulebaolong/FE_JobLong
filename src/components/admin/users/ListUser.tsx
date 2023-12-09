@@ -43,10 +43,7 @@ import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import AutorenewIcon from '@mui/icons-material/Autorenew';
 import { useFormStatus } from 'react-dom';
 import RestoreButton from '@/components/common/button/RestoreButton';
-import {
-    deleteUserByIdAction,
-    restoreUserByIdAction,
-} from '@/app/admin/users/action';
+import { deleteUserByIdAction, restoreUserByIdAction } from '@/app/admin/users/action';
 import {
     CreatedInfoAction,
     DeletedInfoAction,
@@ -60,22 +57,14 @@ interface IProps {
     initialGender: IOptionAutocomplete[];
 }
 
-function ListUser({
-    dataUser,
-    initialCompaies,
-    initialRole,
-    initialGender,
-}: IProps) {
+function ListUser({ dataUser, initialCompaies, initialRole, initialGender }: IProps) {
     const { pending } = useFormStatus();
     const router = useRouter();
     const pathname = usePathname();
     const searchParams = useSearchParams();
-    const [companiesList, setCompaniesList] =
-        useState<IOptionAutocomplete[]>(initialCompaies);
-    const [genderList, setGenderList] =
-        useState<IOptionAutocomplete[]>(initialGender);
-    const [roleList, setRoleList] =
-        useState<IOptionAutocomplete[]>(initialRole);
+    const [companiesList, setCompaniesList] = useState<IOptionAutocomplete[]>(initialCompaies);
+    const [genderList, setGenderList] = useState<IOptionAutocomplete[]>(initialGender);
+    const [roleList, setRoleList] = useState<IOptionAutocomplete[]>(initialRole);
 
     const searchForm = useFormik({
         initialValues: {
@@ -164,6 +153,7 @@ function ListUser({
                     <Stack direction={'row'} flexWrap="wrap" gap={2}>
                         {/* Name */}
                         <TextField
+                            sx={{ width: '300px' }}
                             label="Name"
                             name="name"
                             value={searchForm.values.name}
@@ -172,6 +162,7 @@ function ListUser({
 
                         {/* Address */}
                         <TextField
+                            sx={{ width: '300px' }}
                             label="Address"
                             name="address"
                             value={searchForm.values.address}
@@ -180,6 +171,7 @@ function ListUser({
 
                         {/* Age */}
                         <TextField
+                            sx={{ width: '300px' }}
                             type="number"
                             max={199}
                             name="age"
@@ -204,22 +196,15 @@ function ListUser({
                                 value.id === '' || option.id === value.id
                             }
                             value={searchForm.values.company}
-                            renderInput={(params) => (
-                                <TextField {...params} label="Company" />
-                            )}
+                            renderInput={(params) => <TextField {...params} label="Company" />}
                             onChange={(_, value) => {
-                                searchForm.setFieldValue(
-                                    'company',
-                                    value || { label: '', id: '' },
-                                );
+                                searchForm.setFieldValue('company', value || { label: '', id: '' });
                             }}
                         />
 
                         {/* Email */}
                         <TextField
                             sx={{ width: '300px' }}
-                            size="small"
-                            variant="outlined"
                             label="Email"
                             name="email"
                             value={searchForm.values.email}
@@ -242,14 +227,9 @@ function ListUser({
                                 value.id === '' || option.id === value.id
                             }
                             value={searchForm.values.gender}
-                            renderInput={(params) => (
-                                <TextField {...params} label="Gender" />
-                            )}
+                            renderInput={(params) => <TextField {...params} label="Gender" />}
                             onChange={(_, value) => {
-                                searchForm.setFieldValue(
-                                    'gender',
-                                    value || { label: '', id: '' },
-                                );
+                                searchForm.setFieldValue('gender', value || { label: '', id: '' });
                             }}
                         />
 
@@ -269,14 +249,9 @@ function ListUser({
                                 value.id === '' || option.id === value.id
                             }
                             value={searchForm.values.role}
-                            renderInput={(params) => (
-                                <TextField {...params} label="Role" />
-                            )}
+                            renderInput={(params) => <TextField {...params} label="Role" />}
                             onChange={(_, value) => {
-                                searchForm.setFieldValue(
-                                    'role',
-                                    value || { label: '', id: '' },
-                                );
+                                searchForm.setFieldValue('role', value || { label: '', id: '' });
                             }}
                         />
                     </Stack>
@@ -286,9 +261,7 @@ function ListUser({
                     <Button variant="contained" onClick={onSearch}>
                         {TEXT.BUTTON_TEXT.SEARCH}
                     </Button>
-                    <Button onClick={onResetSearch}>
-                        {TEXT.BUTTON_TEXT.RESET}
-                    </Button>
+                    <Button onClick={onResetSearch}>{TEXT.BUTTON_TEXT.RESET}</Button>
                 </CardActions>
             </Card>
 
@@ -330,11 +303,7 @@ function ListUser({
                                                 spacing={1}
                                             >
                                                 <Tooltip
-                                                    title={
-                                                        <TitleTooltipAvatar
-                                                            user={user}
-                                                        />
-                                                    }
+                                                    title={<TitleTooltipAvatar user={user} />}
                                                     placement="right-end"
                                                 >
                                                     <Avatar
@@ -350,9 +319,7 @@ function ListUser({
                                         </TableCell>
                                         <TableCell>{user.address}</TableCell>
                                         <TableCell>{user.age}</TableCell>
-                                        <TableCell>
-                                            {user?.company?.name}
-                                        </TableCell>
+                                        <TableCell>{user?.company?.name}</TableCell>
                                         <TableCell>{user.email}</TableCell>
                                         <TableCell>{user.gender}</TableCell>
                                         <TableCell>
@@ -360,8 +327,7 @@ function ListUser({
                                                 key={index}
                                                 variant="outlined"
                                                 color={
-                                                    user.role.name ===
-                                                    'ROLE_ADMIN'
+                                                    user.role.name === 'ROLE_ADMIN'
                                                         ? 'error'
                                                         : 'info'
                                                 }
@@ -371,46 +337,28 @@ function ListUser({
                                         </TableCell>
                                         <TableCell>
                                             {user.isDeleted ? (
-                                                <ThumbDownIcon
-                                                    fontSize="small"
-                                                    color="error"
-                                                />
+                                                <ThumbDownIcon fontSize="small" color="error" />
                                             ) : (
-                                                <ThumbUpIcon
-                                                    fontSize="small"
-                                                    color="primary"
-                                                />
+                                                <ThumbUpIcon fontSize="small" color="primary" />
                                             )}
                                         </TableCell>
                                         <TableCell>
                                             {user.isDeleted ? (
                                                 <>
                                                     <EditButton
-                                                        href={ROUTES.ADMIN.USERS.DETAIL(
-                                                            user._id,
-                                                        )}
+                                                        href={ROUTES.ADMIN.USERS.DETAIL(user._id)}
                                                     />
                                                     <RestoreButton
-                                                        onClick={() =>
-                                                            handleRestore(
-                                                                user._id,
-                                                            )
-                                                        }
+                                                        onClick={() => handleRestore(user._id)}
                                                     />
                                                 </>
                                             ) : (
                                                 <>
                                                     <EditButton
-                                                        href={ROUTES.ADMIN.USERS.DETAIL(
-                                                            user._id,
-                                                        )}
+                                                        href={ROUTES.ADMIN.USERS.DETAIL(user._id)}
                                                     />
                                                     <DeleteButton
-                                                        onClick={() =>
-                                                            handleDelete(
-                                                                user._id,
-                                                            )
-                                                        }
+                                                        onClick={() => handleDelete(user._id)}
                                                     />
                                                 </>
                                             )}
@@ -442,52 +390,29 @@ interface IPropsTableCellNote {
     loading?: boolean;
 }
 
-function TableCellNote({
-    dataUser,
-    onChange,
-    checked,
-    loading,
-}: IPropsTableCellNote) {
+function TableCellNote({ dataUser, onChange, checked, loading }: IPropsTableCellNote) {
     return (
-        <TableCell
-            colSpan={9}
-            sx={{ borderBottom: 'none', paddingBottom: '0 !important' }}
-        >
+        <TableCell colSpan={9} sx={{ borderBottom: 'none', paddingBottom: '0 !important' }}>
             <Stack
                 direction="row"
                 justifyContent="space-between"
                 alignItems="center"
                 width={'100%'}
             >
-                <Stack
-                    direction="row"
-                    justifyContent="flex-start"
-                    alignItems="center"
-                    spacing={3}
-                >
-                    <Box sx={{ fontSize: '1rem' }}>
-                        Total: {dataUser.data?.meta?.totalItems}
-                    </Box>
+                <Stack direction="row" justifyContent="flex-start" alignItems="center" spacing={3}>
+                    <Box sx={{ fontSize: '1rem' }}>Total: {dataUser.data?.meta?.totalItems}</Box>
                     <Box>
                         <FormControlLabel
                             control={
-                                <Checkbox
-                                    onChange={onChange}
-                                    size="small"
-                                    checked={checked}
-                                />
+                                <Checkbox onChange={onChange} size="small" checked={checked} />
                             }
                             label={
-                                <Typography variant="subtitle2">
-                                    Includes deleted users
-                                </Typography>
+                                <Typography variant="subtitle2">Includes deleted users</Typography>
                             }
                         />
                     </Box>
                 </Stack>
-                <Box>
-                    {loading && <AutorenewIcon className="animate-spin" />}
-                </Box>
+                <Box>{loading && <AutorenewIcon className="animate-spin" />}</Box>
             </Stack>
         </TableCell>
     );
@@ -501,22 +426,13 @@ function TitleTooltipAvatar({ user }: IPropsTooltipAvatar) {
     return (
         <Stack direction={'column'} spacing={2} padding={1}>
             {/* Created by */}
-            <CreatedInfoAction
-                createdBy={user?.createdBy?.email}
-                createdAt={user?.createdAt}
-            />
+            <CreatedInfoAction createdBy={user?.createdBy?.email} createdAt={user?.createdAt} />
 
             {/* Updated by */}
-            <UpdatedInfoAction
-                updatedBy={user?.createdBy?.email}
-                updatedAt={user?.createdAt}
-            />
+            <UpdatedInfoAction updatedBy={user?.createdBy?.email} updatedAt={user?.createdAt} />
 
             {/* Deleted by */}
-            <DeletedInfoAction
-                deletedBy={user?.createdBy?.email}
-                deletedAt={user?.createdAt}
-            />
+            <DeletedInfoAction deletedBy={user?.createdBy?.email} deletedAt={user?.createdAt} />
         </Stack>
     );
 }

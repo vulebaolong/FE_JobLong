@@ -1,11 +1,7 @@
 import Sidebar from '@/components/admin/sidebar/Sidebar';
 import Header from '@/components/admin/header/Header';
 
-export default async function RootLayout({
-    children,
-}: {
-    children: React.ReactNode;
-}) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
     return (
         <div className="flex w-screen">
             <Sidebar />

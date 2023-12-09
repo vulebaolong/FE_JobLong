@@ -1,8 +1,5 @@
 import CreateUser from '@/components/admin/users/CreateUser';
-import Content, {
-    ContentBody,
-    ContentHeader,
-} from '@/components/common/content/Content';
+import Content, { ContentBody, ContentHeader } from '@/components/common/content/Content';
 import { TEXT } from '@/constant/text.contants';
 
 const UserCreatePage = async () => {

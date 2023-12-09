@@ -13,9 +13,7 @@ export const getListRole = async ({ searchParams }: IProps) => {
     if (searchParams.fields) query.push(`fields=${searchParams.fields.trim()}`);
 
     return await sendRequestAction<IModelPaginate<ICompany[]>>({
-        url: `roles?currentPage=${currentPage}&limit=${limit}&${query.join(
-            '&',
-        )}`,
+        url: `roles?currentPage=${currentPage}&limit=${limit}&${query.join('&')}`,
         method: 'GET',
     });
 };

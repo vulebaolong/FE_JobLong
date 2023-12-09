@@ -14,17 +14,12 @@ enum Color {
 
 type AvailableColors = keyof typeof Color;
 
-export const log = (
-    title: string,
-    desc: any,
-    color: AvailableColors = 'DEFAULT',
-): void => {
+export const log = (title: string, desc: any, color: AvailableColors = 'DEFAULT'): void => {
     const colorCode: string = Color[color] || Color.DEFAULT;
     const resetCode: string = Color.DEFAULT;
     const boldCode: string = Color.BOLD;
 
-    const description =
-        typeof desc === 'object' ? util.inspect(desc, { colors: true }) : desc;
+    const description = typeof desc === 'object' ? util.inspect(desc, { colors: true }) : desc;
 
     console.log(`${colorCode}${boldCode}${title}${resetCode}${description}`);
 };

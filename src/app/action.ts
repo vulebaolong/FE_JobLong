@@ -8,14 +8,7 @@ export const sendRequestAction = async <T>(props: IRequest) => {
     const session = getSessionUser();
     console.log('sendRequestAction :::>>>', session);
 
-    let {
-        url,
-        method,
-        body,
-        headers = {},
-        nextOption = {},
-        isJsonParse = true,
-    } = props;
+    let { url, method, body, headers = {}, nextOption = {}, isJsonParse = true } = props;
 
     const options: any = {
         method: method,

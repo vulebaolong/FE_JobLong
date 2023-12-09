@@ -2,15 +2,7 @@
 
 import React from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
-import {
-    Box,
-    Divider,
-    IconButton,
-    ListItemText,
-    Menu,
-    Stack,
-    Tooltip,
-} from '@mui/material';
+import { Box, Divider, IconButton, ListItemText, Menu, Stack, Tooltip } from '@mui/material';
 import InfoIcon from '@mui/icons-material/Info';
 import { Button } from '@mui/material';
 import { toastError, toastSuccess } from '@/provider/ToastProvider';
@@ -43,11 +35,7 @@ const DeleteButton = ({ onClick }: IProps) => {
     return (
         <>
             <Tooltip title="Delete" placement="top">
-                <IconButton
-                    size="small"
-                    id="delete-button"
-                    onClick={handleClick}
-                >
+                <IconButton size="small" id="delete-button" onClick={handleClick}>
                     <DeleteIcon color="error" fontSize="small" />
                 </IconButton>
             </Tooltip>
@@ -83,11 +71,7 @@ const DeleteButton = ({ onClick }: IProps) => {
                         <Button onClick={handleClose} size="small">
                             Cancel
                         </Button>
-                        <Button
-                            onClick={handleClickOke}
-                            size="small"
-                            variant="contained"
-                        >
+                        <Button onClick={handleClickOke} size="small" variant="contained">
                             OKE
                         </Button>
                     </Stack>

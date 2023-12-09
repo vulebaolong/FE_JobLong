@@ -1,9 +1,6 @@
 import ListUser from '@/components/admin/users/ListUser';
 import { getListUserAction } from './action';
-import Content, {
-    ContentBody,
-    ContentHeader,
-} from '@/components/common/content/Content';
+import Content, { ContentBody, ContentHeader } from '@/components/common/content/Content';
 import NavButton from '@/components/common/button/NavButton';
 import { TEXT } from '@/constant/text.contants';
 import { ROUTES } from '@/constant/routes.contants';
@@ -56,10 +53,7 @@ const UsersPage = async ({ searchParams }: IProps) => {
             <ContentHeader
                 title={TEXT.TITLE.USER}
                 rightContent={
-                    <NavButton
-                        href={ROUTES.ADMIN.USERS.CREATE}
-                        text={TEXT.BUTTON_TEXT.ADD}
-                    />
+                    <NavButton href={ROUTES.ADMIN.USERS.CREATE} text={TEXT.BUTTON_TEXT.ADD} />
                 }
             />
             <ContentBody>

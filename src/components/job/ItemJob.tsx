@@ -34,27 +34,19 @@ function ItemJob({ job }: { job: Ijob }) {
                 />
                 <div className="flex flex-col w-full h-full">
                     <div>
-                        <h3 className="text-base font-semibold text-start mb-3">
-                            {job.name}
-                        </h3>
+                        <h3 className="text-base font-semibold text-start mb-3">{job.name}</h3>
                         <p className="flex items-center gap-2 mb-2">
                             <LocationOnOutlinedIcon fontSize="small" />
-                            <span className="font-medium text-sm">
-                                {job.location}
-                            </span>
+                            <span className="font-medium text-sm">{job.location}</span>
                         </p>
                         <p className="flex items-center gap-2">
                             <PaidOutlinedIcon fontSize="small" />
-                            <span className="font-medium text-sm">
-                                {job.salary}
-                            </span>
+                            <span className="font-medium text-sm">{job.salary}</span>
                         </p>
                     </div>
                     <p className="text-end mt-auto block">
                         <AccessTimeIcon fontSize="small" />
-                        <span className="text-xs italic">
-                            {dayjs(job.updatedAt).fromNow()}
-                        </span>
+                        <span className="text-xs italic">{dayjs(job.updatedAt).fromNow()}</span>
                     </p>
                 </div>
             </CardActionArea>

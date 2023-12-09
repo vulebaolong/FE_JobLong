@@ -72,10 +72,7 @@ export const authOptions: NextAuthOptions = {
         CredentialsProvider({
             name: 'Credentials',
             credentials: {},
-            async authorize(
-                credentials: ILoginRequest | Record<never, string> | undefined,
-                req,
-            ) {
+            async authorize(credentials: ILoginRequest | Record<never, string> | undefined, req) {
                 if (!credentials) return null;
 
                 // const { username, password } = credentials as ILoginRequest;

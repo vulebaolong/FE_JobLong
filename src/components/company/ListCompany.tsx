@@ -12,9 +12,7 @@ function ListCompany({ dataCompany }: IProps) {
 
     return (
         <div className="container">
-            <h2 className="font-bold text-3xl text-center mb-20">
-                Nhà tuyển dụng hàng đầu
-            </h2>
+            <h2 className="font-bold text-3xl text-center mb-20">Nhà tuyển dụng hàng đầu</h2>
             <div className="grid grid-cols-3 gap-4">
                 {companies.map((company) => {
                     return <ItemCompany company={company} key={company._id} />;

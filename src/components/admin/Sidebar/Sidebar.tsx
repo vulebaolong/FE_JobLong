@@ -72,9 +72,7 @@ interface IProps {
 function Sidebar() {
     const pathname = usePathname();
     const router = useRouter();
-    const { sidebarOpen } = useSelector(
-        (state: RootState) => state.sidebarSlice,
-    );
+    const { sidebarOpen } = useSelector((state: RootState) => state.sidebarSlice);
     const [activeState, setActiveState] = useState('');
     const [permission, setPermission] = useState<IPermissions[]>([]);
     const [loading, setLoading] = useState(false);
@@ -113,11 +111,7 @@ function Sidebar() {
                 <List sx={{ paddingTop: 0 }}>
                     {sidebarMenus.map((item, index) => {
                         return (
-                            <ListItem
-                                key={index}
-                                disablePadding
-                                sx={{ display: 'block' }}
-                            >
+                            <ListItem key={index} disablePadding sx={{ display: 'block' }}>
                                 <Link
                                     href={item.url}
                                     style={{
@@ -128,27 +122,16 @@ function Sidebar() {
                                     <ListItemButton
                                         sx={{
                                             minHeight: 48,
-                                            justifyContent: sidebarOpen
-                                                ? 'initial'
-                                                : 'center',
+                                            justifyContent: sidebarOpen ? 'initial' : 'center',
                                             px: 2.5,
                                             backgroundColor:
-                                                item.url === activeState
-                                                    ? cyan['400']
-                                                    : 'unset',
-                                            color:
-                                                item.url === activeState
-                                                    ? '#fff'
-                                                    : 'unset',
+                                                item.url === activeState ? cyan['400'] : 'unset',
+                                            color: item.url === activeState ? '#fff' : 'unset',
                                             '&:hover': {
                                                 backgroundColor:
-                                                    item.url === activeState
-                                                        ? cyan['600']
-                                                        : '',
+                                                    item.url === activeState ? cyan['600'] : '',
                                                 color:
-                                                    item.url === activeState
-                                                        ? '#fff'
-                                                        : 'inherit',
+                                                    item.url === activeState ? '#fff' : 'inherit',
                                             },
                                         }}
                                     >
@@ -157,10 +140,7 @@ function Sidebar() {
                                                 minWidth: 0,
                                                 mr: sidebarOpen ? 3 : 'auto',
                                                 justifyContent: 'center',
-                                                color:
-                                                    item.url === activeState
-                                                        ? '#fff'
-                                                        : 'unset',
+                                                color: item.url === activeState ? '#fff' : 'unset',
                                             }}
                                         >
                                             {item.icon}

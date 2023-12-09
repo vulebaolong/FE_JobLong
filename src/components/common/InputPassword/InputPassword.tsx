@@ -8,7 +8,7 @@ interface InputNumberProps extends TextFieldProps {
     password?: boolean;
 }
 
-function InputNumber({ password, ...props }: InputNumberProps) {
+function InputPassword({ password, ...props }: InputNumberProps) {
     const [showPassword, setShowPassword] = useState(false);
     const handleClickShowPassword = () => setShowPassword((show) => !show);
     const handleMouseDownPassword = (event: MouseEvent<HTMLButtonElement>) => {
@@ -45,4 +45,4 @@ function InputNumber({ password, ...props }: InputNumberProps) {
     );
 }
 
-export default InputNumber;
+export default InputPassword;

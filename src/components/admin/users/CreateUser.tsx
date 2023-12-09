@@ -9,15 +9,16 @@ import {
     Divider,
     MenuItem,
     Stack,
-    TextField,
 } from '@mui/material';
 import { useFormik } from 'formik';
-import { useRouter } from 'next/router';
 import { useState } from 'react';
 import * as Yup from 'yup';
 import { LoadingButton } from '@mui/lab';
 import { TEXT } from '@/constant/text.contants';
 import AlertError from '@/components/common/alert/AlertError';
+import { useRouter } from 'next/navigation';
+import TextField from '@/components/common/textField/TextField';
+import InputPassword from '@/components/common/InputPassword/InputPassword';
 
 const CreateUser = () => {
     const router = useRouter();
@@ -26,10 +27,24 @@ const CreateUser = () => {
     const [ownerTenants, setOwnerTenants] = useState([]);
     const [onRequest, setOnRequest] = useState(false);
 
-    const tenantCreateForm = useFormik({
-        initialValues: {},
-        validationSchema: Yup.object({}),
-        onSubmit: async (values) => {},
+    const userCreateForm = useFormik({
+        initialValues: {
+            name: '',
+            email: '',
+            password: '',
+            address: '',
+        },
+        validationSchema: Yup.object({
+            name: Yup.string().required(TEXT.MESSAGE.REQUIRED_FIELD('Name')),
+            email: Yup.string()
+                .email(TEXT.MESSAGE.EMAIL_FIELD)
+                .required(TEXT.MESSAGE.REQUIRED_FIELD('Email')),
+            password: Yup.string().required(TEXT.MESSAGE.REQUIRED_FIELD('Password')),
+            address: Yup.string().required(TEXT.MESSAGE.REQUIRED_FIELD('Address')),
+        }),
+        onSubmit: async (values) => {
+            console.log(values);
+        },
     });
 
     const onOrganizationChange = async () => {};
@@ -41,105 +56,73 @@ const CreateUser = () => {
     return (
         <Stack gap={3}>
             {errMessage && <AlertError message={errMessage} />}
-            <Box component={'form'} onSubmit={tenantCreateForm.handleSubmit}>
+            <Box component={'form'} onSubmit={userCreateForm.handleSubmit}>
                 <Card variant="outlined" sx={{ maxWidth: 'sm' }}>
                     <CardContent>
                         <Stack gap={3}>
-                            {/* Input name */}
+                            {/* Name */}
                             <TextField
-                                label="拠点名"
                                 fullWidth
+                                label="Name"
                                 name="name"
-                                // value={}
-                                // onChange={tenantCreateForm.handleChange}
-                                // error={ }
-                                // helperText={ }
+                                value={userCreateForm.values.name}
+                                onChange={userCreateForm.handleChange}
+                                error={
+                                    userCreateForm.touched.name &&
+                                    userCreateForm.errors.name !== undefined
+                                }
+                                helperText={
+                                    userCreateForm.touched.name && userCreateForm.errors.name
+                                }
                             />
 
-                            {/* Select organization */}
+                            {/* Email */}
                             <TextField
-                                select
-                                label="企業・組織"
                                 fullWidth
-                                name="organization"
-                                // value={tenantCreateForm.values.organization}
-                                // onChange={onOrganizationChange}
-                                // error={
-                                //     tenantCreateForm.touched.organization &&
-                                //     tenantCreateForm.errors.organization !== undefined
-                                // }
-                                // helperText={
-                                //     tenantCreateForm.touched.organization &&
-                                //     tenantCreateForm.errors.organization
-                                // }
-                            >
-                                {[].map((item, index) => (
-                                    <MenuItem value={'1'} key={index}>
-                                        item.organization_name
-                                    </MenuItem>
-                                ))}
-                            </TextField>
-
-                            {/* Select layer */}
-                            <TextField
-                                select
-                                label="階層"
-                                fullWidth
-                                name="layer"
-                                // value={tenantCreateForm.values.layer}
-                                // onChange={onLayerChange}
-                                // error={
-                                //     tenantCreateForm.touched.layer &&
-                                //     tenantCreateForm.errors.layer !== undefined
-                                // }
-                                // helperText={
-                                //     tenantCreateForm.touched.layer && tenantCreateForm.errors.layer
-                                // }
-                            >
-                                <MenuItem value={1}>1</MenuItem>
-                                <MenuItem value={2}>2</MenuItem>
-                                <MenuItem value={3}>3</MenuItem>
-                                <MenuItem value={4}>4</MenuItem>
-                                <MenuItem value={5}>5</MenuItem>
-                            </TextField>
-
-                            {/* Input explanation */}
-                            <TextField
-                                label="説明"
-                                fullWidth
-                                name="explanation"
-                                // value={tenantCreateForm.values.explanation}
-                                // onChange={tenantCreateForm.handleChange}
-                                // error={
-                                //     tenantCreateForm.touched.explanation &&
-                                //     tenantCreateForm.errors.explanation !== undefined
-                                // }
-                                // helperText={
-                                //     tenantCreateForm.touched.explanation &&
-                                //     tenantCreateForm.errors.explanation
-                                // }
+                                label="Email"
+                                name="email"
+                                value={userCreateForm.values.email}
+                                onChange={userCreateForm.handleChange}
+                                error={
+                                    userCreateForm.touched.email &&
+                                    userCreateForm.errors.email !== undefined
+                                }
+                                helperText={
+                                    userCreateForm.touched.email && userCreateForm.errors.email
+                                }
                             />
 
-                            {/* select usage_flag */}
-                            <TextField
-                                select
-                                label="利用設定"
+                            <InputPassword
+                                name="password"
+                                label="Mật khẩu"
+                                value={userCreateForm.values.password}
+                                variant="outlined"
                                 fullWidth
-                                name="usage_flag"
-                                // value={tenantCreateForm.values.usage_flag}
-                                // onChange={tenantCreateForm.handleChange}
-                                // error={
-                                //     tenantCreateForm.touched.usage_flag &&
-                                //     tenantCreateForm.errors.usage_flag !== undefined
-                                // }
-                                // helperText={
-                                //     tenantCreateForm.touched.usage_flag &&
-                                //     tenantCreateForm.errors.usage_flag
-                                // }
-                            >
-                                <MenuItem value={0}>無効</MenuItem>
-                                <MenuItem value={1}>有効</MenuItem>
-                            </TextField>
+                                onChange={userCreateForm.handleChange}
+                                password
+                                error={
+                                    userCreateForm.errors.password
+                                        ? true
+                                        : false && userCreateForm.touched.password
+                                }
+                                helperText={userCreateForm.errors.password}
+                            />
+
+                            {/* Address */}
+                            <TextField
+                                fullWidth
+                                label="Address"
+                                name="address"
+                                value={userCreateForm.values.address}
+                                onChange={userCreateForm.handleChange}
+                                error={
+                                    userCreateForm.touched.address &&
+                                    userCreateForm.errors.address !== undefined
+                                }
+                                helperText={
+                                    userCreateForm.touched.address && userCreateForm.errors.address
+                                }
+                            />
                         </Stack>
                     </CardContent>
                     <Divider />
@@ -152,10 +135,7 @@ const CreateUser = () => {
                         >
                             {TEXT.BUTTON_TEXT.ADD}
                         </LoadingButton>
-                        <Button
-                            onClick={() => router.back()}
-                            disabled={onRequest}
-                        >
+                        <Button onClick={() => router.back()} disabled={onRequest}>
                             {TEXT.BUTTON_TEXT.CANCEL}
                         </Button>
                     </CardActions>

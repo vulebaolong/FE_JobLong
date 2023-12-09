@@ -10,10 +10,7 @@ export const getCompanyByIdAction = async (id: string) => {
     });
 };
 
-export const getListCompanyAction = async (
-    currentPage: number = 1,
-    limit: number = 10,
-) => {
+export const getListCompanyAction = async (currentPage: number = 1, limit: number = 10) => {
     return await sendRequestAction<IModelPaginate<ICompany[]>>({
         url: `companies?currentPage=${currentPage}&limit=${limit}`,
         method: 'GET',

@@ -13,9 +13,7 @@ export const getListCompanies = async ({ searchParams }: IProps) => {
     if (searchParams.fields) query.push(`fields=${searchParams.fields.trim()}`);
 
     return await sendRequestAction<IModelPaginate<ICompany[]>>({
-        url: `companies?currentPage=${currentPage}&limit=${limit}&${query.join(
-            '&',
-        )}`,
+        url: `companies?currentPage=${currentPage}&limit=${limit}&${query.join('&')}`,
         method: 'GET',
     });
 };

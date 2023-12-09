@@ -1,10 +1,4 @@
-import {
-    ListItem,
-    ListItemButton,
-    ListItemIcon,
-    ListItemText,
-    Skeleton,
-} from '@mui/material';
+import { ListItem, ListItemButton, ListItemIcon, ListItemText, Skeleton } from '@mui/material';
 
 interface IProps {
     sidebarOpen: boolean;
@@ -16,17 +10,11 @@ function SlidebarSkeleton({ sidebarOpen, activeState }: IProps) {
         <div>
             {[...Array(10)].map((user, index) => {
                 return (
-                    <ListItem
-                        key={index}
-                        disablePadding
-                        sx={{ display: 'block' }}
-                    >
+                    <ListItem key={index} disablePadding sx={{ display: 'block' }}>
                         <ListItemButton
                             sx={{
                                 minHeight: 48,
-                                justifyContent: sidebarOpen
-                                    ? 'initial'
-                                    : 'center',
+                                justifyContent: sidebarOpen ? 'initial' : 'center',
                                 px: 2.5,
                                 backgroundColor: 'unset',
                                 color: 'unset',
@@ -40,16 +28,10 @@ function SlidebarSkeleton({ sidebarOpen, activeState }: IProps) {
                                     color: 'unset',
                                 }}
                             >
-                                <Skeleton
-                                    variant="rounded"
-                                    width={20}
-                                    height={20}
-                                />
+                                <Skeleton variant="rounded" width={20} height={20} />
                             </ListItemIcon>
                             <ListItemText
-                                primary={
-                                    <Skeleton animation="wave" variant="text" />
-                                }
+                                primary={<Skeleton animation="wave" variant="text" />}
                                 sx={{ opacity: sidebarOpen ? 1 : 0 }}
                             />
                         </ListItemButton>

@@ -1,9 +1,5 @@
 import { cookies } from 'next/headers';
-import {
-    ACCESS_TOKEN,
-    REFRESH_TOKEN,
-    USER_LOGIN,
-} from '@/constant/userContants';
+import { ACCESS_TOKEN, REFRESH_TOKEN, USER_LOGIN } from '@/constant/userContants';
 import { ISessionUser } from '@/interface/auth';
 
 export const parserCookies = (cookieString: string) => {
@@ -28,11 +24,7 @@ export const parserCookies = (cookieString: string) => {
     }, {});
 };
 
-export const setSessionUser = ({
-    access_token,
-    refresh_token,
-    user,
-}: ISessionUser) => {
+export const setSessionUser = ({ access_token, refresh_token, user }: ISessionUser) => {
     cookies().set(ACCESS_TOKEN, access_token);
     cookies().set(REFRESH_TOKEN, refresh_token);
     cookies().set(USER_LOGIN, JSON.stringify(user));

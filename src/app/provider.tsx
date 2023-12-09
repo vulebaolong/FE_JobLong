@@ -11,9 +11,7 @@ function Provider({ children }: { children: ReactNode }) {
         <ReduxProvider>
             <SessionProvider>
                 <ToastProvider />
-                <ThemeRegistry options={{ key: 'mui' }}>
-                    {children}
-                </ThemeRegistry>
+                <ThemeRegistry options={{ key: 'mui' }}>{children}</ThemeRegistry>
             </SessionProvider>
         </ReduxProvider>
     );

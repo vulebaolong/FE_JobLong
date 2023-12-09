@@ -46,24 +46,9 @@ function FormRegister() {
     };
     return (
         <div className="space-y-5">
-            <TextField
-                id="outlined-basic"
-                label="Tên"
-                variant="outlined"
-                fullWidth
-            />
-            <TextField
-                id="outlined-basic"
-                label="Email"
-                variant="outlined"
-                fullWidth
-            />
-            <TextField
-                id="outlined-basic"
-                label="Mật khẩu"
-                variant="outlined"
-                fullWidth
-            />
+            <TextField id="outlined-basic" label="Tên" variant="outlined" fullWidth />
+            <TextField id="outlined-basic" label="Email" variant="outlined" fullWidth />
+            <TextField id="outlined-basic" label="Mật khẩu" variant="outlined" fullWidth />
             <div className="flex gap-2">
                 <TextField
                     className="basis-1/2"
@@ -76,24 +61,14 @@ function FormRegister() {
                 />
                 <FormControl className="basis-1/2">
                     <InputLabel id="age">Giới tính</InputLabel>
-                    <Select
-                        labelId="age"
-                        value={age}
-                        label="Giới tính"
-                        onChange={handleChange}
-                    >
+                    <Select labelId="age" value={age} label="Giới tính" onChange={handleChange}>
                         <MenuItem value={10}>Nam</MenuItem>
                         <MenuItem value={20}>Nữ</MenuItem>
                     </Select>
                 </FormControl>
             </div>
 
-            <TextField
-                id="outlined-basic"
-                label="Địa chỉ"
-                variant="outlined"
-                fullWidth
-            />
+            <TextField id="outlined-basic" label="Địa chỉ" variant="outlined" fullWidth />
             <Button variant="contained">Đăng ký</Button>
         </div>
     );

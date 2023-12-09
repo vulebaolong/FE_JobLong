@@ -67,9 +67,9 @@ export default function ThemeRegistry(props: any) {
                         styleOverrides: {
                             root: {
                                 borderRadius,
-                                '&:hover .MuiOutlinedInput-notchedOutline': {
-                                    borderColor: cyan['500'],
-                                },
+                                // '&:hover .MuiOutlinedInput-notchedOutline': {
+                                //     borderColor: cyan['500'],
+                                // },
                             },
                         },
                     },

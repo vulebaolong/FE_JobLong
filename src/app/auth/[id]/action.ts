@@ -19,8 +19,7 @@ export const loginAction = async (value: ILoginRequest) => {
 
     const cookiesHeader = resultRaw.headers.get('set-cookie');
     let refresh_token = '';
-    if (cookiesHeader)
-        refresh_token = parserCookies(cookiesHeader).refresh_token;
+    if (cookiesHeader) refresh_token = parserCookies(cookiesHeader).refresh_token;
 
     const result: IBackendRes<ISessionUser> = await resultRaw.json();
 

@@ -9,12 +9,7 @@ interface IPropsCreated {
 export function CreatedInfoAction({ createdBy, createdAt }: IPropsCreated) {
     return (
         <Box>
-            <Chip
-                color={'success'}
-                size="small"
-                label={'Create'}
-                sx={{ marginBottom: '10px' }}
-            />
+            <Chip color={'success'} size="small" label={'Create'} sx={{ marginBottom: '10px' }} />
             <Stack sx={{ marginLeft: '20px' }} spacing={1}>
                 <Stack direction={'row'} alignItems={'baseline'} spacing={1}>
                     <Chip size="small" label={'Created by:'} />
@@ -41,12 +36,7 @@ interface IPropsUpdated {
 export function UpdatedInfoAction({ updatedBy, updatedAt }: IPropsUpdated) {
     return (
         <Box>
-            <Chip
-                color={'warning'}
-                size="small"
-                label={'Update'}
-                sx={{ marginBottom: '10px' }}
-            />
+            <Chip color={'warning'} size="small" label={'Update'} sx={{ marginBottom: '10px' }} />
             <Stack sx={{ marginLeft: '20px' }} spacing={1}>
                 <Stack direction={'row'} alignItems={'baseline'} spacing={1}>
                     <Chip size="small" label={'Updated by:'} />
@@ -73,12 +63,7 @@ interface IPropsDeleted {
 export function DeletedInfoAction({ deletedBy, deletedAt }: IPropsDeleted) {
     return (
         <Box>
-            <Chip
-                color={'error'}
-                size="small"
-                label={'Delete'}
-                sx={{ marginBottom: '10px' }}
-            />
+            <Chip color={'error'} size="small" label={'Delete'} sx={{ marginBottom: '10px' }} />
             <Stack sx={{ marginLeft: '20px' }} spacing={1}>
                 <Stack direction={'row'} alignItems={'baseline'} spacing={1}>
                     <Chip size="small" label={'Deleted by:'} />

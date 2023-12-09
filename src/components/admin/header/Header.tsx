@@ -95,13 +95,8 @@ function Header() {
                                 {userLogin && (
                                     <Box sx={{ flexGrow: 0 }}>
                                         <Tooltip title="Open settings">
-                                            <IconButton
-                                                onClick={handleOpenUserMenu}
-                                                sx={{ p: 0 }}
-                                            >
-                                                <Avatar
-                                                    src={userLogin.avatar}
-                                                />
+                                            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                                                <Avatar src={userLogin.avatar} />
                                             </IconButton>
                                         </Tooltip>
                                         <Menu
@@ -129,8 +124,7 @@ function Header() {
                                                     width: 10,
                                                     height: 10,
                                                     bgcolor: 'background.paper',
-                                                    transform:
-                                                        'translateY(-50%) rotate(45deg)',
+                                                    transform: 'translateY(-50%) rotate(45deg)',
                                                     zIndex: 0,
                                                 },
                                             }}
@@ -146,26 +140,17 @@ function Header() {
                                             {/* <MenuItem onClick={handleCloseUserMenu}>
                                                     <Avatar /> Profile
                                                 </MenuItem> */}
-                                            <MenuItem
-                                                onClick={handleCloseUserMenu}
-                                            >
-                                                <Avatar
-                                                    src={userLogin.avatar}
-                                                />{' '}
-                                                {userLogin.name}
+                                            <MenuItem onClick={handleCloseUserMenu}>
+                                                <Avatar src={userLogin.avatar} /> {userLogin.name}
                                             </MenuItem>
                                             <Divider />
-                                            <MenuItem
-                                                onClick={handleCloseUserMenu}
-                                            >
+                                            <MenuItem onClick={handleCloseUserMenu}>
                                                 <ListItemIcon>
                                                     <PersonAdd fontSize="small" />
                                                 </ListItemIcon>
                                                 Add another account
                                             </MenuItem>
-                                            <MenuItem
-                                                onClick={handleCloseUserMenu}
-                                            >
+                                            <MenuItem onClick={handleCloseUserMenu}>
                                                 <ListItemIcon>
                                                     <Settings fontSize="small" />
                                                 </ListItemIcon>
@@ -192,10 +177,7 @@ function Header() {
                                         >
                                             Đăng nhập
                                         </Button>
-                                        <Button
-                                            onClick={handleRegister}
-                                            size="small"
-                                        >
+                                        <Button onClick={handleRegister} size="small">
                                             Đăng ký
                                         </Button>
                                     </Box>

@@ -75,11 +75,7 @@ function Header() {
     return (
         <>
             {isClient && (
-                <AppBar
-                    position="fixed"
-                    className="justify-center"
-                    sx={{ height: '80px' }}
-                >
+                <AppBar position="fixed" className="justify-center" sx={{ height: '80px' }}>
                     <Container maxWidth="xl">
                         <Toolbar disableGutters>
                             <Box
@@ -91,9 +87,7 @@ function Header() {
                                 }}
                             >
                                 {/* LOGO DESKTOP */}
-                                <Box
-                                    sx={{ display: { xs: 'none', md: 'flex' } }}
-                                >
+                                <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
                                     <Logo />
                                 </Box>
                                 {/* MENU DESKTOP */}
@@ -109,8 +103,7 @@ function Header() {
                                             onClick={handleCloseNavMenu}
                                             sx={{
                                                 my: 2,
-                                                color: (theme) =>
-                                                    theme.palette.primary.light,
+                                                color: (theme) => theme.palette.primary.light,
                                                 display: 'block',
                                             }}
                                         >
@@ -120,9 +113,7 @@ function Header() {
                                 </Box>
 
                                 {/* MENU MOBILE */}
-                                <Box
-                                    sx={{ display: { xs: 'flex', md: 'none' } }}
-                                >
+                                <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
                                     <IconButton
                                         size="large"
                                         aria-label="account of current user"
@@ -130,8 +121,7 @@ function Header() {
                                         aria-haspopup="true"
                                         onClick={handleOpenNavMenu}
                                         sx={{
-                                            color: (theme) =>
-                                                theme.palette.primary.light,
+                                            color: (theme) => theme.palette.primary.light,
                                         }}
                                     >
                                         <MenuIcon />
@@ -158,15 +148,11 @@ function Header() {
                                         }}
                                     >
                                         {pages.map((page) => (
-                                            <MenuItem
-                                                key={page}
-                                                onClick={handleCloseNavMenu}
-                                            >
+                                            <MenuItem key={page} onClick={handleCloseNavMenu}>
                                                 <Typography
                                                     sx={{
                                                         color: (theme) =>
-                                                            theme.palette
-                                                                .primary.light,
+                                                            theme.palette.primary.light,
                                                     }}
                                                     textAlign="center"
                                                 >
@@ -177,9 +163,7 @@ function Header() {
                                     </Menu>
                                 </Box>
                                 {/* LOGO MOBILE */}
-                                <Box
-                                    sx={{ display: { xs: 'flex', md: 'none' } }}
-                                >
+                                <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
                                     <Logo />
                                 </Box>
 
@@ -220,10 +204,8 @@ function Header() {
                                                         right: 14,
                                                         width: 10,
                                                         height: 10,
-                                                        bgcolor:
-                                                            'background.paper',
-                                                        transform:
-                                                            'translateY(-50%) rotate(45deg)',
+                                                        bgcolor: 'background.paper',
+                                                        transform: 'translateY(-50%) rotate(45deg)',
                                                         zIndex: 0,
                                                     },
                                                 }}
@@ -239,37 +221,23 @@ function Header() {
                                                 {/* <MenuItem onClick={handleCloseUserMenu}>
                                                 <Avatar /> Profile
                                             </MenuItem> */}
-                                                <MenuItem
-                                                    onClick={
-                                                        handleCloseUserMenu
-                                                    }
-                                                >
+                                                <MenuItem onClick={handleCloseUserMenu}>
                                                     <Avatar /> {userLogin.name}
                                                 </MenuItem>
                                                 <Divider />
-                                                <MenuItem
-                                                    onClick={
-                                                        handleCloseUserMenu
-                                                    }
-                                                >
+                                                <MenuItem onClick={handleCloseUserMenu}>
                                                     <ListItemIcon>
                                                         <PersonAdd fontSize="small" />
                                                     </ListItemIcon>
                                                     Add another account
                                                 </MenuItem>
-                                                <MenuItem
-                                                    onClick={
-                                                        handleCloseUserMenu
-                                                    }
-                                                >
+                                                <MenuItem onClick={handleCloseUserMenu}>
                                                     <ListItemIcon>
                                                         <Settings fontSize="small" />
                                                     </ListItemIcon>
                                                     Settings
                                                 </MenuItem>
-                                                <MenuItem
-                                                    onClick={handleLogout}
-                                                >
+                                                <MenuItem onClick={handleLogout}>
                                                     <ListItemIcon>
                                                         <Logout fontSize="small" />
                                                     </ListItemIcon>
@@ -290,10 +258,7 @@ function Header() {
                                             >
                                                 Đăng nhập
                                             </Button>
-                                            <Button
-                                                onClick={handleRegister}
-                                                size="small"
-                                            >
+                                            <Button onClick={handleRegister} size="small">
                                                 Đăng ký
                                             </Button>
                                         </Box>

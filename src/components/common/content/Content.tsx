@@ -24,12 +24,7 @@ export const ContentHeader = ({
     rightContent = undefined,
 }: IPropsContentHeader) => {
     return (
-        <Stack
-            direction="row"
-            justifyContent="space-between"
-            alignItems="center"
-            padding={1}
-        >
+        <Stack direction="row" justifyContent="space-between" alignItems="center" padding={1}>
             {/* left content */}
             <Stack direction="row" spacing={1} alignItems={'center'}>
                 {backButton && <BackButton />}
@@ -44,10 +39,7 @@ export const ContentHeader = ({
     );
 };
 
-export const ContentBody = ({
-    children,
-    disablePadding = false,
-}: IPropsContentBody) => {
+export const ContentBody = ({ children, disablePadding = false }: IPropsContentBody) => {
     return <Box padding={disablePadding ? 0 : 1}> {children}</Box>;
 };
 

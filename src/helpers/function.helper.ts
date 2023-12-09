@@ -1,8 +1,6 @@
 import { IPermissions } from '@/interface/auth';
 
-export const extractUniqueModules = (
-    permissions?: IPermissions[],
-): string[] => {
+export const extractUniqueModules = (permissions?: IPermissions[]): string[] => {
     const uniqueModules: Set<string> = new Set();
 
     permissions?.forEach((api: IPermissions) => {

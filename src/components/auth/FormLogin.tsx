@@ -2,7 +2,6 @@
 
 import { Button, TextField } from '@mui/material';
 import { useFormik } from 'formik';
-import InputNumber from '../InputNumber/InputNumber';
 import * as Yup from 'yup';
 import { toastError, toastSuccess } from '@/provider/ToastProvider';
 import { signIn } from 'next-auth/react';
@@ -15,6 +14,8 @@ import { loginAction } from '@/app/auth/[id]/action';
 import { loginAuth } from '@/redux/slices/authSlice';
 import { lcStorage } from '@/helpers/localStorage';
 import { ACCESS_TOKEN, USER_LOGIN } from '@/constant/userContants';
+import InputPassword from '../common/InputPassword/InputPassword';
+import { TEXT } from '@/constant/text.contants';
 
 function FormLogin() {
     const dispatch: DispatchType = useDispatch();
@@ -28,9 +29,9 @@ function FormLogin() {
         },
         validationSchema: Yup.object({
             email: Yup.string()
-                .required('Vui lòng nhập email')
-                .email('Vui lòng nhập đúng định dạng email'),
-            password: Yup.string().required('Vui lòng nhập password'),
+                .email(TEXT.MESSAGE.EMAIL_FIELD)
+                .required(TEXT.MESSAGE.REQUIRED_FIELD('email')),
+            password: Yup.string().required(TEXT.MESSAGE.REQUIRED_FIELD('Password')),
         }),
         onSubmit: async (values) => {
             // signIn('credentials', {
@@ -60,8 +61,7 @@ function FormLogin() {
             const result = await loginAction(loginRequest);
             console.log(result);
 
-            if (result.statusCode !== 201)
-                return toastError('Đăng nhập không thành công');
+            if (result.statusCode !== 201) return toastError('Đăng nhập không thành công');
 
             dispatch(
                 loginAuth({
@@ -94,14 +94,10 @@ function FormLogin() {
                 variant="outlined"
                 fullWidth
                 onChange={formLogin.handleChange}
-                error={
-                    formLogin.errors.email
-                        ? true
-                        : false && formLogin.touched.email
-                }
+                error={formLogin.errors.email ? true : false && formLogin.touched.email}
                 helperText={formLogin.errors.email}
             />
-            <InputNumber
+            <InputPassword
                 name="password"
                 label="Mật khẩu"
                 value={formLogin.values.password}
@@ -109,19 +105,11 @@ function FormLogin() {
                 fullWidth
                 onChange={formLogin.handleChange}
                 password
-                error={
-                    formLogin.errors.password
-                        ? true
-                        : false && formLogin.touched.password
-                }
+                error={formLogin.errors.password ? true : false && formLogin.touched.password}
                 helperText={formLogin.errors.password}
             />
             <div>
-                <Button
-                    onClick={handleAutoField}
-                    type="button"
-                    variant="outlined"
-                >
+                <Button onClick={handleAutoField} type="button" variant="outlined">
                     Tài khoản dùng thử
                 </Button>
             </div>

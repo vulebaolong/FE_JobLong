@@ -1,9 +1,5 @@
 import { IUserLogin } from './../interface/auth';
-import {
-    ACCESS_TOKEN,
-    REFRESH_TOKEN,
-    USER_LOGIN,
-} from '@/constant/userContants';
+import { ACCESS_TOKEN, REFRESH_TOKEN, USER_LOGIN } from '@/constant/userContants';
 import { JWT } from 'next-auth/jwt';
 import NextAuth, { DefaultSession } from 'next-auth';
 import { IUserLogin } from '@/interface/auth';

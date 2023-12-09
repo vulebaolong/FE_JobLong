@@ -58,15 +58,11 @@ function DetailJob({ dataJob }: IProps) {
                         </div>
                         <p className="flex items-center gap-2">
                             <LocationOnOutlinedIcon fontSize="small" />
-                            <span className="font-medium text-sm">
-                                {'job?.location'}
-                            </span>
+                            <span className="font-medium text-sm">{'job?.location'}</span>
                         </p>
                         <p className="flex items-center gap-2">
                             <PaidOutlinedIcon fontSize="small" />
-                            <span className="font-medium text-sm">
-                                {'job?.salary'}
-                            </span>
+                            <span className="font-medium text-sm">{'job?.salary'}</span>
                         </p>
                         <p className="flex items-center gap-2">
                             <AccessTimeIcon fontSize="small" />

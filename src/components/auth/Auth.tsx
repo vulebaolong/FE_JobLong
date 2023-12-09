@@ -21,16 +21,8 @@ export default function Auth() {
             <TabContext value={value}>
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                     <TabList onChange={handleChange} sx={{ display: 'flex' }}>
-                        <Tab
-                            label="Đăng nhập"
-                            value="1"
-                            sx={{ flexBasis: '50%' }}
-                        />
-                        <Tab
-                            label="Đăng ký"
-                            value="2"
-                            sx={{ flexBasis: '50%' }}
-                        />
+                        <Tab label="Đăng nhập" value="1" sx={{ flexBasis: '50%' }} />
+                        <Tab label="Đăng ký" value="2" sx={{ flexBasis: '50%' }} />
                     </TabList>
                 </Box>
                 <TabPanel value="1">

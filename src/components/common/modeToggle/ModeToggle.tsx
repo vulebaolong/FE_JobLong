@@ -63,14 +63,12 @@ export function ModeToggle() {
                             },
                             '& + .MuiSwitch-track': {
                                 opacity: 1,
-                                backgroundColor:
-                                    mode === 'dark' ? '#8796A5' : '#aab4be',
+                                backgroundColor: mode === 'dark' ? '#8796A5' : '#aab4be',
                             },
                         },
                     },
                     '& .MuiSwitch-thumb': {
-                        backgroundColor:
-                            mode === 'dark' ? '#003892' : cyan['700'],
+                        backgroundColor: mode === 'dark' ? '#003892' : cyan['700'],
                         width: '32px',
                         height: '32px',
                         '&:before': {
@@ -89,8 +87,7 @@ export function ModeToggle() {
                     },
                     '& .MuiSwitch-track': {
                         opacity: 1,
-                        backgroundColor:
-                            mode === 'dark' ? '#8796A5' : '#aab4be',
+                        backgroundColor: mode === 'dark' ? '#8796A5' : '#aab4be',
                         borderRadius: 20 / 2,
                     },
                 }}

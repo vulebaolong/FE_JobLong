@@ -14,12 +14,7 @@ interface IProps {
     newSearchParams: NewSearchParams;
 }
 
-export const routerReplace = ({
-    router,
-    pathname,
-    searchParams,
-    newSearchParams,
-}: IProps) => {
+export const routerReplace = ({ router, pathname, searchParams, newSearchParams }: IProps) => {
     const current = new URLSearchParams(Array.from(searchParams.entries()));
 
     const keys = Object.keys(newSearchParams);

@@ -11,8 +11,7 @@ export const initValueFormik = (
     searchParams: ReadonlyURLSearchParams,
 ) => {
     return (
-        (searchParams.get(key) &&
-            data.find((e) => e.id === searchParams.get(key))) || {
+        (searchParams.get(key) && data.find((e) => e.id === searchParams.get(key))) || {
             label: '',
             id: '',
         }

@@ -28,12 +28,8 @@ function ItemCompany(props: IProps) {
                 priority={true}
             />
             <CardContent>
-                <h3 className="text-lg font-bold text-center mb-5">
-                    {company.name}
-                </h3>
-                <p className="text-base font-normal text-white/70 text-center">
-                    {company.address}
-                </p>
+                <h3 className="text-lg font-bold text-center mb-5">{company.name}</h3>
+                <p className="text-base font-normal text-white/70 text-center">{company.address}</p>
             </CardContent>
         </Card>
     );
