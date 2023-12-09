@@ -8,7 +8,6 @@ import {
     Card,
     CardActions,
     CardContent,
-    CardHeader,
     Checkbox,
     Chip,
     Divider,
@@ -20,6 +19,8 @@ import {
     TableContainer,
     TableHead,
     TableRow,
+    Tooltip,
+    Typography,
 } from "@mui/material";
 import MPagination from "@/components/common/pagination/MPagination";
 import EditButton from "@/components/common/button/EditButton";
@@ -41,8 +42,11 @@ import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
 import { useFormStatus } from "react-dom";
-import RestoreIcon from '@mui/icons-material/Restore';
+import RestoreIcon from "@mui/icons-material/Restore";
 import RestoreButton from "@/components/common/button/RestoreButton";
+import { deleteUserByIdAction, restoreUserByIdAction } from "@/app/admin/users/action";
+import dayjs from "dayjs";
+import { CreatedInfoAction, DeletedInfoAction, UpdatedInfoAction } from "@/components/common/infoAction/InfoAction";
 
 interface IProps {
     dataUser: IModelPaginate<IUserInfo[]>;
@@ -52,7 +56,6 @@ interface IProps {
 }
 
 function ListUser({ dataUser, initialCompaies, initialRole, initialGender }: IProps) {
-    
     const { pending } = useFormStatus();
     const router = useRouter();
     const pathname = usePathname();
@@ -71,7 +74,9 @@ function ListUser({ dataUser, initialCompaies, initialRole, initialGender }: IPr
             gender: initValueFormik("gender", genderList, searchParams),
             role: initValueFormik("role", roleList, searchParams),
             page: searchParams.get("page") || 1,
-            isDeleted: convertStringToBoolean(searchParams.get("isDeleted")),
+            isDeleted: searchParams.get("isDeleted")
+                ? convertStringToBoolean(searchParams.get("isDeleted"))
+                : true,
         },
         onSubmit: (values) => {
             routerReplace({
@@ -83,7 +88,7 @@ function ListUser({ dataUser, initialCompaies, initialRole, initialGender }: IPr
                     company: values.company.id || "",
                     gender: values.gender.label || "",
                     role: values.role.id || "",
-                    isDeleted: convertStringToBoolean(values.isDeleted),
+                    isDeleted: values.isDeleted,
                 },
             });
         },
@@ -118,6 +123,22 @@ function ListUser({ dataUser, initialCompaies, initialRole, initialGender }: IPr
     const handleCheckBox = (_: any, value: boolean) => {
         searchForm.setFieldValue("isDeleted", value);
         searchForm.submitForm();
+    };
+
+    const handleDelete = async (id: string) => {
+        const { data } = await deleteUserByIdAction(id);
+
+        if (data.modifiedCount === 1) return true;
+
+        return false;
+    };
+
+    const handleRestore = async (id: string) => {
+        const { data } = await restoreUserByIdAction(id);
+
+        if (data.modifiedCount === 1) return true;
+
+        return false;
     };
 
     return (
@@ -251,9 +272,7 @@ function ListUser({ dataUser, initialCompaies, initialRole, initialGender }: IPr
                                     <TableCellNote
                                         dataUser={dataUser}
                                         onChange={handleCheckBox}
-                                        checked={convertStringToBoolean(
-                                            searchForm.values.isDeleted
-                                        )}
+                                        checked={searchForm.values.isDeleted}
                                         loading={true}
                                     />
                                 </TableRow>
@@ -280,10 +299,15 @@ function ListUser({ dataUser, initialCompaies, initialRole, initialGender }: IPr
                                                 alignItems="center"
                                                 spacing={1}
                                             >
-                                                <Avatar
-                                                    sx={{ width: 30, height: 30 }}
-                                                    src={user.avatar}
-                                                />
+                                                <Tooltip
+                                                    title={<TitleTooltipAvatar user={user} />}
+                                                    placement="right-end"
+                                                >
+                                                    <Avatar
+                                                        sx={{ width: 30, height: 30 }}
+                                                        src={user.avatar}
+                                                    />
+                                                </Tooltip>
                                                 <Box>{user.name}</Box>
                                             </Stack>
                                         </TableCell>
@@ -318,14 +342,18 @@ function ListUser({ dataUser, initialCompaies, initialRole, initialGender }: IPr
                                                     <EditButton
                                                         href={ROUTES.ADMIN.USERS.DETAIL(user._id)}
                                                     />
-                                                    <RestoreButton />
+                                                    <RestoreButton
+                                                        onClick={() => handleRestore(user._id)}
+                                                    />
                                                 </>
                                             ) : (
                                                 <>
                                                     <EditButton
                                                         href={ROUTES.ADMIN.USERS.DETAIL(user._id)}
                                                     />
-                                                    <DeleteButton />
+                                                    <DeleteButton
+                                                        onClick={() => handleDelete(user._id)}
+                                                    />
                                                 </>
                                             )}
                                         </TableCell>
@@ -372,12 +400,42 @@ function TableCellNote({ dataUser, onChange, checked, loading }: IPropsTableCell
                             control={
                                 <Checkbox onChange={onChange} size="small" checked={checked} />
                             }
-                            label={<Box sx={{ fontSize: "1rem", paddingTop: "1px" }}>label</Box>}
+                            label={
+                                <Typography variant="subtitle2">Includes deleted users</Typography>
+                            }
                         />
                     </Box>
                 </Stack>
                 <Box>{loading && <AutorenewIcon className="animate-spin" />}</Box>
             </Stack>
         </TableCell>
+    );
+}
+
+interface IPropsTooltipAvatar {
+    user: IUserInfo;
+}
+
+function TitleTooltipAvatar({ user }: IPropsTooltipAvatar) {
+    return (
+        <Stack direction={"column"} spacing={2} padding={1}>
+            {/* Created by */}
+            <CreatedInfoAction 
+                createdBy={user?.createdBy?.email}
+                createdAt={user?.createdAt}
+            />
+
+            {/* Updated by */}
+            <UpdatedInfoAction 
+                updatedBy={user?.createdBy?.email}
+                updatedAt={user?.createdAt}
+            />
+
+            {/* Deleted by */}
+            <DeletedInfoAction 
+                deletedBy={user?.createdBy?.email}
+                deletedAt={user?.createdAt}
+            />
+        </Stack>
     );
 }

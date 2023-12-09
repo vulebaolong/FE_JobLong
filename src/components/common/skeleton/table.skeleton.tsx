@@ -139,9 +139,9 @@ export const TableSkeleton = ({ rowsNum }: IProps) => {
                         </CardContent>
                         <Divider />
                         <CardActions>
-                            <Skeleton variant="rounded" width={60} height={30} />
-                            <Skeleton variant="rounded" width={60} height={30} />
-                            <Skeleton variant="rounded" width={60} height={30} />
+                            <Skeleton variant="rounded" width={26} height={26} />
+                            <Skeleton variant="rounded" width={26} height={26} />
+                            <Skeleton variant="rounded" width={26} height={26} />
                         </CardActions>
                     </Card>
                 </Stack>

@@ -1,5 +1,4 @@
-
-export { };
+export {};
 // https://bobbyhadz.com/blog/typescript-make-types-global#declare-global-types-in-typescript
 
 declare global {
@@ -10,7 +9,7 @@ declare global {
         useCredentials?: boolean;
         headers?: object;
         nextOption?: object;
-        isJsonParse?: boolean
+        isJsonParse?: boolean;
     }
 
     interface IBackendRes<Data> extends Response {
@@ -21,12 +20,12 @@ declare global {
     }
 
     interface IModelPaginate<Data> {
-        statusCode: number,
-        message: string,
+        statusCode: number;
+        message: string;
         data?: {
-            meta?: IMeta,
-            result?: Data
-        }
+            meta?: IMeta;
+            result?: Data;
+        };
         error?: string | string[];
     }
 
@@ -37,4 +36,11 @@ declare global {
         totalItems: number;
     }
 
+    interface IResponseUpdate {
+        acknowledged: boolean;
+        modifiedCount: number;
+        upsertedId: number | null;
+        upsertedCount: number;
+        matchedCount: number;
+    }
 }

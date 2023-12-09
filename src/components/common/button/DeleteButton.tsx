@@ -2,19 +2,16 @@
 
 import React from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
-import {
-    Box,
-    Divider,
-    IconButton,
-    ListItemText,
-    Menu,
-    Stack,
-    Tooltip,
-} from "@mui/material";
+import { Box, Divider, IconButton, ListItemText, Menu, Stack, Tooltip } from "@mui/material";
 import InfoIcon from "@mui/icons-material/Info";
 import { Button } from "@mui/material";
+import { toastError, toastSuccess } from "@/provider/ToastProvider";
 
-const DeleteButton = () => {
+interface IProps {
+    onClick: () => Promise<boolean>
+}
+
+const DeleteButton = ({onClick}: IProps) => {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -22,6 +19,18 @@ const DeleteButton = () => {
     };
     const handleClose = () => {
         setAnchorEl(null);
+    };
+
+    const handleClickOke = async () => {
+        const isClose = await onClick()
+        if(isClose) {
+            handleClose()
+            toastSuccess('Deleted successfully')
+            return
+        }
+
+        toastError('Deletion failed')
+        console.log("OKEOKEOKEOKE");
     };
     return (
         <>
@@ -59,8 +68,10 @@ const DeleteButton = () => {
                         justifyContent={"end"}
                         gap={1}
                     >
-                        <Button size="small">Cancel</Button>
-                        <Button size="small" variant="contained">OKE</Button>
+                        <Button onClick={handleClose} size="small">Cancel</Button>
+                        <Button onClick={handleClickOke} size="small" variant="contained">
+                            OKE
+                        </Button>
                     </Stack>
                 </Box>
             </Menu>
