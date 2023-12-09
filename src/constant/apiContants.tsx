@@ -9,5 +9,3 @@ export const API_REFRESH_TOKEN = "auth/refresh";
 // export const BASE_URL_SERVER = "https://nestjs-hoidanit.vercel.app";
 
 export const FOLDER_IMAGE_COMPANY = "images/company";
-
-

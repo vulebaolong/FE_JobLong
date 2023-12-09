@@ -1,21 +1,21 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 interface IInitialState {
-    sidebarOpen: boolean;
+  sidebarOpen: boolean;
 }
 
 const initialState: IInitialState = {
-    sidebarOpen: true,
+  sidebarOpen: true,
 };
 
 const sidebarSlice = createSlice({
-    name: "sidebarSlice",
-    initialState,
-    reducers: {
-        setSidebarOpen: (state) => {
-            state.sidebarOpen = !state.sidebarOpen
-        },
+  name: "sidebarSlice",
+  initialState,
+  reducers: {
+    setSidebarOpen: (state) => {
+      state.sidebarOpen = !state.sidebarOpen;
     },
+  },
 });
 
 export const { setSidebarOpen } = sidebarSlice.actions;

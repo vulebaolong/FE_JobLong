@@ -4,24 +4,24 @@ import { IUserLogin } from "@/interface/auth";
 import { createSlice } from "@reduxjs/toolkit";
 
 interface IInitialState {
-    userLogin: IUserLogin;
-    accessToken: string
+  userLogin: IUserLogin;
+  accessToken: string;
 }
 
 const initialState: IInitialState = {
-    userLogin: lcStorage.get(USER_LOGIN),
-    accessToken: lcStorage.get(ACCESS_TOKEN),
+  userLogin: lcStorage.get(USER_LOGIN),
+  accessToken: lcStorage.get(ACCESS_TOKEN),
 };
 
 const authSlice = createSlice({
-    name: "authSlice",
-    initialState,
-    reducers: {
-        loginAuth: (state, { payload }) => {
-            state.userLogin = payload.userLogin
-            state.accessToken = payload.accessToken
-        }
+  name: "authSlice",
+  initialState,
+  reducers: {
+    loginAuth: (state, { payload }) => {
+      state.userLogin = payload.userLogin;
+      state.accessToken = payload.accessToken;
     },
+  },
 });
 
 export const { loginAuth } = authSlice.actions;

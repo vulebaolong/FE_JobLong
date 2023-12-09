@@ -1,5 +1,5 @@
-import ListPermissions from "@/components/admin/permissions/ListPermissions"
-import { getListPermissionsAction } from "./action"
+import ListPermissions from "@/components/admin/permissions/ListPermissions";
+import { getListPermissionsAction } from "./action";
 
 interface IProps {
   params: { slug: string };
@@ -7,11 +7,11 @@ interface IProps {
 }
 
 async function PermissionsPage({ searchParams }: IProps) {
-  const dataPermissions = await getListPermissionsAction({ searchParams })
+  const dataPermissions = await getListPermissionsAction({ searchParams });
   return (
     <div>
-      <ListPermissions dataPermissions={dataPermissions}/>
+      <ListPermissions dataPermissions={dataPermissions} />
     </div>
-  )
+  );
 }
-export default PermissionsPage
+export default PermissionsPage;
