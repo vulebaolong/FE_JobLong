@@ -1,11 +1,11 @@
-import { ACCESS_TOKEN, USER_LOGIN } from "@/constant/userContants";
-import { lcStorage } from "@/helpers/localStorage";
-import { IUserLogin } from "@/interface/auth";
-import { createSlice } from "@reduxjs/toolkit";
+import { ACCESS_TOKEN, USER_LOGIN } from '@/constant/userContants';
+import { lcStorage } from '@/helpers/localStorage';
+import { IUserLogin } from '@/interface/auth';
+import { createSlice } from '@reduxjs/toolkit';
 
 interface IInitialState {
     userLogin: IUserLogin;
-    accessToken: string
+    accessToken: string;
 }
 
 const initialState: IInitialState = {
@@ -14,13 +14,13 @@ const initialState: IInitialState = {
 };
 
 const authSlice = createSlice({
-    name: "authSlice",
+    name: 'authSlice',
     initialState,
     reducers: {
         loginAuth: (state, { payload }) => {
-            state.userLogin = payload.userLogin
-            state.accessToken = payload.accessToken
-        }
+            state.userLogin = payload.userLogin;
+            state.accessToken = payload.accessToken;
+        },
     },
 });
 

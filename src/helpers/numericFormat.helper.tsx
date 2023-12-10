@@ -1,5 +1,5 @@
-import * as React from "react";
-import { NumericFormat, NumericFormatProps } from "react-number-format";
+import * as React from 'react';
+import { NumericFormat, NumericFormatProps } from 'react-number-format';
 
 interface CustomProps {
     onChange: (event: { target: { name: string; value: string } }) => void;
@@ -28,5 +28,5 @@ export const NumericFormatCustom = React.forwardRef<NumericFormatProps, CustomPr
                 prefix=""
             />
         );
-    }
+    },
 );

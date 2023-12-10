@@ -1,9 +1,9 @@
-import { Button } from "@mui/material";
-import Link from "next/link";
+import { Button } from '@mui/material';
+import Link from 'next/link';
 
 interface IProps {
-    href: string,
-    text: string
+    href: string;
+    text: string;
 }
 
 const NavButton = ({ href, text }: IProps) => {

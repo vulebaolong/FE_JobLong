@@ -3,16 +3,19 @@ import 'react-toastify/dist/ReactToastify.css';
 import { toast } from 'react-toastify';
 
 export default function ToastProvider() {
-    return <ToastContainer
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable={false}
-        pauseOnHover
-        theme="colored" />;
+    return (
+        <ToastContainer
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable={false}
+            pauseOnHover
+            theme="colored"
+        />
+    );
 }
 
 export const toastSuccess = (message: string, position: ToastPosition = 'bottom-left') => {
@@ -29,5 +32,4 @@ export const toastWarning = (message: string, position: ToastPosition = 'bottom-
 
 export const toastInfo = (message: string, position: ToastPosition = 'bottom-left') => {
     toast.info(message, { position });
-}
-
+};

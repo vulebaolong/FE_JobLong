@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { ICompany } from "@/interface/company";
-import { Card, CardContent } from "@mui/material";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { ICompany } from '@/interface/company';
+import { Card, CardContent } from '@mui/material';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 interface IProps {
     company: ICompany;

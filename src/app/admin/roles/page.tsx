@@ -1,6 +1,4 @@
 function RolesPage() {
-  return (
-    <div>RolesPage</div>
-  )
+    return <div>RolesPage</div>;
 }
-export default RolesPage
+export default RolesPage;

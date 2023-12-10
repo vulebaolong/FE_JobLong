@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 interface IInitialState {
     sidebarOpen: boolean;
@@ -9,11 +9,11 @@ const initialState: IInitialState = {
 };
 
 const sidebarSlice = createSlice({
-    name: "sidebarSlice",
+    name: 'sidebarSlice',
     initialState,
     reducers: {
         setSidebarOpen: (state) => {
-            state.sidebarOpen = !state.sidebarOpen
+            state.sidebarOpen = !state.sidebarOpen;
         },
     },
 });

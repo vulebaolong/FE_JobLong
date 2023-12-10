@@ -1,16 +1,16 @@
-"use client";
-import createCache from "@emotion/cache";
-import { useServerInsertedHTML } from "next/navigation";
-import { CacheProvider } from "@emotion/react";
-import CssBaseline from "@mui/material/CssBaseline";
-import { useMemo, useState } from "react";
-import { experimental_extendTheme as extendTheme } from "@mui/material/styles";
-import { Experimental_CssVarsProvider as CssVarsProvider } from "@mui/material/styles";
-import { ModeToggle } from "@/components/common/modeToggle/ModeToggle";
-import { cyan, lightBlue, pink } from "@mui/material/colors";
+'use client';
+import createCache from '@emotion/cache';
+import { useServerInsertedHTML } from 'next/navigation';
+import { CacheProvider } from '@emotion/react';
+import CssBaseline from '@mui/material/CssBaseline';
+import { useMemo, useState } from 'react';
+import { experimental_extendTheme as extendTheme } from '@mui/material/styles';
+import { Experimental_CssVarsProvider as CssVarsProvider } from '@mui/material/styles';
+import { ModeToggle } from '@/components/common/modeToggle/ModeToggle';
+import { cyan, lightBlue, pink } from '@mui/material/colors';
 
-export const borderRadius = "10px";
-export const heightHeader = "80px";
+export const borderRadius = '10px';
+export const heightHeader = '80px';
 // declare module "@mui/system" {
 //     interface Theme {
 //         heightHeader: string;
@@ -25,23 +25,23 @@ export default function ThemeRegistry(props: any) {
                     light: {
                         palette: {
                             primary: {
-                                main: cyan["700"],
+                                main: cyan['700'],
                             },
                             secondary: {
-                                main: lightBlue["500"],
+                                main: lightBlue['500'],
                             },
                             AppBar: {
-                                darkBg: "white",
+                                darkBg: 'white',
                             },
                         },
                     },
                     dark: {
                         palette: {
                             primary: {
-                                main: cyan["400"],
+                                main: cyan['400'],
                             },
                             secondary: {
-                                main: lightBlue["500"],
+                                main: lightBlue['500'],
                             },
                         },
                     },
@@ -51,7 +51,7 @@ export default function ThemeRegistry(props: any) {
                         styleOverrides: {
                             root: {
                                 borderRadius,
-                                textTransform: "none",
+                                textTransform: 'none',
                             },
                         },
                     },
@@ -59,7 +59,7 @@ export default function ThemeRegistry(props: any) {
                         styleOverrides: {
                             root: {
                                 height: heightHeader,
-                                boxShadow: "none",
+                                boxShadow: 'none',
                             },
                         },
                     },
@@ -67,9 +67,9 @@ export default function ThemeRegistry(props: any) {
                         styleOverrides: {
                             root: {
                                 borderRadius,
-                                "&:hover .MuiOutlinedInput-notchedOutline": {
-                                    borderColor: cyan["500"],
-                                },
+                                // '&:hover .MuiOutlinedInput-notchedOutline': {
+                                //     borderColor: cyan['500'],
+                                // },
                             },
                         },
                     },
@@ -90,7 +90,7 @@ export default function ThemeRegistry(props: any) {
                     MuiTable: {
                         styleOverrides: {
                             root: {
-                                "& .MuiTableCell-head": {
+                                '& .MuiTableCell-head': {
                                     fontWeight: 600,
                                     paddingTop: 16,
                                     paddingBottom: 16,
@@ -101,7 +101,7 @@ export default function ThemeRegistry(props: any) {
                     MuiList: {
                         styleOverrides: {
                             root: {
-                                "& .MuiListItemButton-root": {
+                                '& .MuiListItemButton-root': {
                                     borderRadius,
                                 },
                             },
@@ -109,7 +109,7 @@ export default function ThemeRegistry(props: any) {
                     },
                 },
             }),
-        []
+        [],
     );
 
     const { options, children } = props;
@@ -139,14 +139,14 @@ export default function ThemeRegistry(props: any) {
         if (names.length === 0) {
             return null;
         }
-        let styles = "";
+        let styles = '';
         for (const name of names) {
             styles += cache.inserted[name];
         }
         return (
             <style
                 key={cache.key}
-                data-emotion={`${cache.key} ${names.join(" ")}`}
+                data-emotion={`${cache.key} ${names.join(' ')}`}
                 dangerouslySetInnerHTML={{
                     __html: styles,
                 }}

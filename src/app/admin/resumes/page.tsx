@@ -1,6 +1,4 @@
 function ResumesPage() {
-  return (
-    <div>ResumesPage</div>
-  )
+    return <div>ResumesPage</div>;
 }
-export default ResumesPage
+export default ResumesPage;

@@ -1,9 +1,9 @@
-"use server";
+'use server';
 
-import { sendRequestAction } from "@/app/action";
-import { convertStringToBoolean } from "@/helpers/formik.helper";
-import { IUserInfo } from "@/interface/user";
-import { revalidateTag } from 'next/cache'
+import { sendRequestAction } from '@/app/action';
+import { convertStringToBoolean } from '@/helpers/formik.helper';
+import { ICreateUser, ICreateUserHr, IUserInfo } from '@/interface/user';
+import { revalidateTag } from 'next/cache';
 
 interface IProps {
     searchParams: { [key: string]: string | undefined };
@@ -26,37 +26,61 @@ export const getListUserAction = async ({ searchParams }: IProps) => {
     if (searchParams.gender) query.push(`gender=${searchParams.gender.trim()}`);
     if (searchParams.role) query.push(`role=${searchParams.role.trim()}`);
     console.log(searchParams.isDeleted);
-    if (searchParams.isDeleted === "false") query.push(`isDeleted!=true`);
+    if (searchParams.isDeleted === 'false') query.push(`isDeleted!=true`);
 
     // console.log(query);
 
     return await sendRequestAction<IModelPaginate<IUserInfo[]>>({
-        url: `users?currentPage=${currentPage}&limit=${limit}&${query.join("&")}`,
-        method: "GET",
+        url: `users?currentPage=${currentPage}&limit=${limit}&${query.join('&')}`,
+        method: 'GET',
         nextOption: {
-            next: { tags: ['getListUserAction'] }
-        }
+            next: { tags: ['getListUserAction'] },
+        },
     });
 };
 
 export const deleteUserByIdAction = async (id: string) => {
     const result = await sendRequestAction<IBackendRes<IResponseUpdate>>({
         url: `users/${id}`,
-        method: "DELETE",
+        method: 'DELETE',
     });
 
-    revalidateTag('getListUserAction')
+    revalidateTag('getListUserAction');
 
-    return result
+    return result;
 };
 
 export const restoreUserByIdAction = async (id: string) => {
-    const result =  await sendRequestAction<IBackendRes<IResponseUpdate>>({
+    const result = await sendRequestAction<IBackendRes<IResponseUpdate>>({
         url: `users/restore/${id}`,
-        method: "PATCH",
+        method: 'PATCH',
     });
 
-    revalidateTag('getListUserAction')
+    revalidateTag('getListUserAction');
 
-    return result
+    return result;
+};
+
+export const createUserAction = async (data: ICreateUser) => {
+    const result = await sendRequestAction<IBackendRes<IResponseUpdate>>({
+        url: `users`,
+        method: 'POST',
+        body: data,
+    });
+
+    revalidateTag('getListUserAction');
+
+    return result;
+};
+
+export const createUserHrAction = async (data: ICreateUserHr) => {
+    const result = await sendRequestAction<IBackendRes<IResponseUpdate>>({
+        url: `users/hr`,
+        method: 'POST',
+        body: data,
+    });
+
+    revalidateTag('getListUserAction');
+
+    return result;
 };

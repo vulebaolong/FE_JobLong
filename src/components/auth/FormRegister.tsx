@@ -1,6 +1,14 @@
-import { Button, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, TextField } from "@mui/material"
-import { forwardRef, useState } from "react";
-import { NumericFormat, NumericFormatProps } from "react-number-format";
+import {
+    Button,
+    FormControl,
+    InputLabel,
+    MenuItem,
+    Select,
+    SelectChangeEvent,
+    TextField,
+} from '@mui/material';
+import { forwardRef, useState } from 'react';
+import { NumericFormat, NumericFormatProps } from 'react-number-format';
 
 interface CustomProps {
     onChange: (event: { target: { name: string; value: string } }) => void;
@@ -25,7 +33,7 @@ const NumericFormatCustom = forwardRef<NumericFormatProps, CustomProps>(
                 }}
                 thousandSeparator
                 valueIsNumericString
-            // prefix="$"
+                // prefix="$"
             />
         );
     },
@@ -53,12 +61,7 @@ function FormRegister() {
                 />
                 <FormControl className="basis-1/2">
                     <InputLabel id="age">Giới tính</InputLabel>
-                    <Select
-                        labelId="age"
-                        value={age}
-                        label="Giới tính"
-                        onChange={handleChange}
-                    >
+                    <Select labelId="age" value={age} label="Giới tính" onChange={handleChange}>
                         <MenuItem value={10}>Nam</MenuItem>
                         <MenuItem value={20}>Nữ</MenuItem>
                     </Select>
@@ -68,9 +71,9 @@ function FormRegister() {
             <TextField id="outlined-basic" label="Địa chỉ" variant="outlined" fullWidth />
             <Button variant="contained">Đăng ký</Button>
         </div>
-    )
+    );
 }
-export default FormRegister
+export default FormRegister;
 
 //     < Autocomplete
 // sx = {{ width: "300px" }}

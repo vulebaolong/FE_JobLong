@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { ICompany } from "@/interface/company";
-import ItemCompany from "./ItemCompany";
+import { ICompany } from '@/interface/company';
+import ItemCompany from './ItemCompany';
 
 interface IProps {
     dataCompany: IModelPaginate<ICompany[]>;

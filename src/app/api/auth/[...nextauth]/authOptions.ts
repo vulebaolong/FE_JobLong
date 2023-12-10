@@ -1,17 +1,18 @@
-import { ILoginRequest, ISessionUser } from "@/interface/auth";
-import CredentialsProvider from "next-auth/providers/credentials";
-import { NextAuthOptions } from "next-auth";
-import { parserCookies } from "@/helpers/cookies";
-import { REFRESH_TOKEN } from "@/constant/userContants";
-import { JWT } from "next-auth/jwt";
-import jwt from 'jsonwebtoken'
-import { log } from "@/helpers/log";
-import { decodeJWT } from "@/helpers/jwt";
-import { BASE_URL_API } from "@/constant/apiContants";
+import { ILoginRequest, ISessionUser } from '@/interface/auth';
+import CredentialsProvider from 'next-auth/providers/credentials';
+import { NextAuthOptions } from 'next-auth';
+import { parserCookies } from '@/helpers/cookies';
+import { REFRESH_TOKEN } from '@/constant/userContants';
+import { JWT } from 'next-auth/jwt';
+import jwt from 'jsonwebtoken';
+import { log } from '@/helpers/log';
+import { decodeJWT } from '@/helpers/jwt';
+import { BASE_URL_API } from '@/constant/apiContants';
 
 async function refreshAccessToken(token: JWT) {
     try {
-        if (process.env.JWT_ACCESS_TOKEN_SECRET) jwt.verify(token.access_token, process.env.JWT_ACCESS_TOKEN_SECRET)
+        if (process.env.JWT_ACCESS_TOKEN_SECRET)
+            jwt.verify(token.access_token, process.env.JWT_ACCESS_TOKEN_SECRET);
 
         // log(`refreshAccessToken :::>>>`, 'ACCESS_TOKEN hợp lệ', "RED")
         // decodeJWT(token?.refresh_token, 'refreshAccessToken/refresh_token')
@@ -19,7 +20,7 @@ async function refreshAccessToken(token: JWT) {
 
         return {
             ...token,
-        }
+        };
     } catch (error: any) {
         // if (error.message === 'jwt expired') {
         //     // log(`refreshAccessToken :::>>>`, 'kiểm tra access_token đã hết hạn', "GREEN")
@@ -61,15 +62,15 @@ async function refreshAccessToken(token: JWT) {
 
         return {
             ...token,
-            error: "RefreshAccessTokenError",
-        }
+            error: 'RefreshAccessTokenError',
+        };
     }
 }
 
 export const authOptions: NextAuthOptions = {
     providers: [
         CredentialsProvider({
-            name: "Credentials",
+            name: 'Credentials',
             credentials: {},
             async authorize(credentials: ILoginRequest | Record<never, string> | undefined, req) {
                 if (!credentials) return null;
@@ -95,7 +96,7 @@ export const authOptions: NextAuthOptions = {
                 // };
 
                 return null;
-            }
+            },
         }),
     ],
     callbacks: {
@@ -108,13 +109,13 @@ export const authOptions: NextAuthOptions = {
             // log('jwt/token :::>>>', token, "RED");
 
             if (user) {
-                token.access_token = user.access_token
-                token.refresh_token = user.refresh_token
-                token.user = user.user
+                token.access_token = user.access_token;
+                token.refresh_token = user.refresh_token;
+                token.user = user.user;
                 return token;
             }
 
-            return refreshAccessToken(token)
+            return refreshAccessToken(token);
         },
         async session({ session, token, trigger }) {
             // log('session/token :::>>>', token.refresh_token, "RED");
@@ -124,12 +125,12 @@ export const authOptions: NextAuthOptions = {
 
             // if(token.error) log('session/token :::>>>', 'Đăng nhập lại', "YELLOW");
             if (token) {
-                session.access_token = token.access_token
-                session.refresh_token = token.refresh_token
-                session.user = token.user
-                session.error = token.error
+                session.access_token = token.access_token;
+                session.refresh_token = token.refresh_token;
+                session.user = token.user;
+                session.error = token.error;
             }
-            return session
+            return session;
         },
     },
-}
+};

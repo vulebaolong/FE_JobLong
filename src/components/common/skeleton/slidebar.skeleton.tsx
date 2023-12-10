@@ -1,4 +1,4 @@
-import { ListItem, ListItemButton, ListItemIcon, ListItemText, Skeleton } from "@mui/material";
+import { ListItem, ListItemButton, ListItemIcon, ListItemText, Skeleton } from '@mui/material';
 
 interface IProps {
     sidebarOpen: boolean;
@@ -10,22 +10,22 @@ function SlidebarSkeleton({ sidebarOpen, activeState }: IProps) {
         <div>
             {[...Array(10)].map((user, index) => {
                 return (
-                    <ListItem key={index} disablePadding sx={{ display: "block" }}>
+                    <ListItem key={index} disablePadding sx={{ display: 'block' }}>
                         <ListItemButton
                             sx={{
                                 minHeight: 48,
-                                justifyContent: sidebarOpen ? "initial" : "center",
+                                justifyContent: sidebarOpen ? 'initial' : 'center',
                                 px: 2.5,
-                                backgroundColor: "unset",
-                                color: "unset",
+                                backgroundColor: 'unset',
+                                color: 'unset',
                             }}
                         >
                             <ListItemIcon
                                 sx={{
                                     minWidth: 0,
-                                    mr: sidebarOpen ? 3 : "auto",
-                                    justifyContent: "center",
-                                    color: "unset",
+                                    mr: sidebarOpen ? 3 : 'auto',
+                                    justifyContent: 'center',
+                                    color: 'unset',
                                 }}
                             >
                                 <Skeleton variant="rounded" width={20} height={20} />

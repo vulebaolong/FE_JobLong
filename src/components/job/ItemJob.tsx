@@ -1,14 +1,14 @@
-"use client";
-import { BASE_URL_SERVER, FOLDER_IMAGE_COMPANY } from "@/constant/apiContants";
-import { Ijob } from "@/interface/job";
-import { Card, CardActionArea } from "@mui/material";
-import Image from "next/image";
-import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
-import PaidOutlinedIcon from "@mui/icons-material/PaidOutlined";
-import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
-import { useRouter } from "next/navigation";
+'use client';
+import { BASE_URL_SERVER, FOLDER_IMAGE_COMPANY } from '@/constant/apiContants';
+import { Ijob } from '@/interface/job';
+import { Card, CardActionArea } from '@mui/material';
+import Image from 'next/image';
+import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
+import PaidOutlinedIcon from '@mui/icons-material/PaidOutlined';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+import { useRouter } from 'next/navigation';
 dayjs.extend(relativeTime);
 
 function ItemJob({ job }: { job: Ijob }) {

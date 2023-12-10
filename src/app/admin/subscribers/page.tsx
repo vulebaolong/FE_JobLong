@@ -1,6 +1,4 @@
 function SubscribersPage() {
-  return (
-    <div>SubscribersPage</div>
-  )
+    return <div>SubscribersPage</div>;
 }
-export default SubscribersPage
+export default SubscribersPage;

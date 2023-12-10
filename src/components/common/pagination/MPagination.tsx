@@ -1,8 +1,14 @@
-"use client";
+'use client';
 
-import { Pagination } from "@mui/material";
+import { Pagination } from '@mui/material';
 
-const MPagination = ({ totalPages, currentPage, onChange }) => {
+interface IProps {
+    totalPages: number | undefined;
+    currentPage: number | undefined;
+    onChange: (_: any, page: number) => void;
+}
+
+const MPagination = ({ totalPages, currentPage, onChange }: IProps) => {
     return (
         <Pagination
             color="primary"

@@ -1,4 +1,4 @@
-import { ReadonlyURLSearchParams } from "next/navigation";
+import { ReadonlyURLSearchParams } from 'next/navigation';
 
 export interface IOptionAutocomplete {
     label: string;
@@ -8,12 +8,12 @@ export interface IOptionAutocomplete {
 export const initValueFormik = (
     key: string,
     data: IOptionAutocomplete[],
-    searchParams: ReadonlyURLSearchParams
+    searchParams: ReadonlyURLSearchParams,
 ) => {
     return (
         (searchParams.get(key) && data.find((e) => e.id === searchParams.get(key))) || {
-            label: "",
-            id: "",
+            label: '',
+            id: '',
         }
     );
 };
@@ -23,7 +23,7 @@ export const convertStringToBoolean = (value: unknown): boolean => {
         value === undefined ||
         value === null ||
         value === false ||
-        String(value).toLowerCase() === "false"
+        String(value).toLowerCase() === 'false'
     ) {
         return false;
     }

@@ -1,17 +1,17 @@
-"use client";
+'use client';
 
-import React from "react";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { Box, Divider, IconButton, ListItemText, Menu, Stack, Tooltip } from "@mui/material";
-import InfoIcon from "@mui/icons-material/Info";
-import { Button } from "@mui/material";
-import { toastError, toastSuccess } from "@/provider/ToastProvider";
+import React from 'react';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { Box, Divider, IconButton, ListItemText, Menu, Stack, Tooltip } from '@mui/material';
+import InfoIcon from '@mui/icons-material/Info';
+import { Button } from '@mui/material';
+import { toastError, toastSuccess } from '@/provider/ToastProvider';
 
 interface IProps {
-    onClick: () => Promise<boolean>
+    onClick: () => Promise<boolean>;
 }
 
-const DeleteButton = ({onClick}: IProps) => {
+const DeleteButton = ({ onClick }: IProps) => {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -22,15 +22,15 @@ const DeleteButton = ({onClick}: IProps) => {
     };
 
     const handleClickOke = async () => {
-        const isClose = await onClick()
-        if(isClose) {
-            handleClose()
-            toastSuccess('Deleted successfully')
-            return
+        const isClose = await onClick();
+        if (isClose) {
+            handleClose();
+            toastSuccess('Deleted successfully');
+            return;
         }
 
-        toastError('Deletion failed')
-        console.log("OKEOKEOKEOKE");
+        toastError('Deletion failed');
+        console.log('OKEOKEOKEOKE');
     };
     return (
         <>
@@ -45,14 +45,14 @@ const DeleteButton = ({onClick}: IProps) => {
                 open={open}
                 onClose={handleClose}
                 MenuListProps={{
-                    "aria-labelledby": "delete-button",
+                    'aria-labelledby': 'delete-button',
                 }}
             >
                 <Box>
                     <Stack
-                        direction={"row"}
+                        direction={'row'}
                         spacing={2}
-                        alignItems={"center"}
+                        alignItems={'center'}
                         onClick={handleClose}
                         paddingLeft={1}
                         paddingRight={1}
@@ -60,15 +60,17 @@ const DeleteButton = ({onClick}: IProps) => {
                         <InfoIcon fontSize="small" color="warning" />
                         <ListItemText>Sure to delete?</ListItemText>
                     </Stack>
-                    <Divider sx={{ margin: "10px" }} />
+                    <Divider sx={{ margin: '10px' }} />
                     <Stack
                         paddingLeft={1}
                         paddingRight={1}
-                        direction={"row"}
-                        justifyContent={"end"}
+                        direction={'row'}
+                        justifyContent={'end'}
                         gap={1}
                     >
-                        <Button onClick={handleClose} size="small">Cancel</Button>
+                        <Button onClick={handleClose} size="small">
+                            Cancel
+                        </Button>
                         <Button onClick={handleClickOke} size="small" variant="contained">
                             OKE
                         </Button>

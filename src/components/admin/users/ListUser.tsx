@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
     Autocomplete,
@@ -21,30 +21,35 @@ import {
     TableRow,
     Tooltip,
     Typography,
-} from "@mui/material";
-import MPagination from "@/components/common/pagination/MPagination";
-import EditButton from "@/components/common/button/EditButton";
-import { IUserInfo } from "@/interface/user";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { routerReplace } from "@/helpers/router.helper";
-import { TEXT } from "@/constant/text.contants";
-import { useFormik } from "formik";
-import TextField from "@/components/common/textField/TextField";
-import { useState } from "react";
+} from '@mui/material';
+import MPagination from '@/components/common/pagination/MPagination';
+import EditButton from '@/components/common/button/EditButton';
+import { IUserInfo } from '@/interface/user';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { routerReplace } from '@/helpers/router.helper';
+import { TEXT } from '@/constant/text.contants';
+import { useFormik } from 'formik';
+import TextField from '@/components/common/textField/TextField';
+import { useState } from 'react';
 import {
     IOptionAutocomplete,
     convertStringToBoolean,
     initValueFormik,
-} from "@/helpers/formik.helper";
-import { ROUTES } from "@/constant/routes.contants";
-import DeleteButton from "@/components/common/button/DeleteButton";
-import ThumbDownIcon from "@mui/icons-material/ThumbDown";
-import ThumbUpIcon from "@mui/icons-material/ThumbUp";
-import AutorenewIcon from "@mui/icons-material/Autorenew";
-import { useFormStatus } from "react-dom";
-import RestoreButton from "@/components/common/button/RestoreButton";
-import { deleteUserByIdAction, restoreUserByIdAction } from "@/app/admin/users/action";
-import { CreatedInfoAction, DeletedInfoAction, UpdatedInfoAction } from "@/components/common/infoAction/InfoAction";
+} from '@/helpers/formik.helper';
+import { ROUTES } from '@/constant/routes.contants';
+import DeleteButton from '@/components/common/button/DeleteButton';
+import ThumbDownIcon from '@mui/icons-material/ThumbDown';
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import AutorenewIcon from '@mui/icons-material/Autorenew';
+import { useFormStatus } from 'react-dom';
+import RestoreButton from '@/components/common/button/RestoreButton';
+import { deleteUserByIdAction, restoreUserByIdAction } from '@/app/admin/users/action';
+import {
+    CreatedInfoAction,
+    DeletedInfoAction,
+    UpdatedInfoAction,
+} from '@/components/common/infoAction/InfoAction';
+import { ROLE_ADMIN, ROLE_HR, ROLE_USER } from '@/constant/role.constant';
 
 interface IProps {
     dataUser: IModelPaginate<IUserInfo[]>;
@@ -64,16 +69,16 @@ function ListUser({ dataUser, initialCompaies, initialRole, initialGender }: IPr
 
     const searchForm = useFormik({
         initialValues: {
-            name: searchParams.get("name") || "",
-            address: searchParams.get("address") || "",
-            age: searchParams.get("age") || "",
-            company: initValueFormik("company", companiesList, searchParams),
-            email: searchParams.get("email") || "",
-            gender: initValueFormik("gender", genderList, searchParams),
-            role: initValueFormik("role", roleList, searchParams),
-            page: searchParams.get("page") || 1,
-            isDeleted: searchParams.get("isDeleted")
-                ? convertStringToBoolean(searchParams.get("isDeleted"))
+            name: searchParams.get('name') || '',
+            address: searchParams.get('address') || '',
+            age: searchParams.get('age') || '',
+            company: initValueFormik('company', companiesList, searchParams),
+            email: searchParams.get('email') || '',
+            gender: initValueFormik('gender', genderList, searchParams),
+            role: initValueFormik('role', roleList, searchParams),
+            page: searchParams.get('page') || 1,
+            isDeleted: searchParams.get('isDeleted')
+                ? convertStringToBoolean(searchParams.get('isDeleted'))
                 : true,
         },
         onSubmit: (values) => {
@@ -83,9 +88,9 @@ function ListUser({ dataUser, initialCompaies, initialRole, initialGender }: IPr
                 searchParams,
                 newSearchParams: {
                     ...values,
-                    company: values.company.id || "",
-                    gender: values.gender.label || "",
-                    role: values.role.id || "",
+                    company: values.company.id || '',
+                    gender: values.gender.label || '',
+                    role: values.role.id || '',
                     isDeleted: values.isDeleted,
                 },
             });
@@ -102,24 +107,24 @@ function ListUser({ dataUser, initialCompaies, initialRole, initialGender }: IPr
     };
 
     const onSearch = () => {
-        searchForm.setFieldValue("page", 1);
+        searchForm.setFieldValue('page', 1);
         searchForm.submitForm();
     };
 
     const onResetSearch = () => {
-        searchForm.setFieldValue("name", "");
-        searchForm.setFieldValue("address", "");
-        searchForm.setFieldValue("age", "");
-        searchForm.setFieldValue("company", { label: "", id: "" });
-        searchForm.setFieldValue("email", "");
-        searchForm.setFieldValue("gender", { label: "", id: "" });
-        searchForm.setFieldValue("role", { label: "", id: "" });
-        searchForm.setFieldValue("page", 1);
+        searchForm.setFieldValue('name', '');
+        searchForm.setFieldValue('address', '');
+        searchForm.setFieldValue('age', '');
+        searchForm.setFieldValue('company', { label: '', id: '' });
+        searchForm.setFieldValue('email', '');
+        searchForm.setFieldValue('gender', { label: '', id: '' });
+        searchForm.setFieldValue('role', { label: '', id: '' });
+        searchForm.setFieldValue('page', 1);
         searchForm.submitForm();
     };
 
     const handleCheckBox = (_: any, value: boolean) => {
-        searchForm.setFieldValue("isDeleted", value);
+        searchForm.setFieldValue('isDeleted', value);
         searchForm.submitForm();
     };
 
@@ -146,9 +151,10 @@ function ListUser({ dataUser, initialCompaies, initialRole, initialGender }: IPr
             {/* SEARCH */}
             <Card variant="outlined">
                 <CardContent>
-                    <Stack direction={"row"} flexWrap="wrap" gap={2}>
+                    <Stack direction={'row'} flexWrap="wrap" gap={2}>
                         {/* Name */}
                         <TextField
+                            sx={{ width: '300px' }}
                             label="Name"
                             name="name"
                             value={searchForm.values.name}
@@ -157,6 +163,7 @@ function ListUser({ dataUser, initialCompaies, initialRole, initialGender }: IPr
 
                         {/* Address */}
                         <TextField
+                            sx={{ width: '300px' }}
                             label="Address"
                             name="address"
                             value={searchForm.values.address}
@@ -165,6 +172,7 @@ function ListUser({ dataUser, initialCompaies, initialRole, initialGender }: IPr
 
                         {/* Age */}
                         <TextField
+                            sx={{ width: '300px' }}
                             type="number"
                             max={199}
                             name="age"
@@ -175,7 +183,7 @@ function ListUser({ dataUser, initialCompaies, initialRole, initialGender }: IPr
 
                         {/* Company */}
                         <Autocomplete
-                            sx={{ width: "300px" }}
+                            sx={{ width: '300px' }}
                             size="small"
                             options={companiesList}
                             renderOption={(props, option) => {
@@ -186,20 +194,18 @@ function ListUser({ dataUser, initialCompaies, initialRole, initialGender }: IPr
                                 );
                             }}
                             isOptionEqualToValue={(option, value) =>
-                                value.id === "" || option.id === value.id
+                                value.id === '' || option.id === value.id
                             }
                             value={searchForm.values.company}
                             renderInput={(params) => <TextField {...params} label="Company" />}
                             onChange={(_, value) => {
-                                searchForm.setFieldValue("company", value || { label: "", id: "" });
+                                searchForm.setFieldValue('company', value || { label: '', id: '' });
                             }}
                         />
 
                         {/* Email */}
                         <TextField
-                            sx={{ width: "300px" }}
-                            size="small"
-                            variant="outlined"
+                            sx={{ width: '300px' }}
                             label="Email"
                             name="email"
                             value={searchForm.values.email}
@@ -208,7 +214,7 @@ function ListUser({ dataUser, initialCompaies, initialRole, initialGender }: IPr
 
                         {/* Gender */}
                         <Autocomplete
-                            sx={{ width: "300px" }}
+                            sx={{ width: '300px' }}
                             size="small"
                             options={genderList}
                             renderOption={(props, option) => {
@@ -219,18 +225,18 @@ function ListUser({ dataUser, initialCompaies, initialRole, initialGender }: IPr
                                 );
                             }}
                             isOptionEqualToValue={(option, value) =>
-                                value.id === "" || option.id === value.id
+                                value.id === '' || option.id === value.id
                             }
                             value={searchForm.values.gender}
                             renderInput={(params) => <TextField {...params} label="Gender" />}
                             onChange={(_, value) => {
-                                searchForm.setFieldValue("gender", value || { label: "", id: "" });
+                                searchForm.setFieldValue('gender', value || { label: '', id: '' });
                             }}
                         />
 
                         {/* Role */}
                         <Autocomplete
-                            sx={{ width: "300px" }}
+                            sx={{ width: '300px' }}
                             size="small"
                             options={roleList}
                             renderOption={(props, option) => {
@@ -241,12 +247,12 @@ function ListUser({ dataUser, initialCompaies, initialRole, initialGender }: IPr
                                 );
                             }}
                             isOptionEqualToValue={(option, value) =>
-                                value.id === "" || option.id === value.id
+                                value.id === '' || option.id === value.id
                             }
                             value={searchForm.values.role}
                             renderInput={(params) => <TextField {...params} label="Role" />}
                             onChange={(_, value) => {
-                                searchForm.setFieldValue("role", value || { label: "", id: "" });
+                                searchForm.setFieldValue('role', value || { label: '', id: '' });
                             }}
                         />
                     </Stack>
@@ -302,7 +308,10 @@ function ListUser({ dataUser, initialCompaies, initialRole, initialGender }: IPr
                                                     placement="right-end"
                                                 >
                                                     <Avatar
-                                                        sx={{ width: 30, height: 30 }}
+                                                        sx={{
+                                                            width: 30,
+                                                            height: 30,
+                                                        }}
                                                         src={user.avatar}
                                                     />
                                                 </Tooltip>
@@ -319,9 +328,13 @@ function ListUser({ dataUser, initialCompaies, initialRole, initialGender }: IPr
                                                 key={index}
                                                 variant="outlined"
                                                 color={
-                                                    user.role.name === "ROLE_ADMIN"
-                                                        ? "error"
-                                                        : "info"
+                                                    user.role.name === ROLE_ADMIN
+                                                        ? 'error'
+                                                        : user.role.name === ROLE_USER
+                                                          ? 'info'
+                                                          : user.role.name === ROLE_HR
+                                                            ? 'warning'
+                                                            : 'default'
                                                 }
                                                 size="small"
                                                 label={user.role.name}
@@ -384,15 +397,15 @@ interface IPropsTableCellNote {
 
 function TableCellNote({ dataUser, onChange, checked, loading }: IPropsTableCellNote) {
     return (
-        <TableCell colSpan={9} sx={{ borderBottom: "none", paddingBottom: "0 !important" }}>
+        <TableCell colSpan={9} sx={{ borderBottom: 'none', paddingBottom: '0 !important' }}>
             <Stack
                 direction="row"
                 justifyContent="space-between"
                 alignItems="center"
-                width={"100%"}
+                width={'100%'}
             >
                 <Stack direction="row" justifyContent="flex-start" alignItems="center" spacing={3}>
-                    <Box sx={{ fontSize: "1rem" }}>Total: {dataUser.data?.meta?.totalItems}</Box>
+                    <Box sx={{ fontSize: '1rem' }}>Total: {dataUser.data?.meta?.totalItems}</Box>
                     <Box>
                         <FormControlLabel
                             control={
@@ -416,24 +429,15 @@ interface IPropsTooltipAvatar {
 
 function TitleTooltipAvatar({ user }: IPropsTooltipAvatar) {
     return (
-        <Stack direction={"column"} spacing={2} padding={1}>
+        <Stack direction={'column'} spacing={2} padding={1}>
             {/* Created by */}
-            <CreatedInfoAction 
-                createdBy={user?.createdBy?.email}
-                createdAt={user?.createdAt}
-            />
+            <CreatedInfoAction createdBy={user?.createdBy?.email} createdAt={user?.createdAt} />
 
             {/* Updated by */}
-            <UpdatedInfoAction 
-                updatedBy={user?.createdBy?.email}
-                updatedAt={user?.createdAt}
-            />
+            <UpdatedInfoAction updatedBy={user?.createdBy?.email} updatedAt={user?.createdAt} />
 
             {/* Deleted by */}
-            <DeletedInfoAction 
-                deletedBy={user?.createdBy?.email}
-                deletedAt={user?.createdAt}
-            />
+            <DeletedInfoAction deletedBy={user?.createdBy?.email} deletedAt={user?.createdAt} />
         </Stack>
     );
 }

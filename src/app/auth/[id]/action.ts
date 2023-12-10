@@ -1,26 +1,31 @@
-"use server";
+'use server';
 
-import { sendRequestAction } from "@/app/action";
-import { deleteSessionUser, getSessionUser, parserCookies, setSessionUser } from "@/helpers/cookies";
-import { ILoginRequest, ISessionUser, IUserLogin } from "@/interface/auth";
+import { sendRequestAction } from '@/app/action';
+import {
+    deleteSessionUser,
+    getSessionUser,
+    parserCookies,
+    setSessionUser,
+} from '@/helpers/cookies';
+import { ILoginRequest, ISessionUser, IUserLogin } from '@/interface/auth';
 
 export const loginAction = async (value: ILoginRequest) => {
     const resultRaw = await sendRequestAction<IBackendRes<ISessionUser>>({
         url: `auth/login`,
-        method: "POST",
+        method: 'POST',
         body: value,
         isJsonParse: false,
     });
 
-    const cookiesHeader = resultRaw.headers.get("set-cookie");
-    let refresh_token = "";
+    const cookiesHeader = resultRaw.headers.get('set-cookie');
+    let refresh_token = '';
     if (cookiesHeader) refresh_token = parserCookies(cookiesHeader).refresh_token;
 
     const result: IBackendRes<ISessionUser> = await resultRaw.json();
 
     if (result.statusCode === 201) {
         result.data.refresh_token = refresh_token;
-        setSessionUser(result.data)
+        setSessionUser(result.data);
         // console.log("loginAction:::>>",getSessionUser());
     }
 
@@ -30,10 +35,8 @@ export const loginAction = async (value: ILoginRequest) => {
 export const logoutAction = async () => {
     await sendRequestAction<IBackendRes<ISessionUser>>({
         url: `auth/logout`,
-        method: "POST",
+        method: 'POST',
     });
 
-    deleteSessionUser()
-    
-
+    deleteSessionUser();
 };

@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import EditButton from "@/components/common/button/EditButton";
-import MPagination from "@/components/common/pagination/MPagination";
-import { routerReplace } from "@/helpers/router.helper";
-import { IPermissions } from "@/interface/auth";
+import EditButton from '@/components/common/button/EditButton';
+import MPagination from '@/components/common/pagination/MPagination';
+import { routerReplace } from '@/helpers/router.helper';
+import { IPermissions } from '@/interface/auth';
 import {
     Card,
     CardActions,
@@ -17,25 +17,24 @@ import {
     TableContainer,
     TableHead,
     TableRow,
-} from "@mui/material";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+} from '@mui/material';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 interface IProps {
     dataPermissions: IModelPaginate<IPermissions[]>;
 }
 
 function ListPermissions({ dataPermissions }: IProps) {
-
     const router = useRouter();
     const pathname = usePathname();
     const searchParams = useSearchParams();
 
-    const onPageChange = ( _: any, page: number) => {
+    const onPageChange = (_: any, page: number) => {
         routerReplace({
             router,
             pathname,
             searchParams,
-            newSearchParams: {currentPage: page}
+            newSearchParams: { currentPage: page },
         });
     };
     return (
@@ -60,7 +59,7 @@ function ListPermissions({ dataPermissions }: IProps) {
                                 {dataPermissions.data?.result?.map((permission, index) => (
                                     <TableRow key={index}>
                                         <TableCell>
-                                            <EditButton href={"/"} />
+                                            <EditButton href={'/'} />
                                         </TableCell>
                                         <TableCell>{permission.name}</TableCell>
                                     </TableRow>

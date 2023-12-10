@@ -1,7 +1,6 @@
-
-const ROUTE_BASE = '/admin/'
+const ROUTE_BASE = '/admin/';
 export const ROUTES = {
-    SIGN_IN: "/signin",
+    SIGN_IN: '/signin',
     ADMIN: {
         DASHBOARD: {
             INDEX: `${ROUTE_BASE}`,

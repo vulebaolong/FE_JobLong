@@ -1,7 +1,7 @@
-import Content, { ContentBody, ContentHeader } from "../content/Content";
-import { TEXT } from "@/constant/text.contants";
-import NavButton from "../button/NavButton";
-import { ROUTES } from "@/constant/routes.contants";
+import Content, { ContentBody, ContentHeader } from '../content/Content';
+import { TEXT } from '@/constant/text.contants';
+import NavButton from '../button/NavButton';
+import { ROUTES } from '@/constant/routes.contants';
 import {
     Card,
     CardActions,
@@ -15,13 +15,13 @@ import {
     TableContainer,
     TableHead,
     TableRow,
-} from "@mui/material";
+} from '@mui/material';
 
 interface IProps {
     rowsNum: number;
 }
 
-export const TableSkeleton = ({ rowsNum }: IProps) => {
+export const ListSkeleton = ({ rowsNum }: IProps) => {
     return (
         <Content>
             <ContentHeader
@@ -35,7 +35,7 @@ export const TableSkeleton = ({ rowsNum }: IProps) => {
                     {/* SEARCH */}
                     <Card variant="outlined">
                         <CardContent>
-                            <Stack direction={"row"} flexWrap="wrap" gap={2}>
+                            <Stack direction={'row'} flexWrap="wrap" gap={2}>
                                 {/* Name */}
                                 <Skeleton animation="wave" variant="text" width={300} />
 
@@ -60,8 +60,8 @@ export const TableSkeleton = ({ rowsNum }: IProps) => {
                         </CardContent>
                         <Divider />
                         <CardActions>
-                            <Skeleton variant="rounded" width={60} height={30} />
-                            <Skeleton variant="rounded" width={60} height={30} />
+                            <Skeleton variant="rounded" width={60} height={40} />
+                            <Skeleton variant="rounded" width={60} height={40} />
                         </CardActions>
                     </Card>
 

@@ -1,23 +1,23 @@
-import { cookies } from "next/headers";
-import { ACCESS_TOKEN, REFRESH_TOKEN, USER_LOGIN } from "@/constant/userContants";
-import { ISessionUser } from "@/interface/auth";
+import { cookies } from 'next/headers';
+import { ACCESS_TOKEN, REFRESH_TOKEN, USER_LOGIN } from '@/constant/userContants';
+import { ISessionUser } from '@/interface/auth';
 
 export const parserCookies = (cookieString: string) => {
-    const cookies = cookieString.split("; ").map((item) => {
-        const arr = item.split(", ");
+    const cookies = cookieString.split('; ').map((item) => {
+        const arr = item.split(', ');
         const isArrToken = arr.length === 3;
 
         if (isArrToken) {
-            const [name, value] = arr[2].split("=");
+            const [name, value] = arr[2].split('=');
             return { [name]: value };
         }
-        const [name, value] = item.split("=");
+        const [name, value] = item.split('=');
         return { [name]: value };
     });
 
     return cookies.reduce((acc, obj) => {
         const [key, value] = Object.entries(obj)[0] || [];
-        if (value !== "" && value !== undefined) {
+        if (value !== '' && value !== undefined) {
             acc = Object.assign(acc, { [key]: value });
         }
         return acc;
@@ -34,7 +34,7 @@ export const getSessionUser = () => {
     const accessCookie = cookies().get(ACCESS_TOKEN)?.value;
     const refreshCookie = cookies().get(REFRESH_TOKEN)?.value;
     const userCookie = cookies().get(USER_LOGIN)?.value;
-    let user_token = "";
+    let user_token = '';
     if (userCookie) user_token = JSON.parse(userCookie);
     return {
         [ACCESS_TOKEN]: accessCookie,

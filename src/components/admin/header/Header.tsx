@@ -1,29 +1,29 @@
-"use client";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Menu from "@mui/material/Menu";
-import MenuIcon from "@mui/icons-material/Menu";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import Tooltip from "@mui/material/Tooltip";
-import MenuItem from "@mui/material/MenuItem";
-import { MouseEvent, useEffect, useState } from "react";
-import { ModeToggle } from "@/components/common/modeToggle/ModeToggle";
-import { useRouter } from "next/navigation";
-import { Divider, ListItemIcon } from "@mui/material";
-import { Logout, PersonAdd, Settings } from "@mui/icons-material";
-import { useDispatch, useSelector } from "react-redux";
-import { DispatchType, RootState } from "@/redux/store";
-import { setSidebarOpen } from "@/redux/slices/sidebarSlice";
-import { lcStorage } from "@/helpers/localStorage";
-import { ACCESS_TOKEN, USER_LOGIN } from "@/constant/userContants";
-import { logoutAction } from "@/app/auth/[id]/action";
+'use client';
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import Toolbar from '@mui/material/Toolbar';
+import IconButton from '@mui/material/IconButton';
+import Menu from '@mui/material/Menu';
+import MenuIcon from '@mui/icons-material/Menu';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import Tooltip from '@mui/material/Tooltip';
+import MenuItem from '@mui/material/MenuItem';
+import { MouseEvent, useEffect, useState } from 'react';
+import { ModeToggle } from '@/components/common/modeToggle/ModeToggle';
+import { useRouter } from 'next/navigation';
+import { Divider, ListItemIcon } from '@mui/material';
+import { Logout, PersonAdd, Settings } from '@mui/icons-material';
+import { useDispatch, useSelector } from 'react-redux';
+import { DispatchType, RootState } from '@/redux/store';
+import { setSidebarOpen } from '@/redux/slices/sidebarSlice';
+import { lcStorage } from '@/helpers/localStorage';
+import { ACCESS_TOKEN, USER_LOGIN } from '@/constant/userContants';
+import { logoutAction } from '@/app/auth/[id]/action';
 
 function Header() {
     const router = useRouter();
-    const { userLogin } = useSelector((state: RootState) => state.authSlice)
+    const { userLogin } = useSelector((state: RootState) => state.authSlice);
     const [isClient, setIsClient] = useState(false);
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
@@ -47,31 +47,38 @@ function Header() {
     };
 
     const handleLogin = () => {
-        router.push("/auth/login");
+        router.push('/auth/login');
     };
     const handleRegister = () => {
-        router.push("/auth/register");
+        router.push('/auth/register');
     };
 
     const handleLogout = async () => {
-        await logoutAction()
-        lcStorage.remove(USER_LOGIN)
-        lcStorage.remove(ACCESS_TOKEN)
-        window.location.reload()
+        await logoutAction();
+        lcStorage.remove(USER_LOGIN);
+        lcStorage.remove(ACCESS_TOKEN);
+        window.location.reload();
         handleCloseUserMenu();
     };
 
     return (
         <>
             {isClient && (
-                <AppBar className="justify-center px-5" sx={{ position: "unset", height: "80px", backgroundImage: "none" }}>
+                <AppBar
+                    className="justify-center px-5"
+                    sx={{
+                        position: 'unset',
+                        height: '80px',
+                        backgroundImage: 'none',
+                    }}
+                >
                     <Toolbar disableGutters>
                         <Box
                             sx={{
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "space-between",
-                                width: "100%",
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'space-between',
+                                width: '100%',
                             }}
                         >
                             <IconButton
@@ -79,7 +86,14 @@ function Header() {
                                 sx={{ marginRight: 3 }}
                                 onClick={onSidebarOpen}
                             >
-                                <MenuIcon />
+                                <MenuIcon
+                                    sx={{
+                                        color: (theme) => {
+                                            if (theme.palette.mode === 'dark') return 'white';
+                                            if (theme.palette.mode === 'light') return 'black';
+                                        },
+                                    }}
+                                />
                             </IconButton>
 
                             {/* USER CONTROL */}
@@ -99,36 +113,35 @@ function Header() {
                                             onClose={handleCloseUserMenu}
                                             onClick={handleCloseUserMenu}
                                             sx={{
-                                                "overflow": "visible",
-                                                "filter":
-                                                    "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
-                                                "mt": 1.5,
-                                                "& .MuiAvatar-root": {
+                                                overflow: 'visible',
+                                                filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+                                                mt: 1.5,
+                                                '& .MuiAvatar-root': {
                                                     width: 32,
                                                     height: 32,
                                                     ml: -0.5,
                                                     mr: 1,
                                                 },
-                                                "&:before": {
+                                                '&:before': {
                                                     content: '""',
-                                                    display: "block",
-                                                    position: "absolute",
+                                                    display: 'block',
+                                                    position: 'absolute',
                                                     top: 0,
                                                     right: 14,
                                                     width: 10,
                                                     height: 10,
-                                                    bgcolor: "background.paper",
-                                                    transform: "translateY(-50%) rotate(45deg)",
+                                                    bgcolor: 'background.paper',
+                                                    transform: 'translateY(-50%) rotate(45deg)',
                                                     zIndex: 0,
                                                 },
                                             }}
                                             transformOrigin={{
-                                                horizontal: "right",
-                                                vertical: "top",
+                                                horizontal: 'right',
+                                                vertical: 'top',
                                             }}
                                             anchorOrigin={{
-                                                horizontal: "right",
-                                                vertical: "bottom",
+                                                horizontal: 'right',
+                                                vertical: 'bottom',
                                             }}
                                         >
                                             {/* <MenuItem onClick={handleCloseUserMenu}>

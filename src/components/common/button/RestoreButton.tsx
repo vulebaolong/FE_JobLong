@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import React from "react";
-import { IconButton, Tooltip } from "@mui/material";
-import RestoreIcon from "@mui/icons-material/Restore";
-import { toastError, toastSuccess } from "@/provider/ToastProvider";
+import React from 'react';
+import { IconButton, Tooltip } from '@mui/material';
+import RestoreIcon from '@mui/icons-material/Restore';
+import { toastError, toastSuccess } from '@/provider/ToastProvider';
 
 interface IProps {
     onClick: () => Promise<boolean>;
@@ -12,10 +12,10 @@ interface IProps {
 const RestoreButton = ({ onClick }: IProps) => {
     const handleClick = async () => {
         const isClose = await onClick();
-        
-        if (isClose) return toastSuccess("Restore successfully");
 
-        toastError("Restore failed");
+        if (isClose) return toastSuccess('Restore successfully');
+
+        toastError('Restore failed');
     };
     return (
         <Tooltip title="Restore" placement="top">

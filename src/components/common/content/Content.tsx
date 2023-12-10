@@ -1,6 +1,6 @@
-import { Box, Stack, Typography } from "@mui/material";
-import React from "react";
-import BackButton from "../button/BackButton";
+import { Box, Stack, Typography } from '@mui/material';
+import React from 'react';
+import BackButton from '../button/BackButton';
 
 interface IPropsContentHeader {
     title?: string;
@@ -26,7 +26,7 @@ export const ContentHeader = ({
     return (
         <Stack direction="row" justifyContent="space-between" alignItems="center" padding={1}>
             {/* left content */}
-            <Stack direction="row" spacing={1} alignItems={"center"}>
+            <Stack direction="row" spacing={1} alignItems={'center'}>
                 {backButton && <BackButton />}
                 <Typography variant="h6">{title}</Typography>
             </Stack>
@@ -40,9 +40,7 @@ export const ContentHeader = ({
 };
 
 export const ContentBody = ({ children, disablePadding = false }: IPropsContentBody) => {
-    return (
-        <Box padding={disablePadding ? 0 : 1}> {children}</Box>
-    );
+    return <Box padding={disablePadding ? 0 : 1}> {children}</Box>;
 };
 
 const Content = ({ children, disablePadding = false }: IPropsContent) => {
