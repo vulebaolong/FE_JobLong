@@ -1,17 +1,23 @@
+import EditUser from '@/components/admin/users/EditUser';
+import Content, { ContentBody, ContentHeader } from '@/components/common/content/Content';
+import { TEXT } from '@/constant/text.contants';
+
 interface IProps {
     params: { id: string };
 }
 
 async function DetailUserPage({ params }: IProps) {
     const { id } = params;
-    // const  dataCompany  = await companyApi.getCompanyById(id);
-    // const  dataCompany  = await getCompanyByIdAction(id);
-
+    {
+        /* <ErrorAlert message={organization.message} /> */
+    }
     return (
-        <div>
-            <h1>{id}</h1>
-            {/* <DetailCompany dataCompany={dataCompany} /> */}
-        </div>
+        <Content>
+            <ContentHeader title={TEXT.TITLE.USER + 'edit'} backButton />
+            <ContentBody>
+                <EditUser />
+            </ContentBody>
+        </Content>
     );
 }
 export default DetailUserPage;
