@@ -8,9 +8,6 @@ import { getListCompanies } from '../companies/action';
 import { buildOptionsAutocomplete } from '@/helpers/function.helper';
 import { ICompany } from '@/interface/company';
 import { getListRole } from '../roles/action';
-import { Suspense } from 'react';
-import { TableSkeleton } from '@/components/common/skeleton/list.skeleton';
-import { log } from '@/helpers/log';
 import { IRole } from '@/interface/role';
 
 interface IProps {
