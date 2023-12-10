@@ -86,7 +86,14 @@ function Header() {
                                 sx={{ marginRight: 3 }}
                                 onClick={onSidebarOpen}
                             >
-                                <MenuIcon />
+                                <MenuIcon
+                                    sx={{
+                                        color: (theme) => {
+                                            if (theme.palette.mode === 'dark') return 'white';
+                                            if (theme.palette.mode === 'light') return 'black';
+                                        },
+                                    }}
+                                />
                             </IconButton>
 
                             {/* USER CONTROL */}

@@ -2,7 +2,7 @@
 
 import { sendRequestAction } from '@/app/action';
 import { convertStringToBoolean } from '@/helpers/formik.helper';
-import { IUserInfo } from '@/interface/user';
+import { ICreateUser, ICreateUserHr, IUserInfo } from '@/interface/user';
 import { revalidateTag } from 'next/cache';
 
 interface IProps {
@@ -54,6 +54,30 @@ export const restoreUserByIdAction = async (id: string) => {
     const result = await sendRequestAction<IBackendRes<IResponseUpdate>>({
         url: `users/restore/${id}`,
         method: 'PATCH',
+    });
+
+    revalidateTag('getListUserAction');
+
+    return result;
+};
+
+export const createUserAction = async (data: ICreateUser) => {
+    const result = await sendRequestAction<IBackendRes<IResponseUpdate>>({
+        url: `users`,
+        method: 'POST',
+        body: data,
+    });
+
+    revalidateTag('getListUserAction');
+
+    return result;
+};
+
+export const createUserHrAction = async (data: ICreateUserHr) => {
+    const result = await sendRequestAction<IBackendRes<IResponseUpdate>>({
+        url: `users/hr`,
+        method: 'POST',
+        body: data,
     });
 
     revalidateTag('getListUserAction');

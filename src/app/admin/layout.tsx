@@ -7,7 +7,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             <Sidebar />
 
             <div className="dark:bg-gray-300/10 bg-gray-300/50 basis-full h-screen flex flex-col overflow-x-hidden overflow-y-scroll">
-                <div className="sticky top-0 z-50">
+                <div className="sticky top-0 z-50 dark:bg-gray-300/10 h-[80px] bg-white">
                     <Header />
                 </div>
                 <div className="flex-grow">{children}</div>

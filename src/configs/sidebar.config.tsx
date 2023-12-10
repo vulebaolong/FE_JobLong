@@ -66,3 +66,7 @@ export const rootSidebarMenus: ISidebarMenus[] = [
         role: 'admin',
     },
 ];
+
+export const sidebarActiveModule = (pathname: string) => {
+    return pathname.trim().split('/')[2].toUpperCase();
+};

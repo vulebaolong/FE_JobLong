@@ -21,7 +21,7 @@ interface IProps {
     rowsNum: number;
 }
 
-export const TableSkeleton = ({ rowsNum }: IProps) => {
+export const ListSkeleton = ({ rowsNum }: IProps) => {
     return (
         <Content>
             <ContentHeader
@@ -60,8 +60,8 @@ export const TableSkeleton = ({ rowsNum }: IProps) => {
                         </CardContent>
                         <Divider />
                         <CardActions>
-                            <Skeleton variant="rounded" width={60} height={30} />
-                            <Skeleton variant="rounded" width={60} height={30} />
+                            <Skeleton variant="rounded" width={60} height={40} />
+                            <Skeleton variant="rounded" width={60} height={40} />
                         </CardActions>
                     </Card>
 

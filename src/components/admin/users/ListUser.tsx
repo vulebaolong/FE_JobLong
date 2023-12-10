@@ -49,6 +49,7 @@ import {
     DeletedInfoAction,
     UpdatedInfoAction,
 } from '@/components/common/infoAction/InfoAction';
+import { ROLE_ADMIN, ROLE_HR, ROLE_USER } from '@/constant/role.constant';
 
 interface IProps {
     dataUser: IModelPaginate<IUserInfo[]>;
@@ -327,9 +328,13 @@ function ListUser({ dataUser, initialCompaies, initialRole, initialGender }: IPr
                                                 key={index}
                                                 variant="outlined"
                                                 color={
-                                                    user.role.name === 'ROLE_ADMIN'
+                                                    user.role.name === ROLE_ADMIN
                                                         ? 'error'
-                                                        : 'info'
+                                                        : user.role.name === ROLE_USER
+                                                          ? 'info'
+                                                          : user.role.name === ROLE_HR
+                                                            ? 'warning'
+                                                            : 'default'
                                                 }
                                                 size="small"
                                                 label={user.role.name}

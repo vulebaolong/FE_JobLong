@@ -2,7 +2,7 @@
 
 import { getListPermissionsAction } from '@/app/action';
 import SlidebarSkeleton from '@/components/common/skeleton/slidebar.skeleton';
-import { rootSidebarMenus } from '@/configs/sidebar.config';
+import { rootSidebarMenus, sidebarActiveModule } from '@/configs/sidebar.config';
 import { ROUTES } from '@/constant/routes.contants';
 import { extractUniqueModules } from '@/helpers/function.helper';
 import { IPermissions } from '@/interface/auth';
@@ -19,7 +19,6 @@ import {
 import MuiDrawer from '@mui/material/Drawer';
 import { cyan } from '@mui/material/colors';
 import { styled } from '@mui/material/styles';
-import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -73,7 +72,7 @@ function Sidebar() {
     const pathname = usePathname();
     const router = useRouter();
     const { sidebarOpen } = useSelector((state: RootState) => state.sidebarSlice);
-    const [activeState, setActiveState] = useState('');
+    const [activeState, setActiveState] = useState<string | undefined>('');
     const [permission, setPermission] = useState<IPermissions[]>([]);
     const [loading, setLoading] = useState(false);
     const uniqueModules: string[] = extractUniqueModules(permission);
@@ -86,7 +85,7 @@ function Sidebar() {
     });
 
     useEffect(() => {
-        setActiveState(pathname);
+        setActiveState(sidebarActiveModule(pathname));
     }, [pathname]);
 
     useEffect(() => {
@@ -95,7 +94,6 @@ function Sidebar() {
             const dataPermission = await getListPermissionsAction();
             setLoading(false);
 
-            console.log(dataPermission);
             if (dataPermission.error) router.push(ROUTES.ADMIN.DASHBOARD.INDEX);
             setPermission(dataPermission.data);
         };
@@ -125,13 +123,15 @@ function Sidebar() {
                                             justifyContent: sidebarOpen ? 'initial' : 'center',
                                             px: 2.5,
                                             backgroundColor:
-                                                item.url === activeState ? cyan['400'] : 'unset',
-                                            color: item.url === activeState ? '#fff' : 'unset',
+                                                item.module === activeState ? cyan['400'] : 'unset',
+                                            color: item.module === activeState ? '#fff' : 'unset',
                                             '&:hover': {
                                                 backgroundColor:
-                                                    item.url === activeState ? cyan['600'] : '',
+                                                    item.module === activeState ? cyan['600'] : '',
                                                 color:
-                                                    item.url === activeState ? '#fff' : 'inherit',
+                                                    item.module === activeState
+                                                        ? '#fff'
+                                                        : 'inherit',
                                             },
                                         }}
                                     >
@@ -140,7 +140,8 @@ function Sidebar() {
                                                 minWidth: 0,
                                                 mr: sidebarOpen ? 3 : 'auto',
                                                 justifyContent: 'center',
-                                                color: item.url === activeState ? '#fff' : 'unset',
+                                                color:
+                                                    item.module === activeState ? '#fff' : 'unset',
                                             }}
                                         >
                                             {item.icon}

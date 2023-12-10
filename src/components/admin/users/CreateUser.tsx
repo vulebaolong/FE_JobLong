@@ -7,8 +7,10 @@ import {
     CardActions,
     CardContent,
     Divider,
+    FormControlLabel,
     Grid,
-    MenuItem,
+    Radio,
+    RadioGroup,
     Stack,
 } from '@mui/material';
 import { useFormik } from 'formik';
@@ -22,23 +24,25 @@ import TextField from '@/components/common/textField/TextField';
 import InputPassword from '@/components/common/InputPassword/InputPassword';
 import { IOptionAutocomplete } from '@/helpers/formik.helper';
 import Autocomplete from '@/components/common/autocomplete/Autocomplete';
+import { ROLE_HR, ROLE_USER } from '@/constant/role.constant';
+import { createUserHrAction, createUserAction } from '@/app/admin/users/action';
+import { ICreateUser, ICreateUserHr } from '@/interface/user';
+import { toastSuccess } from '@/provider/ToastProvider';
 
 interface IProps {
     initialGender: IOptionAutocomplete[];
-    initialRole: IOptionAutocomplete[];
     initialCompaies: IOptionAutocomplete[];
 }
 
-const CreateUser = ({ initialGender, initialRole, initialCompaies }: IProps) => {
+const CreateUser = ({ initialGender, initialCompaies }: IProps) => {
     const router = useRouter();
 
-    const [errMessage, setErrMessage] = useState('');
-    const [ownerTenants, setOwnerTenants] = useState([]);
-    const [onRequest, setOnRequest] = useState(false);
+    const [errMessage, setErrMessage] = useState<string | undefined>(undefined);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
-    const [genderList, setGenderList] = useState<IOptionAutocomplete[]>(initialGender);
-    const [roleList, setRoleList] = useState<IOptionAutocomplete[]>(initialRole);
-    const [companiesList, setCompaniesList] = useState<IOptionAutocomplete[]>(initialCompaies);
+    const [genderList] = useState<IOptionAutocomplete[]>(initialGender);
+    const [companiesList] = useState<IOptionAutocomplete[]>(initialCompaies);
+    const [isUserOrHr, setIsUserOrHr] = useState<string>(ROLE_HR);
 
     const userCreateForm = useFormik({
         initialValues: {
@@ -48,10 +52,9 @@ const CreateUser = ({ initialGender, initialRole, initialCompaies }: IProps) => 
             address: '',
             age: '',
             gender: { label: '', id: '' },
-            role: { label: '', id: '' },
             company: { label: '', id: '' },
         },
-        validationSchema: Yup.object({
+        validationSchema: Yup.object().shape({
             name: Yup.string().required(TEXT.MESSAGE.REQUIRED_FIELD('Name')),
             email: Yup.string()
                 .email(TEXT.MESSAGE.EMAIL_FIELD)
@@ -62,29 +65,64 @@ const CreateUser = ({ initialGender, initialRole, initialCompaies }: IProps) => 
             gender: Yup.object().shape({
                 label: Yup.string().required(TEXT.MESSAGE.REQUIRED_FIELD('Gender')),
             }),
-            role: Yup.object().shape({
-                label: Yup.string().required(TEXT.MESSAGE.REQUIRED_FIELD('Role')),
-            }),
             company: Yup.object().shape({
-                label: Yup.string().required(TEXT.MESSAGE.REQUIRED_FIELD('Company')),
+                label:
+                    isUserOrHr === ROLE_HR
+                        ? Yup.string().required(TEXT.MESSAGE.REQUIRED_FIELD('Company'))
+                        : Yup.string(),
             }),
         }),
         onSubmit: async (values) => {
-            console.log(values);
+            setErrMessage(undefined);
+            setIsLoading(true);
+            if (isUserOrHr === ROLE_HR) {
+                const data: ICreateUserHr = {
+                    name: values.name,
+                    email: values.email,
+                    password: values.password,
+                    address: values.address,
+                    age: values.age,
+                    gender: values.gender.label,
+                    company: values.company.id,
+                };
+                const result = await createUserHrAction(data);
+
+                setIsLoading(false);
+
+                if (result.statusCode !== 201) return setErrMessage(result.message);
+
+                toastSuccess(TEXT.MESSAGE.CREATE_SUCCESS);
+
+                router.back();
+            }
+
+            if (isUserOrHr === ROLE_USER) {
+                const data: ICreateUser = {
+                    name: values.name,
+                    email: values.email,
+                    password: values.password,
+                    address: values.address,
+                    age: values.age,
+                    gender: values.gender.label,
+                };
+                const result = await createUserAction(data);
+
+                setIsLoading(false);
+
+                if (result.statusCode !== 201) return setErrMessage(result.message);
+
+                toastSuccess(TEXT.MESSAGE.CREATE_SUCCESS);
+
+                router.back();
+            }
         },
     });
 
-    const onOrganizationChange = async () => {};
-
-    const onLayerChange = async () => {};
-
-    const getTenants = async () => {};
-
     return (
-        <Stack gap={3}>
+        <Stack gap={3} sx={{ maxWidth: 'sm' }}>
             {errMessage && <AlertError message={errMessage} />}
             <Box component={'form'} onSubmit={userCreateForm.handleSubmit}>
-                <Card variant="outlined" sx={{ maxWidth: 'sm' }}>
+                <Card variant="outlined">
                     <CardContent>
                         <Stack gap={3}>
                             {/* Name */}
@@ -209,61 +247,57 @@ const CreateUser = ({ initialGender, initialRole, initialCompaies }: IProps) => 
                                 }
                             />
 
-                            {/* Role */}
-                            <Autocomplete
-                                fullWidth
-                                options={roleList}
-                                value={userCreateForm.values.role}
-                                renderInput={(params) => {
-                                    return (
-                                        <TextField
-                                            {...params}
-                                            label="Role"
-                                            error={
-                                                userCreateForm.touched.role &&
-                                                Boolean(userCreateForm.errors.role)
-                                            }
-                                            helperText={
-                                                userCreateForm.touched.role &&
-                                                userCreateForm.errors.role
-                                                    ? userCreateForm.errors.role.label
-                                                    : ''
-                                            }
-                                        />
-                                    );
+                            {/* USER or HR */}
+                            <RadioGroup
+                                value={isUserOrHr}
+                                onChange={(_: any, isUserOrHr: string) => {
+                                    setIsUserOrHr(isUserOrHr);
                                 }}
-                                onChange={(_, value) => {
-                                    userCreateForm.setFieldValue('role', value || { label: '', id: '' });
-                                }}
-                            />
+                            >
+                                <FormControlLabel
+                                    value={ROLE_USER}
+                                    control={<Radio size="small" />}
+                                    label="User"
+                                />
+                                <FormControlLabel
+                                    value={ROLE_HR}
+                                    control={<Radio size="small" />}
+                                    label="Hr"
+                                />
+                            </RadioGroup>
 
                             {/* Company */}
-                            <Autocomplete
-                                fullWidth
-                                options={companiesList}
-                                value={userCreateForm.values.company}
-                                renderInput={(params) => {
-                                    return (
-                                        <TextField
-                                            {...params}
-                                            label="Company"
-                                            error={
-                                                userCreateForm.touched.company &&
-                                                Boolean(userCreateForm.errors.company)
-                                            }
-                                            helperText={
-                                                userCreateForm.touched.company &&
-                                                userCreateForm.errors.company
-                                                    ? userCreateForm.errors.company.label
-                                                    : ''
-                                            }
-                                        />
-                                    );
-                                }}
-                                onChange={(_, value) => {
-                                    userCreateForm.setFieldValue('company', value || { label: '', id: '' });
-                                }}
-                            />
+                            {isUserOrHr === ROLE_HR && (
+                                <Autocomplete
+                                    fullWidth
+                                    options={companiesList}
+                                    value={userCreateForm.values.company}
+                                    renderInput={(params) => {
+                                        return (
+                                            <TextField
+                                                {...params}
+                                                label="Company"
+                                                error={
+                                                    userCreateForm.touched.company &&
+                                                    Boolean(userCreateForm.errors.company)
+                                                }
+                                                helperText={
+                                                    userCreateForm.touched.company &&
+                                                    userCreateForm.errors.company
+                                                        ? userCreateForm.errors.company.label
+                                                        : ''
+                                                }
+                                            />
+                                        );
+                                    }}
+                                    onChange={(_, value) => {
+                                        userCreateForm.setFieldValue(
+                                            'company',
+                                            value || { label: '', id: '' },
+                                        );
+                                    }}
+                                />
+                            )}
                         </Stack>
                     </CardContent>
                     <Divider />
@@ -272,11 +306,11 @@ const CreateUser = ({ initialGender, initialRole, initialCompaies }: IProps) => 
                             type="submit"
                             variant="contained"
                             color="primary"
-                            loading={onRequest}
+                            loading={isLoading}
                         >
                             {TEXT.BUTTON_TEXT.ADD}
                         </LoadingButton>
-                        <Button onClick={() => router.back()} disabled={onRequest}>
+                        <Button onClick={() => router.back()} disabled={isLoading}>
                             {TEXT.BUTTON_TEXT.CANCEL}
                         </Button>
                     </CardActions>

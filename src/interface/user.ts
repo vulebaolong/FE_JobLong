@@ -11,7 +11,10 @@ export interface IUserInfo {
     age: number;
     gender: string;
     address: string;
-    company: Company;
+    company: {
+        _id: string;
+        name: string;
+    };
     role: { _id: string; name: string };
     isDeleted: boolean;
     deletedBy: ActionBy;
@@ -27,14 +30,26 @@ export interface IUserInfo {
     refreshToken: string;
 }
 
-export interface Company {
-    _id: string;
-    name: string;
-}
-
 export interface ActionBy {
     _id: string;
     email: string;
 }
 
-export interface IDeleteUser {}
+export interface ICreateUser {
+    name: string;
+    email: string;
+    password: string;
+    address: string;
+    age: string;
+    gender: string;
+}
+
+export interface ICreateUserHr {
+    name: string;
+    email: string;
+    password: string;
+    address: string;
+    age: string;
+    gender: string;
+    company: string;
+}

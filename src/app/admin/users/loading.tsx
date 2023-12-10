@@ -1,5 +1,5 @@
-import { TableSkeleton } from '@/components/common/skeleton/table.skeleton';
+import { ListSkeleton } from '@/components/common/skeleton/list.skeleton';
 
 export default function Loading() {
-    return <TableSkeleton rowsNum={10} />;
+    return <ListSkeleton rowsNum={10} />;
 }

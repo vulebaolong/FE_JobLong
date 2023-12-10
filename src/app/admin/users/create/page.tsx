@@ -8,9 +8,6 @@ import { getListCompanies } from '../../companies/action';
 import { ICompany } from '@/interface/company';
 
 const UserCreatePage = async () => {
-    const dataRole = await getListRole({
-        searchParams: { limit: '999', fields: 'name' },
-    });
     const dataCompanies = await getListCompanies({
         searchParams: { limit: '999', fields: 'name' },
     });
@@ -19,11 +16,6 @@ const UserCreatePage = async () => {
         { label: TEXT.AUTOCOMPLETE.MALE, id: '1' },
         { label: TEXT.AUTOCOMPLETE.FEMALE, id: '2' },
     ];
-    const initialRole = buildOptionsAutocomplete<IRole>({
-        list: dataRole.data?.result || [],
-        keyId: '_id',
-        keyLabel: 'name',
-    });
     const initialCompaies = buildOptionsAutocomplete<ICompany>({
         list: dataCompanies.data?.result || [],
         keyId: '_id',
@@ -34,11 +26,7 @@ const UserCreatePage = async () => {
         <Content>
             <ContentHeader title={TEXT.TITLE.USER} backButton />
             <ContentBody>
-                <CreateUser 
-                    initialGender={initialGender} 
-                    initialRole={initialRole}
-                    initialCompaies={initialCompaies}
-                />
+                <CreateUser initialGender={initialGender} initialCompaies={initialCompaies} />
             </ContentBody>
         </Content>
     );
