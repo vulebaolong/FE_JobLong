@@ -9,6 +9,7 @@ export const TEXT = {
         UPDATE: 'Update',
         CANCEL: 'Cancel',
         ADD: 'Add',
+        EDIT: 'Edit',
         SEARCH: 'Search',
         RESET: 'Reset',
         REGISTER: 'Register',

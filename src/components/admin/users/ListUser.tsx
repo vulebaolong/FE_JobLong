@@ -24,7 +24,7 @@ import {
 } from '@mui/material';
 import MPagination from '@/components/common/pagination/MPagination';
 import EditButton from '@/components/common/button/EditButton';
-import { IUserInfo } from '@/interface/user';
+import { IUser } from '@/interface/user';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { routerReplace } from '@/helpers/router.helper';
 import { TEXT } from '@/constant/text.contants';
@@ -52,7 +52,7 @@ import {
 import { ROLE_ADMIN, ROLE_HR, ROLE_USER } from '@/constant/role.constant';
 
 interface IProps {
-    dataUser: IModelPaginate<IUserInfo[]>;
+    dataUser: IModelPaginate<IUser[]>;
     initialCompaies: IOptionAutocomplete[];
     initialRole: IOptionAutocomplete[];
     initialGender: IOptionAutocomplete[];
@@ -389,7 +389,7 @@ function ListUser({ dataUser, initialCompaies, initialRole, initialGender }: IPr
 export default ListUser;
 
 interface IPropsTableCellNote {
-    dataUser: IModelPaginate<IUserInfo[]>;
+    dataUser: IModelPaginate<IUser[]>;
     onChange: (_: any, value: boolean) => void;
     checked: boolean;
     loading?: boolean;
@@ -424,7 +424,7 @@ function TableCellNote({ dataUser, onChange, checked, loading }: IPropsTableCell
 }
 
 interface IPropsTooltipAvatar {
-    user: IUserInfo;
+    user: IUser;
 }
 
 function TitleTooltipAvatar({ user }: IPropsTooltipAvatar) {

@@ -1,3 +1,4 @@
+import { ROLE_ADMIN } from '@/constant/role.constant';
 import { IPermissions } from '@/interface/auth';
 
 export const extractUniqueModules = (permissions?: IPermissions[]): string[] => {
@@ -27,4 +28,19 @@ export const buildOptionsAutocomplete = <T extends { [key: string]: any }>({
             id: item[keyId],
         };
     });
+};
+
+export const roleOptionsAutocomplete = <T extends { [key: string]: any }>({
+    list,
+    keyLabel,
+    keyId,
+}: IProps<T>) => {
+    return list
+        .filter((role) => role.name !== ROLE_ADMIN)
+        .map((item) => {
+            return {
+                label: item[keyLabel],
+                id: item[keyId],
+            };
+        });
 };

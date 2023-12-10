@@ -68,5 +68,9 @@ export const rootSidebarMenus: ISidebarMenus[] = [
 ];
 
 export const sidebarActiveModule = (pathname: string) => {
-    return pathname.trim().split('/')[2].toUpperCase();
+    const arrPathname = pathname.trim().split('/');
+
+    if (arrPathname.length > 2) return arrPathname[2].toUpperCase();
+
+    return '';
 };

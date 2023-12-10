@@ -1,9 +1,9 @@
 export interface IDataListUser {
     meta: IMeta;
-    result: IUserInfo[];
+    result: IUser[];
 }
 
-export interface IUserInfo {
+export interface IUser {
     _id: string;
     name: string;
     email: string;
@@ -52,4 +52,14 @@ export interface ICreateUserHr {
     age: string;
     gender: string;
     company: string;
+}
+
+export interface IUpdateUser {
+    name: string;
+    email: string;
+    address: string;
+    age: string;
+    gender: string;
+    role: string;
+    company?: string;
 }

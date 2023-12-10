@@ -2,8 +2,6 @@ import CreateUser from '@/components/admin/users/CreateUser';
 import Content, { ContentBody, ContentHeader } from '@/components/common/content/Content';
 import { TEXT } from '@/constant/text.contants';
 import { buildOptionsAutocomplete } from '@/helpers/function.helper';
-import { getListRole } from '../../roles/action';
-import { IRole } from '@/interface/role';
 import { getListCompanies } from '../../companies/action';
 import { ICompany } from '@/interface/company';
 

@@ -4,7 +4,7 @@ import Content, { ContentBody, ContentHeader } from '../content/Content';
 
 interface IProps {}
 
-export const CreateSkeleton = ({}: IProps) => {
+export const FormSkeleton = ({}: IProps) => {
     return (
         <Content>
             <ContentHeader title={TEXT.TITLE.USER} backButton />

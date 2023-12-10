@@ -1,8 +1,7 @@
 'use server';
 
 import { sendRequestAction } from '@/app/action';
-import { convertStringToBoolean } from '@/helpers/formik.helper';
-import { ICreateUser, ICreateUserHr, IUserInfo } from '@/interface/user';
+import { ICreateUser, ICreateUserHr, IUpdateUser, IUser } from '@/interface/user';
 import { revalidateTag } from 'next/cache';
 
 interface IProps {
@@ -30,7 +29,7 @@ export const getListUserAction = async ({ searchParams }: IProps) => {
 
     // console.log(query);
 
-    return await sendRequestAction<IModelPaginate<IUserInfo[]>>({
+    return await sendRequestAction<IModelPaginate<IUser[]>>({
         url: `users?currentPage=${currentPage}&limit=${limit}&${query.join('&')}`,
         method: 'GET',
         nextOption: {
@@ -77,6 +76,25 @@ export const createUserHrAction = async (data: ICreateUserHr) => {
     const result = await sendRequestAction<IBackendRes<IResponseUpdate>>({
         url: `users/hr`,
         method: 'POST',
+        body: data,
+    });
+
+    revalidateTag('getListUserAction');
+
+    return result;
+};
+
+export const getUserByIdAction = async (id: string) => {
+    return await sendRequestAction<IBackendRes<IUser>>({
+        url: `users/${id}`,
+        method: 'GET',
+    });
+};
+
+export const updateUserAction = async (id: string, data: IUpdateUser) => {
+    const result = await sendRequestAction<IBackendRes<IResponseUpdate>>({
+        url: `users/${id}`,
+        method: 'PATCH',
         body: data,
     });
 
