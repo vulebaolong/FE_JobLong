@@ -11,6 +11,7 @@ import { getListRole } from '../roles/action';
 import { Suspense } from 'react';
 import { TableSkeleton } from '@/components/common/skeleton/table.skeleton';
 import { log } from '@/helpers/log';
+import { IRole } from '@/interface/role';
 
 interface IProps {
     params: { slug: string };
@@ -38,7 +39,7 @@ const UsersPage = async ({ searchParams }: IProps) => {
         keyId: '_id',
         keyLabel: 'name',
     });
-    const initialRole = buildOptionsAutocomplete<ICompany>({
+    const initialRole = buildOptionsAutocomplete<IRole>({
         list: dataRole.data?.result || [],
         keyId: '_id',
         keyLabel: 'name',

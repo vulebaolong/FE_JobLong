@@ -25,9 +25,11 @@ import Autocomplete from '@/components/common/autocomplete/Autocomplete';
 
 interface IProps {
     initialGender: IOptionAutocomplete[];
+    initialRole: IOptionAutocomplete[];
+    initialCompaies: IOptionAutocomplete[];
 }
 
-const CreateUser = ({ initialGender }: IProps) => {
+const CreateUser = ({ initialGender, initialRole, initialCompaies }: IProps) => {
     const router = useRouter();
 
     const [errMessage, setErrMessage] = useState('');
@@ -35,6 +37,8 @@ const CreateUser = ({ initialGender }: IProps) => {
     const [onRequest, setOnRequest] = useState(false);
 
     const [genderList, setGenderList] = useState<IOptionAutocomplete[]>(initialGender);
+    const [roleList, setRoleList] = useState<IOptionAutocomplete[]>(initialRole);
+    const [companiesList, setCompaniesList] = useState<IOptionAutocomplete[]>(initialCompaies);
 
     const userCreateForm = useFormik({
         initialValues: {
@@ -44,6 +48,8 @@ const CreateUser = ({ initialGender }: IProps) => {
             address: '',
             age: '',
             gender: { label: '', id: '' },
+            role: { label: '', id: '' },
+            company: { label: '', id: '' },
         },
         validationSchema: Yup.object({
             name: Yup.string().required(TEXT.MESSAGE.REQUIRED_FIELD('Name')),
@@ -55,6 +61,12 @@ const CreateUser = ({ initialGender }: IProps) => {
             age: Yup.string().required(TEXT.MESSAGE.REQUIRED_FIELD('Age')),
             gender: Yup.object().shape({
                 label: Yup.string().required(TEXT.MESSAGE.REQUIRED_FIELD('Gender')),
+            }),
+            role: Yup.object().shape({
+                label: Yup.string().required(TEXT.MESSAGE.REQUIRED_FIELD('Role')),
+            }),
+            company: Yup.object().shape({
+                label: Yup.string().required(TEXT.MESSAGE.REQUIRED_FIELD('Company')),
             }),
         }),
         onSubmit: async (values) => {
@@ -195,6 +207,62 @@ const CreateUser = ({ initialGender }: IProps) => {
                                 helperText={
                                     userCreateForm.touched.address && userCreateForm.errors.address
                                 }
+                            />
+
+                            {/* Role */}
+                            <Autocomplete
+                                fullWidth
+                                options={roleList}
+                                value={userCreateForm.values.role}
+                                renderInput={(params) => {
+                                    return (
+                                        <TextField
+                                            {...params}
+                                            label="Role"
+                                            error={
+                                                userCreateForm.touched.role &&
+                                                Boolean(userCreateForm.errors.role)
+                                            }
+                                            helperText={
+                                                userCreateForm.touched.role &&
+                                                userCreateForm.errors.role
+                                                    ? userCreateForm.errors.role.label
+                                                    : ''
+                                            }
+                                        />
+                                    );
+                                }}
+                                onChange={(_, value) => {
+                                    userCreateForm.setFieldValue('role', value || { label: '', id: '' });
+                                }}
+                            />
+
+                            {/* Company */}
+                            <Autocomplete
+                                fullWidth
+                                options={companiesList}
+                                value={userCreateForm.values.company}
+                                renderInput={(params) => {
+                                    return (
+                                        <TextField
+                                            {...params}
+                                            label="Company"
+                                            error={
+                                                userCreateForm.touched.company &&
+                                                Boolean(userCreateForm.errors.company)
+                                            }
+                                            helperText={
+                                                userCreateForm.touched.company &&
+                                                userCreateForm.errors.company
+                                                    ? userCreateForm.errors.company.label
+                                                    : ''
+                                            }
+                                        />
+                                    );
+                                }}
+                                onChange={(_, value) => {
+                                    userCreateForm.setFieldValue('company', value || { label: '', id: '' });
+                                }}
                             />
                         </Stack>
                     </CardContent>
