@@ -17,9 +17,11 @@ export const TEXT = {
     },
     TITLE: {
         USER: 'Users',
+        PERMISSION: 'Permissions',
     },
     AUTOCOMPLETE: {
         MALE: 'Male',
         FEMALE: 'Female',
+        METHODS: ['GET', 'POST', 'PATCH', 'DELETE'],
     },
 };

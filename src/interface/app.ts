@@ -43,4 +43,9 @@ declare global {
         upsertedCount: number;
         matchedCount: number;
     }
+
+    export interface ActionBy {
+        _id: string;
+        email: string;
+    }
 }

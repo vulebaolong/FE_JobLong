@@ -9,5 +9,9 @@ export const ROUTES = {
             CREATE: `${ROUTE_BASE}users/create`,
             DETAIL: (id: string) => `${ROUTE_BASE}users/${id}`,
         },
+        PERMISSION: {
+            CREATE: `${ROUTE_BASE}permissions/create`,
+            DETAIL: (id: string) => `${ROUTE_BASE}permissions/${id}`,
+        },
     },
 };

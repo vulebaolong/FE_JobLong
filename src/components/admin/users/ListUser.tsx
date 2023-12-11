@@ -1,7 +1,6 @@
 'use client';
 
 import {
-    Autocomplete,
     Avatar,
     Box,
     Button,
@@ -50,6 +49,7 @@ import {
     UpdatedInfoAction,
 } from '@/components/common/infoAction/InfoAction';
 import { ROLE_ADMIN, ROLE_HR, ROLE_USER } from '@/constant/role.constant';
+import Autocomplete from '@/components/common/autocomplete/Autocomplete';
 
 interface IProps {
     dataUser: IModelPaginate<IUser[]>;
@@ -63,9 +63,9 @@ function ListUser({ dataUser, initialCompaies, initialRole, initialGender }: IPr
     const router = useRouter();
     const pathname = usePathname();
     const searchParams = useSearchParams();
-    const [companiesList, setCompaniesList] = useState<IOptionAutocomplete[]>(initialCompaies);
-    const [genderList, setGenderList] = useState<IOptionAutocomplete[]>(initialGender);
-    const [roleList, setRoleList] = useState<IOptionAutocomplete[]>(initialRole);
+    const [companiesList] = useState<IOptionAutocomplete[]>(initialCompaies);
+    const [genderList] = useState<IOptionAutocomplete[]>(initialGender);
+    const [roleList] = useState<IOptionAutocomplete[]>(initialRole);
 
     const searchForm = useFormik({
         initialValues: {
@@ -76,7 +76,7 @@ function ListUser({ dataUser, initialCompaies, initialRole, initialGender }: IPr
             email: searchParams.get('email') || '',
             gender: initValueFormik('gender', genderList, searchParams),
             role: initValueFormik('role', roleList, searchParams),
-            page: searchParams.get('page') || 1,
+            currentPage: searchParams.get('currentPage') || 1,
             isDeleted: searchParams.get('isDeleted')
                 ? convertStringToBoolean(searchParams.get('isDeleted'))
                 : true,
@@ -97,17 +97,17 @@ function ListUser({ dataUser, initialCompaies, initialRole, initialGender }: IPr
         },
     });
 
-    const onPageChange = (_: any, page: number) => {
+    const onPageChange = (_: any, currentPage: number) => {
         routerReplace({
             router,
             pathname,
             searchParams,
-            newSearchParams: { currentPage: page },
+            newSearchParams: { currentPage: currentPage },
         });
     };
 
     const onSearch = () => {
-        searchForm.setFieldValue('page', 1);
+        searchForm.setFieldValue('currentPage', 1);
         searchForm.submitForm();
     };
 
@@ -119,7 +119,7 @@ function ListUser({ dataUser, initialCompaies, initialRole, initialGender }: IPr
         searchForm.setFieldValue('email', '');
         searchForm.setFieldValue('gender', { label: '', id: '' });
         searchForm.setFieldValue('role', { label: '', id: '' });
-        searchForm.setFieldValue('page', 1);
+        searchForm.setFieldValue('currentPage', 1);
         searchForm.submitForm();
     };
 
@@ -186,16 +186,6 @@ function ListUser({ dataUser, initialCompaies, initialRole, initialGender }: IPr
                             sx={{ width: '300px' }}
                             size="small"
                             options={companiesList}
-                            renderOption={(props, option) => {
-                                return (
-                                    <li {...props} key={option.id}>
-                                        {option.label}
-                                    </li>
-                                );
-                            }}
-                            isOptionEqualToValue={(option, value) =>
-                                value.id === '' || option.id === value.id
-                            }
                             value={searchForm.values.company}
                             renderInput={(params) => <TextField {...params} label="Company" />}
                             onChange={(_, value) => {
@@ -217,16 +207,6 @@ function ListUser({ dataUser, initialCompaies, initialRole, initialGender }: IPr
                             sx={{ width: '300px' }}
                             size="small"
                             options={genderList}
-                            renderOption={(props, option) => {
-                                return (
-                                    <li {...props} key={option.id}>
-                                        {option.label}
-                                    </li>
-                                );
-                            }}
-                            isOptionEqualToValue={(option, value) =>
-                                value.id === '' || option.id === value.id
-                            }
                             value={searchForm.values.gender}
                             renderInput={(params) => <TextField {...params} label="Gender" />}
                             onChange={(_, value) => {
@@ -239,16 +219,6 @@ function ListUser({ dataUser, initialCompaies, initialRole, initialGender }: IPr
                             sx={{ width: '300px' }}
                             size="small"
                             options={roleList}
-                            renderOption={(props, option) => {
-                                return (
-                                    <li {...props} key={option.id}>
-                                        {option.label}
-                                    </li>
-                                );
-                            }}
-                            isOptionEqualToValue={(option, value) =>
-                                value.id === '' || option.id === value.id
-                            }
                             value={searchForm.values.role}
                             renderInput={(params) => <TextField {...params} label="Role" />}
                             onChange={(_, value) => {
@@ -294,8 +264,8 @@ function ListUser({ dataUser, initialCompaies, initialRole, initialGender }: IPr
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {dataUser.data?.result?.map((user, index) => (
-                                    <TableRow key={index}>
+                                {dataUser.data?.result?.map((user) => (
+                                    <TableRow key={user._id}>
                                         <TableCell>
                                             <Stack
                                                 direction="row"
@@ -325,7 +295,6 @@ function ListUser({ dataUser, initialCompaies, initialRole, initialGender }: IPr
                                         <TableCell>{user.gender}</TableCell>
                                         <TableCell>
                                             <Chip
-                                                key={index}
                                                 variant="outlined"
                                                 color={
                                                     user.role.name === ROLE_ADMIN
