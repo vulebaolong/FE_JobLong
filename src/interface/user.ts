@@ -30,11 +30,6 @@ export interface IUser {
     refreshToken: string;
 }
 
-export interface ActionBy {
-    _id: string;
-    email: string;
-}
-
 export interface ICreateUser {
     name: string;
     email: string;

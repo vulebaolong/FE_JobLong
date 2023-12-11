@@ -6,7 +6,7 @@ import { IPermissions } from '@/interface/auth';
 
 export const sendRequestAction = async <T>(props: IRequest) => {
     const session = getSessionUser();
-    console.log('sendRequestAction :::>>>', session);
+    // console.log('sendRequestAction :::>>>', session);
 
     let { url, method, body, headers = {}, nextOption = {}, isJsonParse = true } = props;
 
