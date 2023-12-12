@@ -27,7 +27,6 @@ export interface IUser {
     updatedAt: string;
 
     __v: number;
-    refreshToken: string;
 }
 
 export interface ICreateUser {

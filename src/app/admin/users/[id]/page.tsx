@@ -55,7 +55,7 @@ async function DetailUserPage({ params }: IProps) {
 
     return (
         <Content>
-            <ContentHeader title={`${TEXT.TITLE.USER} edit`} backButton />
+            <ContentHeader title={`${TEXT.TITLE.USER_EDIT}`} backButton />
             <ContentBody>
                 {isEdit() ? (
                     <EditUser

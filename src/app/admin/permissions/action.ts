@@ -1,7 +1,7 @@
 'use server';
 
 import { sendRequestAction } from '@/app/action';
-import { IPermission } from '@/interface/permission';
+import { ICreatePermission, IPermission } from '@/interface/permission';
 import { revalidateTag } from 'next/cache';
 
 interface IProps {
@@ -21,7 +21,7 @@ export const getListPermissionsAction = async ({ searchParams }: IProps) => {
     if (searchParams.isDeleted === 'false') query.push(`isDeleted!=true`);
 
     return await sendRequestAction<IModelPaginate<IPermission[]>>({
-        url: `permissions?currentPage=${currentPage}&limit=${limit}&${query.join('&')}`,
+        url: `permissions?currentPage=${currentPage}&limit=${limit}&sort=-createdAt&${query.join('&')}`,
         method: 'GET',
         nextOption: {
             next: { tags: ['getListPermissionsAction'] },
@@ -44,6 +44,18 @@ export const restorePermissionByIdAction = async (id: string) => {
     const result = await sendRequestAction<IBackendRes<IResponseUpdate>>({
         url: `permissions/restore/${id}`,
         method: 'PATCH',
+    });
+
+    revalidateTag('getListPermissionsAction');
+
+    return result;
+};
+
+export const createPermissionAction = async (data: ICreatePermission) => {
+    const result = await sendRequestAction<IBackendRes<IPermission>>({
+        url: `permissions`,
+        method: 'POST',
+        body: data,
     });
 
     revalidateTag('getListPermissionsAction');

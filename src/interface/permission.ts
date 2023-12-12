@@ -23,3 +23,10 @@ export interface IPermission {
     __v: number;
     refreshToken: string;
 }
+
+export interface ICreatePermission {
+    name: string
+    apiPath: string
+    method: string
+    module: string
+}

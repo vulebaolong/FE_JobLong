@@ -22,7 +22,7 @@ const UserCreatePage = async () => {
 
     return (
         <Content>
-            <ContentHeader title={TEXT.TITLE.USER} backButton />
+            <ContentHeader title={TEXT.TITLE.USER_CREATE} backButton />
             <ContentBody>
                 <CreateUser initialGender={initialGender} initialCompaies={initialCompaies} />
             </ContentBody>

@@ -30,7 +30,7 @@ export const getListUserAction = async ({ searchParams }: IProps) => {
     // console.log(query);
 
     return await sendRequestAction<IModelPaginate<IUser[]>>({
-        url: `users?currentPage=${currentPage}&limit=${limit}&${query.join('&')}`,
+        url: `users?currentPage=${currentPage}&limit=${limit}&sort=-createdAt&${query.join('&')}`,
         method: 'GET',
         nextOption: {
             next: { tags: ['getListUserAction'] },
@@ -61,7 +61,7 @@ export const restoreUserByIdAction = async (id: string) => {
 };
 
 export const createUserAction = async (data: ICreateUser) => {
-    const result = await sendRequestAction<IBackendRes<IResponseUpdate>>({
+    const result = await sendRequestAction<IBackendRes<IUser>>({
         url: `users`,
         method: 'POST',
         body: data,
