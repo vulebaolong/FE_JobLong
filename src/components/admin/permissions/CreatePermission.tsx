@@ -1,6 +1,4 @@
 function CreatePermission() {
-  return (
-    <div>CreatePermission</div>
-  )
+    return <div>CreatePermission</div>;
 }
-export default CreatePermission
+export default CreatePermission;
