@@ -112,19 +112,13 @@ function ListPermissions({ dataPermission, initialMethods }: IProps) {
     };
 
     const handleDelete = async (id: string) => {
-        const { data } = await deletePermissionByIdAction(id);
-
-        if (data.modifiedCount === 1) return true;
-
-        return false;
+        const dataDelete = await deletePermissionByIdAction(id);
+        return dataDelete.success;
     };
 
     const handleRestore = async (id: string) => {
-        const { data } = await restorePermissionByIdAction(id);
-
-        if (data.modifiedCount === 1) return true;
-
-        return false;
+        const dataRestore = await restorePermissionByIdAction(id);
+        return dataRestore.success;
     };
 
     return (
@@ -261,7 +255,7 @@ function ListPermissions({ dataPermission, initialMethods }: IProps) {
                                             ) : (
                                                 <>
                                                     <EditButton
-                                                        href={ROUTES.ADMIN.USERS.DETAIL(
+                                                        href={ROUTES.ADMIN.PERMISSION.DETAIL(
                                                             permission._id,
                                                         )}
                                                     />

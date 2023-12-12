@@ -9,6 +9,7 @@ import { buildOptionsAutocomplete } from '@/helpers/function.helper';
 import { ICompany } from '@/interface/company';
 import { getListRole } from '../roles/action';
 import { IRole } from '@/interface/role';
+import AlertError from '@/components/common/alert/AlertError';
 
 interface IProps {
     params: { slug: string };
@@ -55,12 +56,16 @@ const UsersPage = async ({ searchParams }: IProps) => {
                 }
             />
             <ContentBody>
-                <ListUser
-                    dataUser={dataUser}
-                    initialCompaies={initialCompaies}
-                    initialRole={initialRole}
-                    initialGender={initialGender}
-                />
+                {dataUser.success && dataUser.data ? (
+                    <ListUser
+                        dataUser={dataUser.data}
+                        initialCompaies={initialCompaies}
+                        initialRole={initialRole}
+                        initialGender={initialGender}
+                    />
+                ) : (
+                    <AlertError message={dataUser.message} />
+                )}
             </ContentBody>
         </Content>
     );

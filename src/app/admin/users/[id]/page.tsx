@@ -14,22 +14,9 @@ interface IProps {
     params: { id: string };
 }
 
-async function DetailUserPage({ params }: IProps) {
+async function EditUserPage({ params }: IProps) {
     const { id } = params;
-    const { statusCode, message, data: user } = await getUserByIdAction(id);
-
-    let messageError = '';
-    const isEdit = () => {
-        if (statusCode !== 200) {
-            messageError = message;
-            return false;
-        }
-        if (user.role.name === ROLE_ADMIN) {
-            messageError = 'Cannot edit admin account';
-            return false;
-        }
-        return true;
-    };
+    const dataUser = await getUserByIdAction(id);
 
     const dataCompanies = await getListCompanies({
         searchParams: { limit: '999', fields: 'name' },
@@ -57,18 +44,18 @@ async function DetailUserPage({ params }: IProps) {
         <Content>
             <ContentHeader title={`${TEXT.TITLE.USER_EDIT}`} backButton />
             <ContentBody>
-                {isEdit() ? (
+                {dataUser.success && dataUser.data ? (
                     <EditUser
-                        user={user}
+                        user={dataUser.data}
                         initialGender={initialGender}
                         initialCompaies={initialCompaies}
                         initialRole={initialRole}
                     />
                 ) : (
-                    <AlertError message={messageError} />
+                    <AlertError message={dataUser.message} />
                 )}
             </ContentBody>
         </Content>
     );
 }
-export default DetailUserPage;
+export default EditUserPage;

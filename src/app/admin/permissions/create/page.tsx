@@ -10,7 +10,7 @@ function PermissionCreatePage() {
         <Content>
             <ContentHeader title={TEXT.TITLE.PERMISSION_CREATE} backButton />
             <ContentBody>
-                <CreatePermission initialMethods={initialMethods}/>
+                <CreatePermission initialMethods={initialMethods} />
             </ContentBody>
         </Content>
     );

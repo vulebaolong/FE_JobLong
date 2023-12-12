@@ -9,96 +9,262 @@ interface IProps {
 }
 
 export const getListUserAction = async ({ searchParams }: IProps) => {
-    const currentPage = searchParams.currentPage || 1;
-    const limit = searchParams.limit || 10;
+    const reuslt: IResult<IModelPaginate<IUser[]>> = {
+        success: true,
+        data: null,
+        message: '',
+    };
+    try {
+        const currentPage = searchParams.currentPage || 1;
+        const limit = searchParams.limit || 10;
 
-    const query: string[] = [];
-    if (searchParams.fields) query.push(`fields=${searchParams.fields.trim()}`);
-    if (searchParams.populate) query.push(`populate=${searchParams.populate.trim()}`);
-    if (searchParams.sort) query.push(`sort=${searchParams.sort.trim()}`);
+        const query: string[] = [];
+        if (searchParams.fields) query.push(`fields=${searchParams.fields.trim()}`);
+        if (searchParams.populate) query.push(`populate=${searchParams.populate.trim()}`);
+        if (searchParams.sort) query.push(`sort=${searchParams.sort.trim()}`);
 
-    if (searchParams.name) query.push(`name=/${searchParams.name.trim()}/i`);
-    if (searchParams.address) query.push(`address=/${searchParams.address.trim()}/i`);
-    if (searchParams.age) query.push(`age=/${searchParams.age.trim()}/i`);
-    if (searchParams.company) query.push(`company=${searchParams.company.trim()}`);
-    if (searchParams.email) query.push(`email=${searchParams.email.trim()}`);
-    if (searchParams.gender) query.push(`gender=${searchParams.gender.trim()}`);
-    if (searchParams.role) query.push(`role=${searchParams.role.trim()}`);
-    console.log(searchParams.isDeleted);
-    if (searchParams.isDeleted === 'false') query.push(`isDeleted!=true`);
+        if (searchParams.name) query.push(`name=/${searchParams.name.trim()}/i`);
+        if (searchParams.address) query.push(`address=/${searchParams.address.trim()}/i`);
+        if (searchParams.age) query.push(`age=/${searchParams.age.trim()}/i`);
+        if (searchParams.company) query.push(`company=${searchParams.company.trim()}`);
+        if (searchParams.email) query.push(`email=${searchParams.email.trim()}`);
+        if (searchParams.gender) query.push(`gender=${searchParams.gender.trim()}`);
+        if (searchParams.role) query.push(`role=${searchParams.role.trim()}`);
+        console.log(searchParams.isDeleted);
+        if (searchParams.isDeleted === 'false') query.push(`isDeleted!=true`);
 
-    // console.log(query);
+        // console.log(query);
 
-    return await sendRequestAction<IModelPaginate<IUser[]>>({
-        url: `users?currentPage=${currentPage}&limit=${limit}&sort=-createdAt&${query.join('&')}`,
-        method: 'GET',
-        nextOption: {
-            next: { tags: ['getListUserAction'] },
-        },
-    });
+        const data = await sendRequestAction<IModelPaginate<IUser[]>>({
+            url: `users?currentPage=${currentPage}&limit=${limit}&sort=-createdAt&${query.join(
+                '&',
+            )}`,
+            method: 'GET',
+            nextOption: {
+                next: { tags: ['getListUserAction'] },
+            },
+        });
+
+        if (data.statusCode !== 200) {
+            reuslt.success = false;
+            reuslt.data = null;
+            reuslt.message = data.message;
+            return reuslt;
+        }
+
+        reuslt.success = true;
+        reuslt.data = data;
+        reuslt.message = data.message;
+
+        return reuslt;
+    } catch (error: any) {
+        reuslt.success = false;
+        reuslt.data = null;
+        reuslt.message = error.message;
+        return reuslt;
+    }
 };
 
 export const deleteUserByIdAction = async (id: string) => {
-    const result = await sendRequestAction<IBackendRes<IResponseUpdate>>({
-        url: `users/${id}`,
-        method: 'DELETE',
-    });
+    const reuslt: IResult<IResponseUpdate> = {
+        success: true,
+        data: null,
+        message: '',
+    };
+    try {
+        const data = await sendRequestAction<IBackendRes<IResponseUpdate>>({
+            url: `users/${id}`,
+            method: 'DELETE',
+        });
 
-    revalidateTag('getListUserAction');
+        if (data.data.modifiedCount !== 1) {
+            reuslt.success = false;
+            reuslt.data = null;
+            reuslt.message = data.message;
+            return reuslt;
+        }
 
-    return result;
+        reuslt.success = true;
+        reuslt.data = data.data;
+        reuslt.message = data.message;
+
+        revalidateTag('getListPermissionsAction');
+
+        return reuslt;
+    } catch (error: any) {
+        reuslt.success = false;
+        reuslt.data = null;
+        reuslt.message = error.message;
+        return reuslt;
+    }
 };
 
 export const restoreUserByIdAction = async (id: string) => {
-    const result = await sendRequestAction<IBackendRes<IResponseUpdate>>({
-        url: `users/restore/${id}`,
-        method: 'PATCH',
-    });
+    const reuslt: IResult<IResponseUpdate> = {
+        success: true,
+        data: null,
+        message: '',
+    };
+    try {
+        const data = await sendRequestAction<IBackendRes<IResponseUpdate>>({
+            url: `users/restore/${id}`,
+            method: 'PATCH',
+        });
 
-    revalidateTag('getListUserAction');
+        if (data.data.modifiedCount !== 1) {
+            reuslt.success = false;
+            reuslt.data = null;
+            reuslt.message = data.message;
+            return reuslt;
+        }
 
-    return result;
+        reuslt.success = true;
+        reuslt.data = data.data;
+        reuslt.message = data.message;
+
+        revalidateTag('getListPermissionsAction');
+
+        return reuslt;
+    } catch (error: any) {
+        reuslt.success = false;
+        reuslt.data = null;
+        reuslt.message = error.message;
+        return reuslt;
+    }
 };
 
-export const createUserAction = async (data: ICreateUser) => {
-    const result = await sendRequestAction<IBackendRes<IUser>>({
-        url: `users`,
-        method: 'POST',
-        body: data,
-    });
+export const createUserAction = async (body: ICreateUser) => {
+    const reuslt: IResult<IUser> = {
+        success: true,
+        data: null,
+        message: '',
+    };
+    try {
+        const data = await sendRequestAction<IBackendRes<IUser>>({
+            url: `users`,
+            method: 'POST',
+            body: body,
+        });
 
-    revalidateTag('getListUserAction');
+        if (data.statusCode !== 201) {
+            reuslt.success = false;
+            reuslt.data = null;
+            reuslt.message = data.message;
+            return reuslt;
+        }
 
-    return result;
+        reuslt.success = true;
+        reuslt.data = data.data;
+        reuslt.message = data.message;
+
+        revalidateTag('getListPermissionsAction');
+
+        return reuslt;
+    } catch (error: any) {
+        reuslt.success = false;
+        reuslt.data = null;
+        reuslt.message = error.message;
+        return reuslt;
+    }
 };
 
-export const createUserHrAction = async (data: ICreateUserHr) => {
-    const result = await sendRequestAction<IBackendRes<IResponseUpdate>>({
-        url: `users/hr`,
-        method: 'POST',
-        body: data,
-    });
+export const createUserHrAction = async (body: ICreateUserHr) => {
+    const reuslt: IResult<IResponseUpdate> = {
+        success: true,
+        data: null,
+        message: '',
+    };
+    try {
+        const data = await sendRequestAction<IBackendRes<IResponseUpdate>>({
+            url: `users/hr`,
+            method: 'POST',
+            body: body,
+        });
+    
+        if (data.statusCode !== 201) {
+            reuslt.success = false;
+            reuslt.data = null;
+            reuslt.message = data.message;
+            return reuslt;
+        }
 
-    revalidateTag('getListUserAction');
+        reuslt.success = true;
+        reuslt.data = data.data;
+        reuslt.message = data.message;
 
-    return result;
+        revalidateTag('getListPermissionsAction');
+
+        return reuslt;
+    } catch (error: any) {
+        reuslt.success = false;
+        reuslt.data = null;
+        reuslt.message = error.message;
+        return reuslt;
+    }
 };
 
 export const getUserByIdAction = async (id: string) => {
-    return await sendRequestAction<IBackendRes<IUser>>({
-        url: `users/${id}`,
-        method: 'GET',
-    });
+    const reuslt: IResult<IUser> = {
+        success: true,
+        data: null,
+        message: '',
+    };
+    try {
+        const data = await sendRequestAction<IBackendRes<IUser>>({
+            url: `users/${id}`,
+            method: 'GET',
+        });
+
+        if (data.statusCode !== 200) {
+            reuslt.success = false;
+            reuslt.data = null;
+            reuslt.message = data.message;
+        }
+
+        reuslt.success = true;
+        reuslt.data = data.data;
+        reuslt.message = data.message;
+
+        return reuslt;
+    } catch (error: any) {
+        reuslt.success = false;
+        reuslt.data = null;
+        reuslt.message = error.message;
+        return reuslt;
+    }
 };
 
-export const updateUserAction = async (id: string, data: IUpdateUser) => {
-    const result = await sendRequestAction<IBackendRes<IResponseUpdate>>({
-        url: `users/${id}`,
-        method: 'PATCH',
-        body: data,
-    });
+export const updateUserByIdAction = async (id: string, body: IUpdateUser) => {
+    const reuslt: IResult<IResponseUpdate> = {
+        success: true,
+        data: null,
+        message: '',
+    };
+    try {
+        const data = await sendRequestAction<IBackendRes<IResponseUpdate>>({
+            url: `users/${id}`,
+            method: 'PATCH',
+            body: body,
+        });
+    
+        if (data.statusCode !== 200) {
+            reuslt.success = false;
+            reuslt.data = null;
+            reuslt.message = data.message;
+            return reuslt;
+        }
 
-    revalidateTag('getListUserAction');
+        reuslt.success = true;
+        reuslt.data = data.data;
+        reuslt.message = data.message;
 
-    return result;
+        revalidateTag('getListPermissionsAction');
+
+        return reuslt;
+    } catch (error: any) {
+        reuslt.success = false;
+        reuslt.data = null;
+        reuslt.message = error.message;
+        return reuslt;
+    }
 };
