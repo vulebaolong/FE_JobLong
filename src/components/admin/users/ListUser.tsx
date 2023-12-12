@@ -40,7 +40,6 @@ import DeleteButton from '@/components/common/button/DeleteButton';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import AutorenewIcon from '@mui/icons-material/Autorenew';
-import { useFormStatus } from 'react-dom';
 import RestoreButton from '@/components/common/button/RestoreButton';
 import { deleteUserByIdAction, restoreUserByIdAction } from '@/app/admin/users/action';
 import {
@@ -59,7 +58,6 @@ interface IProps {
 }
 
 function ListUser({ dataUser, initialCompaies, initialRole, initialGender }: IProps) {
-    const { pending } = useFormStatus();
     const router = useRouter();
     const pathname = usePathname();
     const searchParams = useSearchParams();
@@ -146,8 +144,6 @@ function ListUser({ dataUser, initialCompaies, initialRole, initialGender }: IPr
 
     return (
         <Stack spacing={4}>
-            <Box>{pending && <AutorenewIcon className="animate-spin" />}</Box>
-
             {/* SEARCH */}
             <Card variant="outlined">
                 <CardContent>

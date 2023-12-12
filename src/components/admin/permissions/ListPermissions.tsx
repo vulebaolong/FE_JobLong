@@ -33,7 +33,6 @@ import {
     initValueFormik,
 } from '@/helpers/formik.helper';
 import AutorenewIcon from '@mui/icons-material/Autorenew';
-import { useFormStatus } from 'react-dom';
 import {
     CreatedInfoAction,
     DeletedInfoAction,
@@ -58,7 +57,6 @@ interface IProps {
 }
 
 function ListPermissions({ dataPermission, initialMethods }: IProps) {
-    const { pending } = useFormStatus();
     const router = useRouter();
     const pathname = usePathname();
     const searchParams = useSearchParams();
@@ -131,8 +129,6 @@ function ListPermissions({ dataPermission, initialMethods }: IProps) {
 
     return (
         <Stack spacing={4}>
-            <Box>{pending && <AutorenewIcon className="animate-spin" />}</Box>
-
             {/* SEARCH */}
             <Card variant="outlined">
                 <CardContent>

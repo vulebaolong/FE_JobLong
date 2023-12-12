@@ -16,8 +16,12 @@ export const TEXT = {
         LOGIN: 'Login',
     },
     TITLE: {
-        USER: 'Users',
-        PERMISSION: 'Permissions',
+        USER: 'User',
+        USER_CREATE: 'Create User',
+        USER_EDIT: 'Edit User',
+        PERMISSION: 'Permission',
+        PERMISSION_CREATE: 'Create Permission',
+        PERMISSION_EDIT: 'Edit Permission',
     },
     AUTOCOMPLETE: {
         MALE: 'Male',
