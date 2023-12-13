@@ -34,9 +34,3 @@ export const sendRequestAction = async <T>(props: IRequest) => {
     }
 };
 
-export const getListPermissionsAction = async () => {
-    return await sendRequestAction<IBackendRes<IPermissions[]>>({
-        url: 'permissions/by-user',
-        method: 'GET',
-    });
-};

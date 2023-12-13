@@ -6,7 +6,6 @@ import AlertError from '@/components/common/alert/AlertError';
 import { getListCompanies } from '../../companies/action';
 import { buildOptionsAutocomplete, roleOptionsAutocomplete } from '@/helpers/function.helper';
 import { ICompany } from '@/interface/company';
-import { ROLE_ADMIN } from '@/constant/role.constant';
 import { getListRoleAction } from '../../roles/action';
 import { IRole } from '@/interface/role';
 
@@ -30,12 +29,12 @@ async function EditUserPage({ params }: IProps) {
         { label: TEXT.AUTOCOMPLETE.FEMALE, id: '2' },
     ];
     const initialCompaies = buildOptionsAutocomplete<ICompany>({
-        list: dataCompanies.data?.result || [],
+        list: dataCompanies.data?.data?.result || [],
         keyId: '_id',
         keyLabel: 'name',
     });
     const initialRole = roleOptionsAutocomplete<IRole>({
-        list: dataRole.data?.result || [],
+        list: dataRole.data?.data?.result || [],
         keyId: '_id',
         keyLabel: 'name',
     });

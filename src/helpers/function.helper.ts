@@ -1,5 +1,6 @@
 import { ROLE_ADMIN } from '@/constant/role.constant';
 import { IPermissions } from '@/interface/auth';
+import { IPermission } from '@/interface/permission';
 
 export const extractUniqueModules = (permissions?: IPermissions[]): string[] => {
     const uniqueModules: Set<string> = new Set();
@@ -69,3 +70,20 @@ export const checkData = (...datas: any[]) => {
     result.messages = [''];
     return result;
 };
+
+
+export interface permissionModule {
+    module: string;
+    data: IPermission[];
+}
+
+export const  filterAndGroupArrayPermission= <T>(originalArray: IPermission[]): permissionModule[] =>{
+    const uniqueModules = Array.from(new Set(originalArray.map(item => item.module)));
+    const resultArray: permissionModule[] = uniqueModules.map(module => {
+        return {
+            module: module,
+            data: originalArray.filter(item => item.module === module)
+        };
+    });
+    return resultArray;
+}

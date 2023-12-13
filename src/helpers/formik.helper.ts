@@ -1,3 +1,4 @@
+import { IPermission } from '@/interface/permission';
 import { ReadonlyURLSearchParams } from 'next/navigation';
 
 export interface IOptionAutocomplete {
@@ -29,3 +30,6 @@ export const convertStringToBoolean = (value: unknown): boolean => {
     }
     return true;
 };
+
+
+

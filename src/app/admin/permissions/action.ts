@@ -1,6 +1,7 @@
 'use server';
 
 import { sendRequestAction } from '@/app/action';
+import { IPermissions } from '@/interface/auth';
 import { ICreatePermission, IPermission, IUpdatePermission } from '@/interface/permission';
 import { revalidateTag } from 'next/cache';
 
@@ -59,6 +60,13 @@ export const getListPermissionsAction = async ({ searchParams }: IProps) => {
         return reuslt;
     }
 };
+
+export const getListPermissionsByUserAction = async () => {
+    return await sendRequestAction<IBackendRes<IPermissions[]>>({
+        url: `permissions/by-user`,
+        method: 'GET',
+    });
+}
 
 export const deletePermissionByIdAction = async (id: string) => {
     const reuslt: IResult<IResponseUpdate> = {

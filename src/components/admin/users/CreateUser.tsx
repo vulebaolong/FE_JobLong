@@ -44,7 +44,7 @@ const CreateUser = ({ initialGender, initialCompaies }: IProps) => {
     const [companiesList] = useState<IOptionAutocomplete[]>(initialCompaies);
     const [isUserOrHr, setIsUserOrHr] = useState<string>(ROLE_HR);
 
-    const userCreateForm = useFormik({
+    const createForm = useFormik({
         initialValues: {
             name: '',
             email: '',
@@ -121,7 +121,7 @@ const CreateUser = ({ initialGender, initialCompaies }: IProps) => {
     return (
         <Stack gap={3} sx={{ maxWidth: 'sm' }}>
             {errMessage && <AlertError message={errMessage} />}
-            <Box component={'form'} onSubmit={userCreateForm.handleSubmit}>
+            <Box component={'form'} onSubmit={createForm.handleSubmit}>
                 <Card variant="outlined">
                     <CardContent>
                         <Stack gap={3}>
@@ -130,14 +130,14 @@ const CreateUser = ({ initialGender, initialCompaies }: IProps) => {
                                 fullWidth
                                 label="Name"
                                 name="name"
-                                value={userCreateForm.values.name}
-                                onChange={userCreateForm.handleChange}
+                                value={createForm.values.name}
+                                onChange={createForm.handleChange}
                                 error={
-                                    userCreateForm.touched.name &&
-                                    userCreateForm.errors.name !== undefined
+                                    createForm.touched.name &&
+                                    createForm.errors.name !== undefined
                                 }
                                 helperText={
-                                    userCreateForm.touched.name && userCreateForm.errors.name
+                                    createForm.touched.name && createForm.errors.name
                                 }
                             />
 
@@ -146,14 +146,14 @@ const CreateUser = ({ initialGender, initialCompaies }: IProps) => {
                                 name="email"
                                 label="Email"
                                 fullWidth
-                                value={userCreateForm.values.email}
-                                onChange={userCreateForm.handleChange}
+                                value={createForm.values.email}
+                                onChange={createForm.handleChange}
                                 error={
-                                    userCreateForm.touched.email &&
-                                    userCreateForm.errors.email !== undefined
+                                    createForm.touched.email &&
+                                    createForm.errors.email !== undefined
                                 }
                                 helperText={
-                                    userCreateForm.touched.email && userCreateForm.errors.email
+                                    createForm.touched.email && createForm.errors.email
                                 }
                             />
 
@@ -163,15 +163,15 @@ const CreateUser = ({ initialGender, initialCompaies }: IProps) => {
                                 label="Password"
                                 password
                                 fullWidth
-                                value={userCreateForm.values.password}
-                                onChange={userCreateForm.handleChange}
+                                value={createForm.values.password}
+                                onChange={createForm.handleChange}
                                 error={
-                                    userCreateForm.touched.password &&
-                                    userCreateForm.errors.password !== undefined
+                                    createForm.touched.password &&
+                                    createForm.errors.password !== undefined
                                 }
                                 helperText={
-                                    userCreateForm.touched.password &&
-                                    userCreateForm.errors.password
+                                    createForm.touched.password &&
+                                    createForm.errors.password
                                 }
                             />
 
@@ -185,14 +185,14 @@ const CreateUser = ({ initialGender, initialCompaies }: IProps) => {
                                         max={199}
                                         name="age"
                                         label="Age"
-                                        value={userCreateForm.values.age}
-                                        onChange={userCreateForm.handleChange}
+                                        value={createForm.values.age}
+                                        onChange={createForm.handleChange}
                                         error={
-                                            userCreateForm.touched.age &&
-                                            userCreateForm.errors.age !== undefined
+                                            createForm.touched.age &&
+                                            createForm.errors.age !== undefined
                                         }
                                         helperText={
-                                            userCreateForm.touched.age && userCreateForm.errors.age
+                                            createForm.touched.age && createForm.errors.age
                                         }
                                     />
                                 </Grid>
@@ -202,27 +202,27 @@ const CreateUser = ({ initialGender, initialCompaies }: IProps) => {
                                     <Autocomplete
                                         fullWidth
                                         options={genderList}
-                                        value={userCreateForm.values.gender}
+                                        value={createForm.values.gender}
                                         renderInput={(params) => {
                                             return (
                                                 <TextField
                                                     {...params}
                                                     label="Gender"
                                                     error={
-                                                        userCreateForm.touched.gender &&
-                                                        Boolean(userCreateForm.errors.gender)
+                                                        createForm.touched.gender &&
+                                                        Boolean(createForm.errors.gender)
                                                     }
                                                     helperText={
-                                                        userCreateForm.touched.gender &&
-                                                        userCreateForm.errors.gender
-                                                            ? userCreateForm.errors.gender.label
+                                                        createForm.touched.gender &&
+                                                        createForm.errors.gender
+                                                            ? createForm.errors.gender.label
                                                             : ''
                                                     }
                                                 />
                                             );
                                         }}
                                         onChange={(_, value) => {
-                                            userCreateForm.setFieldValue(
+                                            createForm.setFieldValue(
                                                 'gender',
                                                 value || { label: '', id: '' },
                                             );
@@ -236,14 +236,14 @@ const CreateUser = ({ initialGender, initialCompaies }: IProps) => {
                                 fullWidth
                                 label="Address"
                                 name="address"
-                                value={userCreateForm.values.address}
-                                onChange={userCreateForm.handleChange}
+                                value={createForm.values.address}
+                                onChange={createForm.handleChange}
                                 error={
-                                    userCreateForm.touched.address &&
-                                    userCreateForm.errors.address !== undefined
+                                    createForm.touched.address &&
+                                    createForm.errors.address !== undefined
                                 }
                                 helperText={
-                                    userCreateForm.touched.address && userCreateForm.errors.address
+                                    createForm.touched.address && createForm.errors.address
                                 }
                             />
 
@@ -271,27 +271,27 @@ const CreateUser = ({ initialGender, initialCompaies }: IProps) => {
                                 <Autocomplete
                                     fullWidth
                                     options={companiesList}
-                                    value={userCreateForm.values.company}
+                                    value={createForm.values.company}
                                     renderInput={(params) => {
                                         return (
                                             <TextField
                                                 {...params}
                                                 label="Company"
                                                 error={
-                                                    userCreateForm.touched.company &&
-                                                    Boolean(userCreateForm.errors.company)
+                                                    createForm.touched.company &&
+                                                    Boolean(createForm.errors.company)
                                                 }
                                                 helperText={
-                                                    userCreateForm.touched.company &&
-                                                    userCreateForm.errors.company
-                                                        ? userCreateForm.errors.company.label
+                                                    createForm.touched.company &&
+                                                    createForm.errors.company
+                                                        ? createForm.errors.company.label
                                                         : ''
                                                 }
                                             />
                                         );
                                     }}
                                     onChange={(_, value) => {
-                                        userCreateForm.setFieldValue(
+                                        createForm.setFieldValue(
                                             'company',
                                             value || { label: '', id: '' },
                                         );

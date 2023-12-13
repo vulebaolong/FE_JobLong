@@ -1,6 +1,6 @@
 'use client';
 
-import { getListPermissionsAction } from '@/app/action';
+import { getListPermissionsByUserAction } from '@/app/admin/permissions/action';
 import SlidebarSkeleton from '@/components/common/skeleton/slidebar.skeleton';
 import { rootSidebarMenus, sidebarActiveModule } from '@/configs/sidebar.config';
 import { ROUTES } from '@/constant/routes.contants';
@@ -91,7 +91,7 @@ function Sidebar() {
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true);
-            const dataPermission = await getListPermissionsAction();
+            const dataPermission = await getListPermissionsByUserAction();
             setLoading(false);
 
             if (dataPermission.error) router.push(ROUTES.ADMIN.DASHBOARD.INDEX);
