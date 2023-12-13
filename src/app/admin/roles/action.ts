@@ -133,3 +133,35 @@ export const createRoleAction = async (body: ICreateRole) => {
         return reuslt;
     }
 };
+
+export const getRoleByIdAction = async (id: string) => {
+    const reuslt: IResult<IRole> = {
+        success: true,
+        data: null,
+        message: '',
+    };
+    try {
+        const data = await sendRequestAction<IBackendRes<IRole>>({
+            url: `roles/${id}`,
+            method: 'GET',
+        });
+
+        if (data.statusCode !== 200) {
+            reuslt.success = false;
+            reuslt.data = null;
+            reuslt.message = data.message;
+            return reuslt;
+        }
+
+        reuslt.success = true;
+        reuslt.data = data.data;
+        reuslt.message = data.message;
+
+        return reuslt;
+    } catch (error: any) {
+        reuslt.success = false;
+        reuslt.data = null;
+        reuslt.message = error.message;
+        return reuslt;
+    }
+};
