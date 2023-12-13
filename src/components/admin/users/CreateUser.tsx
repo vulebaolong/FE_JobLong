@@ -133,12 +133,9 @@ const CreateUser = ({ initialGender, initialCompaies }: IProps) => {
                                 value={createForm.values.name}
                                 onChange={createForm.handleChange}
                                 error={
-                                    createForm.touched.name &&
-                                    createForm.errors.name !== undefined
+                                    createForm.touched.name && createForm.errors.name !== undefined
                                 }
-                                helperText={
-                                    createForm.touched.name && createForm.errors.name
-                                }
+                                helperText={createForm.touched.name && createForm.errors.name}
                             />
 
                             {/* Email */}
@@ -152,9 +149,7 @@ const CreateUser = ({ initialGender, initialCompaies }: IProps) => {
                                     createForm.touched.email &&
                                     createForm.errors.email !== undefined
                                 }
-                                helperText={
-                                    createForm.touched.email && createForm.errors.email
-                                }
+                                helperText={createForm.touched.email && createForm.errors.email}
                             />
 
                             {/* password */}
@@ -170,8 +165,7 @@ const CreateUser = ({ initialGender, initialCompaies }: IProps) => {
                                     createForm.errors.password !== undefined
                                 }
                                 helperText={
-                                    createForm.touched.password &&
-                                    createForm.errors.password
+                                    createForm.touched.password && createForm.errors.password
                                 }
                             />
 
@@ -191,9 +185,7 @@ const CreateUser = ({ initialGender, initialCompaies }: IProps) => {
                                             createForm.touched.age &&
                                             createForm.errors.age !== undefined
                                         }
-                                        helperText={
-                                            createForm.touched.age && createForm.errors.age
-                                        }
+                                        helperText={createForm.touched.age && createForm.errors.age}
                                     />
                                 </Grid>
 
@@ -242,9 +234,7 @@ const CreateUser = ({ initialGender, initialCompaies }: IProps) => {
                                     createForm.touched.address &&
                                     createForm.errors.address !== undefined
                                 }
-                                helperText={
-                                    createForm.touched.address && createForm.errors.address
-                                }
+                                helperText={createForm.touched.address && createForm.errors.address}
                             />
 
                             {/* USER or HR */}

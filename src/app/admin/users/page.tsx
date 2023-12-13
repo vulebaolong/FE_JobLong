@@ -34,7 +34,7 @@ const UsersPage = async ({ searchParams }: IProps) => {
         searchParams: { limit: '999', fields: 'name' },
     });
 
-    const {success, messages} = checkData(dataUser, dataCompanies, dataRole)
+    const { success, messages } = checkData(dataUser, dataCompanies, dataRole);
 
     const initialCompaies = buildOptionsAutocomplete<ICompany>({
         list: dataCompanies.data?.data?.result || [],
@@ -69,7 +69,9 @@ const UsersPage = async ({ searchParams }: IProps) => {
                     />
                 ) : (
                     <Stack spacing={2}>
-                        {messages.map((message, index) => <AlertError message={message} key={index} />)}
+                        {messages.map((message, index) => (
+                            <AlertError message={message} key={index} />
+                        ))}
                     </Stack>
                 )}
             </ContentBody>

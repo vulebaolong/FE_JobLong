@@ -33,4 +33,3 @@ export const sendRequestAction = async <T>(props: IRequest) => {
         throw error;
     }
 };
-

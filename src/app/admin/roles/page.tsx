@@ -5,6 +5,9 @@ import NavButton from '@/components/common/button/NavButton';
 import { ROUTES } from '@/constant/routes.contants';
 import AlertError from '@/components/common/alert/AlertError';
 import ListRole from '@/components/admin/roles/ListRole';
+import { checkData } from '@/helpers/function.helper';
+import { IRole } from '@/interface/role';
+import { Stack } from '@mui/material';
 
 interface IProps {
     params: { slug: string };
@@ -18,10 +21,13 @@ async function RolesPage({ searchParams }: IProps) {
             ...searchParams,
         },
     });
+
+    const { success, messages } = checkData(dataRole);
+
     const initialActives = [
         { label: 'Active', id: `true` },
-        { label: 'Not', id: `false` }
-    ]
+        { label: 'Not', id: `false` },
+    ];
     return (
         <Content>
             <ContentHeader
@@ -31,13 +37,14 @@ async function RolesPage({ searchParams }: IProps) {
                 }
             />
             <ContentBody>
-                {dataRole.success && dataRole.data ? (
-                    <ListRole
-                        dataRole={dataRole.data}
-                        initialActives={initialActives}
-                    />
+                {success ? (
+                    <ListRole dataRole={dataRole.data as IModelPaginate<IRole[]>} initialActives={initialActives} />
                 ) : (
-                    <AlertError message={dataRole.message} />
+                    <Stack spacing={2}>
+                        {messages.map((message, index) => (
+                            <AlertError message={message} key={index} />
+                        ))}
+                    </Stack>
                 )}
             </ContentBody>
         </Content>

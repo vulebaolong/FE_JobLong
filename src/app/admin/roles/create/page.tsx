@@ -1,22 +1,20 @@
 import Content, { ContentBody, ContentHeader } from '@/components/common/content/Content';
 import { TEXT } from '@/constant/text.contants';
 import CreateRole from '@/components/admin/roles/CreateRole';
-import { getListPermissionsAction } from '../../permissions/action';
 import { permissionModule, checkData } from '@/helpers/function.helper';
-import { IPermissions } from '@/interface/auth';
 import { Stack } from '@mui/material';
 import AlertError from '@/components/common/alert/AlertError';
 import { getDataPermissionProcessed } from '../action';
 
 const RoleCreatePage = async () => {
-    const permissionModule = await getDataPermissionProcessed()
+    const permissionModule = await getDataPermissionProcessed();
 
-    const {success, messages} = checkData(permissionModule)
+    const { success, messages } = checkData(permissionModule);
 
     const initialActives = [
         { label: 'Active', id: `true` },
-        { label: 'Not', id: `false` }
-    ]
+        { label: 'Not', id: `false` },
+    ];
     return (
         <Content>
             <ContentHeader title={TEXT.TITLE.ROLE_CREATE} backButton />
@@ -28,7 +26,9 @@ const RoleCreatePage = async () => {
                     />
                 ) : (
                     <Stack spacing={2}>
-                        {messages.map((message, index) => <AlertError message={message} key={index} />)}
+                        {messages.map((message, index) => (
+                            <AlertError message={message} key={index} />
+                        ))}
                     </Stack>
                 )}
             </ContentBody>

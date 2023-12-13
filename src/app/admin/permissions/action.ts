@@ -32,9 +32,7 @@ export const getListPermissionsAction = async ({ searchParams }: IProps) => {
         if (searchParams.isDeleted === 'false') query.push(`isDeleted!=true`);
 
         const data = await sendRequestAction<IModelPaginate<IPermission[]>>({
-            url: `permissions?currentPage=${currentPage}&limit=${limit}&${query.join(
-                '&',
-            )}`,
+            url: `permissions?currentPage=${currentPage}&limit=${limit}&${query.join('&')}`,
             method: 'GET',
             nextOption: {
                 next: { tags: ['getListPermissionsAction'] },
@@ -66,7 +64,7 @@ export const getListPermissionsByUserAction = async () => {
         url: `permissions/by-user`,
         method: 'GET',
     });
-}
+};
 
 export const deletePermissionByIdAction = async (id: string) => {
     const reuslt: IResult<IResponseUpdate> = {

@@ -1,7 +1,7 @@
-import { Stack } from "@mui/material";
-import { CreatedInfoAction, DeletedInfoAction, UpdatedInfoAction } from "../infoAction/InfoAction";
+import { Stack } from '@mui/material';
+import { CreatedInfoAction, DeletedInfoAction, UpdatedInfoAction } from '../infoAction/InfoAction';
 
-function TooltipRowTable({ data }: {data: any}) {
+function TooltipRowTable({ data }: { data: any }) {
     return (
         <Stack direction={'column'} spacing={2} padding={1}>
             {/* Created by */}
@@ -16,4 +16,4 @@ function TooltipRowTable({ data }: {data: any}) {
     );
 }
 
-export default TooltipRowTable
+export default TooltipRowTable;

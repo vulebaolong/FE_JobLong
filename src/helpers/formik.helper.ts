@@ -30,6 +30,3 @@ export const convertStringToBoolean = (value: unknown): boolean => {
     }
     return true;
 };
-
-
-

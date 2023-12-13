@@ -36,9 +36,7 @@ export const getListUserAction = async ({ searchParams }: IProps) => {
         // console.log(query);
 
         const data = await sendRequestAction<IModelPaginate<IUser[]>>({
-            url: `users?currentPage=${currentPage}&limit=${limit}&${query.join(
-                '&',
-            )}`,
+            url: `users?currentPage=${currentPage}&limit=${limit}&${query.join('&')}`,
             method: 'GET',
             nextOption: {
                 next: { tags: ['getListUserAction'] },
@@ -180,7 +178,7 @@ export const createUserHrAction = async (body: ICreateUserHr) => {
             method: 'POST',
             body: body,
         });
-    
+
         if (data.statusCode !== 201) {
             reuslt.success = false;
             reuslt.data = null;
@@ -246,7 +244,7 @@ export const updateUserByIdAction = async (id: string, body: IUpdateUser) => {
             method: 'PATCH',
             body: body,
         });
-    
+
         if (data.statusCode !== 200) {
             reuslt.success = false;
             reuslt.data = null;
