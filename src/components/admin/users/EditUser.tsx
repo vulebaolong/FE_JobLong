@@ -1,17 +1,6 @@
 'use client';
 
-import {
-    Box,
-    Button,
-    Card,
-    CardActions,
-    CardContent,
-    Divider,
-    Grid,
-    Radio,
-    RadioGroup,
-    Stack,
-} from '@mui/material';
+import { Box, Button, Card, CardActions, CardContent, Divider, Grid, Stack } from '@mui/material';
 import { useFormik } from 'formik';
 import { useState } from 'react';
 import * as Yup from 'yup';
@@ -20,12 +9,10 @@ import { TEXT } from '@/constant/text.contants';
 import AlertError from '@/components/common/alert/AlertError';
 import { useRouter } from 'next/navigation';
 import TextField from '@/components/common/textField/TextField';
-import InputPassword from '@/components/common/InputPassword/InputPassword';
 import { IOptionAutocomplete } from '@/helpers/formik.helper';
 import Autocomplete from '@/components/common/autocomplete/Autocomplete';
-import { ROLE_HR, ROLE_USER } from '@/constant/role.constant';
-import { createUserHrAction, updateUserAction } from '@/app/admin/users/action';
-import { IUpdateUser, IUser } from '@/interface/user';
+import { updateUserByIdAction } from '@/app/admin/users/action';
+import { IUser } from '@/interface/user';
 import { toastSuccess } from '@/provider/ToastProvider';
 
 interface IProps {
@@ -91,14 +78,12 @@ const EditUser = ({ initialGender, initialCompaies, initialRole, user }: IProps)
             setErrMessage(undefined);
             setIsLoading(true);
 
-            const result = await updateUserAction(user._id, values);
-
+            const dataUpdateUser = await updateUserByIdAction(user._id, values);
             setIsLoading(false);
 
-            if (result.statusCode !== 200) return setErrMessage(result.message);
+            if (!dataUpdateUser.success) return setErrMessage(dataUpdateUser.message);
 
             toastSuccess(TEXT.MESSAGE.CREATE_SUCCESS);
-
             router.back();
         },
     });

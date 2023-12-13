@@ -11,14 +11,16 @@ import { useRouter } from 'next/navigation';
 import TextField from '@/components/common/textField/TextField';
 import { IOptionAutocomplete } from '@/helpers/formik.helper';
 import Autocomplete from '@/components/common/autocomplete/Autocomplete';
-import { createPermissionAction } from '@/app/admin/permissions/action';
 import { toastSuccess } from '@/provider/ToastProvider';
+import { IPermission } from '@/interface/permission';
+import { updatePermissionByIdAction } from '@/app/admin/permissions/action';
 
 interface IProps {
     initialMethods: IOptionAutocomplete[];
+    permission: IPermission;
 }
 
-const CreatePermission = ({ initialMethods }: IProps) => {
+const EditPermissions = ({ initialMethods, permission }: IProps) => {
     const router = useRouter();
 
     const [errMessage, setErrMessage] = useState<string | undefined>(undefined);
@@ -26,12 +28,15 @@ const CreatePermission = ({ initialMethods }: IProps) => {
 
     const [methodList] = useState<IOptionAutocomplete[]>(initialMethods);
 
-    const createForm = useFormik({
+    const editForm = useFormik({
         initialValues: {
-            name: '',
-            apiPath: '',
-            method: { label: '', id: '' },
-            module: '',
+            name: permission.name || '',
+            apiPath: permission.apiPath || '',
+            method: methodList.find((method) => method.label === permission.method) || {
+                label: '',
+                id: '',
+            },
+            module: permission.module || '',
         },
         validationSchema: Yup.object().shape({
             name: Yup.string().required(TEXT.MESSAGE.REQUIRED_FIELD('Name')),
@@ -50,7 +55,7 @@ const CreatePermission = ({ initialMethods }: IProps) => {
             setErrMessage(undefined);
             setIsLoading(true);
 
-            const result = await createPermissionAction(values);
+            const result = await updatePermissionByIdAction(permission._id, values);
             setIsLoading(false);
 
             if (!result.success) return setErrMessage(result.message);
@@ -63,7 +68,7 @@ const CreatePermission = ({ initialMethods }: IProps) => {
     return (
         <Stack gap={3} sx={{ maxWidth: 'sm' }}>
             {errMessage && <AlertError message={errMessage} />}
-            <Box component={'form'} onSubmit={createForm.handleSubmit}>
+            <Box component={'form'} onSubmit={editForm.handleSubmit}>
                 <Card variant="outlined">
                     <CardContent>
                         <Stack gap={3}>
@@ -72,12 +77,10 @@ const CreatePermission = ({ initialMethods }: IProps) => {
                                 fullWidth
                                 label="Name"
                                 name="name"
-                                value={createForm.values.name}
-                                onChange={createForm.handleChange}
-                                error={
-                                    createForm.touched.name && createForm.errors.name !== undefined
-                                }
-                                helperText={createForm.touched.name && createForm.errors.name}
+                                value={editForm.values.name}
+                                onChange={editForm.handleChange}
+                                error={editForm.touched.name && editForm.errors.name !== undefined}
+                                helperText={editForm.touched.name && editForm.errors.name}
                             />
 
                             {/* Path */}
@@ -85,41 +88,39 @@ const CreatePermission = ({ initialMethods }: IProps) => {
                                 fullWidth
                                 label="Path"
                                 name="apiPath"
-                                value={createForm.values.apiPath}
-                                onChange={createForm.handleChange}
+                                value={editForm.values.apiPath}
+                                onChange={editForm.handleChange}
                                 error={
-                                    createForm.touched.apiPath &&
-                                    createForm.errors.apiPath !== undefined
+                                    editForm.touched.apiPath &&
+                                    editForm.errors.apiPath !== undefined
                                 }
-                                helperText={createForm.touched.apiPath && createForm.errors.apiPath}
-                                placeholder="/api/v1/module/:id"
+                                helperText={editForm.touched.apiPath && editForm.errors.apiPath}
                             />
 
                             {/* Method */}
                             <Autocomplete
                                 fullWidth
                                 options={methodList}
-                                value={createForm.values.method}
+                                value={editForm.values.method}
                                 renderInput={(params) => {
                                     return (
                                         <TextField
                                             {...params}
                                             label="Method"
                                             error={
-                                                createForm.touched.method &&
-                                                Boolean(createForm.errors.method)
+                                                editForm.touched.method &&
+                                                Boolean(editForm.errors.method)
                                             }
                                             helperText={
-                                                createForm.touched.method &&
-                                                createForm.errors.method
-                                                    ? createForm.errors.method.label
+                                                editForm.touched.method && editForm.errors.method
+                                                    ? editForm.errors.method.label
                                                     : ''
                                             }
                                         />
                                     );
                                 }}
                                 onChange={(_, value) => {
-                                    createForm.setFieldValue(
+                                    editForm.setFieldValue(
                                         'method',
                                         value || { label: '', id: '' },
                                     );
@@ -130,14 +131,13 @@ const CreatePermission = ({ initialMethods }: IProps) => {
                             <TextField
                                 fullWidth
                                 label="Module"
-                                name="module"
-                                value={createForm.values.module}
-                                onChange={createForm.handleChange}
+                                name="apiPath"
+                                value={editForm.values.module}
+                                onChange={editForm.handleChange}
                                 error={
-                                    createForm.touched.module &&
-                                    createForm.errors.module !== undefined
+                                    editForm.touched.module && editForm.errors.module !== undefined
                                 }
-                                helperText={createForm.touched.module && createForm.errors.module}
+                                helperText={editForm.touched.module && editForm.errors.module}
                             />
                         </Stack>
                     </CardContent>
@@ -149,7 +149,7 @@ const CreatePermission = ({ initialMethods }: IProps) => {
                             color="primary"
                             loading={isLoading}
                         >
-                            {TEXT.BUTTON_TEXT.ADD}
+                            {TEXT.BUTTON_TEXT.EDIT}
                         </LoadingButton>
                         <Button onClick={() => router.back()} disabled={isLoading}>
                             {TEXT.BUTTON_TEXT.CANCEL}
@@ -161,4 +161,4 @@ const CreatePermission = ({ initialMethods }: IProps) => {
     );
 };
 
-export default CreatePermission;
+export default EditPermissions;

@@ -4,6 +4,7 @@ import Content, { ContentBody, ContentHeader } from '@/components/common/content
 import { TEXT } from '@/constant/text.contants';
 import NavButton from '@/components/common/button/NavButton';
 import { ROUTES } from '@/constant/routes.contants';
+import AlertError from '@/components/common/alert/AlertError';
 
 interface IProps {
     params: { slug: string };
@@ -24,7 +25,14 @@ async function PermissionsPage({ searchParams }: IProps) {
                 }
             />
             <ContentBody>
-                <ListPermissions dataPermission={dataPermission} initialMethods={initialMethods} />
+                {dataPermission.success && dataPermission.data ? (
+                    <ListPermissions
+                        dataPermission={dataPermission.data}
+                        initialMethods={initialMethods}
+                    />
+                ) : (
+                    <AlertError message={dataPermission.message} />
+                )}
             </ContentBody>
         </Content>
     );

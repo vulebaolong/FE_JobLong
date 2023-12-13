@@ -44,8 +44,14 @@ declare global {
         matchedCount: number;
     }
 
-    export interface ActionBy {
+    interface ActionBy {
         _id: string;
         email: string;
+    }
+
+    interface IResult<T> {
+        success: boolean;
+        data: null | T;
+        message: string;
     }
 }

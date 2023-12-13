@@ -25,8 +25,10 @@ export interface IPermission {
 }
 
 export interface ICreatePermission {
-    name: string
-    apiPath: string
-    method: string
-    module: string
+    name: string;
+    apiPath: string;
+    method: string;
+    module: string;
 }
+
+export interface IUpdatePermission extends ICreatePermission {}

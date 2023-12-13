@@ -85,11 +85,11 @@ const CreateUser = ({ initialGender, initialCompaies }: IProps) => {
                     gender: values.gender.label,
                     company: values.company.id,
                 };
-                const result = await createUserHrAction(data);
+                const dataCreateUserHr = await createUserHrAction(data);
 
                 setIsLoading(false);
 
-                if (result.statusCode !== 201) return setErrMessage(result.message);
+                if (!dataCreateUserHr.success) return setErrMessage(dataCreateUserHr.message);
 
                 toastSuccess(TEXT.MESSAGE.CREATE_SUCCESS);
 
@@ -105,11 +105,11 @@ const CreateUser = ({ initialGender, initialCompaies }: IProps) => {
                     age: values.age,
                     gender: values.gender.label,
                 };
-                const result = await createUserAction(data);
+                const dataCreateUser = await createUserAction(data);
 
                 setIsLoading(false);
 
-                if (result.statusCode !== 201) return setErrMessage(result.message);
+                if (!dataCreateUser.success) return setErrMessage(dataCreateUser.message);
 
                 toastSuccess(TEXT.MESSAGE.CREATE_SUCCESS);
 
