@@ -50,6 +50,7 @@ import {
 import { ROLE_ADMIN, ROLE_HR, ROLE_USER } from '@/constant/role.constant';
 import Autocomplete from '@/components/common/autocomplete/Autocomplete';
 import TableCellNote from '@/components/common/table/TableCellNote';
+import TooltipRowTable from '@/components/common/table/TooltipRowTable';
 
 interface IProps {
     dataUser: IModelPaginate<IUser[]>;
@@ -265,7 +266,7 @@ function ListUser({ dataUser, initialCompaies, initialRole, initialGender }: IPr
                                                 spacing={1}
                                             >
                                                 <Tooltip
-                                                    title={<TitleTooltipAvatar user={user} />}
+                                                    title={<TooltipRowTable data={user} />}
                                                     placement="right-end"
                                                 >
                                                     <Avatar
@@ -347,22 +348,3 @@ function ListUser({ dataUser, initialCompaies, initialRole, initialGender }: IPr
     );
 }
 export default ListUser;
-
-interface IPropsTooltipAvatar {
-    user: IUser;
-}
-
-function TitleTooltipAvatar({ user }: IPropsTooltipAvatar) {
-    return (
-        <Stack direction={'column'} spacing={2} padding={1}>
-            {/* Created by */}
-            <CreatedInfoAction createdBy={user?.createdBy?.email} createdAt={user?.createdAt} />
-
-            {/* Updated by */}
-            <UpdatedInfoAction updatedBy={user?.createdBy?.email} updatedAt={user?.createdAt} />
-
-            {/* Deleted by */}
-            <DeletedInfoAction deletedBy={user?.createdBy?.email} deletedAt={user?.createdAt} />
-        </Stack>
-    );
-}

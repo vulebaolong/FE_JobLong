@@ -52,6 +52,7 @@ import {
 } from '@/app/admin/permissions/action';
 import { IRole } from '@/interface/role';
 import TableCellNote from '@/components/common/table/TableCellNote';
+import TooltipRowTable from '@/components/common/table/TooltipRowTable';
 
 interface IProps {
     dataRole: IModelPaginate<IRole[]>
@@ -197,7 +198,7 @@ function ListRole({ dataRole, initialActives }: IProps) {
                                     <TableRow key={role._id}>
                                         <TableCell>
                                             <Tooltip
-                                                title={<TitleTooltipAvatar data={role} />}
+                                                title={<TooltipRowTable data={role} />}
                                                 placement="top"
                                             >
                                                 <div>{role.name}</div>
@@ -265,22 +266,3 @@ function ListRole({ dataRole, initialActives }: IProps) {
     );
 }
 export default ListRole;
-
-interface IPropsTooltipAvatar {
-    data: IRole;
-}
-
-function TitleTooltipAvatar({ data }: IPropsTooltipAvatar) {
-    return (
-        <Stack direction={'column'} spacing={2} padding={1}>
-            {/* Created by */}
-            <CreatedInfoAction createdBy={data?.createdBy?.email} createdAt={data?.createdAt} />
-
-            {/* Updated by */}
-            <UpdatedInfoAction updatedBy={data?.createdBy?.email} updatedAt={data?.createdAt} />
-
-            {/* Deleted by */}
-            <DeletedInfoAction deletedBy={data?.createdBy?.email} deletedAt={data?.createdAt} />
-        </Stack>
-    );
-}

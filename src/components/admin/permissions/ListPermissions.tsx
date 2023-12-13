@@ -50,6 +50,8 @@ import {
     deletePermissionByIdAction,
     restorePermissionByIdAction,
 } from '@/app/admin/permissions/action';
+import TableCellNote from '@/components/common/table/TableCellNote';
+import TooltipRowTable from '@/components/common/table/TooltipRowTable';
 
 interface IProps {
     dataPermission: IModelPaginate<IPermission[]>;
@@ -184,7 +186,7 @@ function ListPermissions({ dataPermission, initialMethods }: IProps) {
                             <TableHead>
                                 <TableRow>
                                     <TableCellNote
-                                        data={dataPermission}
+                                        total={dataPermission.data?.meta?.totalItems || 0}
                                         onChange={handleCheckBox}
                                         checked={searchForm.values.isDeleted}
                                         loading={true}
@@ -205,7 +207,7 @@ function ListPermissions({ dataPermission, initialMethods }: IProps) {
                                     <TableRow key={permission._id}>
                                         <TableCell>
                                             <Tooltip
-                                                title={<TitleTooltipAvatar data={permission} />}
+                                                title={<TooltipRowTable data={permission} />}
                                                 placement="top"
                                             >
                                                 <div>{permission.name}</div>
@@ -285,58 +287,4 @@ function ListPermissions({ dataPermission, initialMethods }: IProps) {
 }
 export default ListPermissions;
 
-interface IPropsTableCellNote {
-    data: IModelPaginate<IPermission[]>;
-    onChange: (_: any, value: boolean) => void;
-    checked: boolean;
-    loading?: boolean;
-}
 
-function TableCellNote({ data, onChange, checked, loading }: IPropsTableCellNote) {
-    return (
-        <TableCell colSpan={9} sx={{ borderBottom: 'none', paddingBottom: '0 !important' }}>
-            <Stack
-                direction="row"
-                justifyContent="space-between"
-                alignItems="center"
-                width={'100%'}
-            >
-                <Stack direction="row" justifyContent="flex-start" alignItems="center" spacing={3}>
-                    <Box sx={{ fontSize: '1rem' }}>Total: {data.data?.meta?.totalItems}</Box>
-                    <Box>
-                        <FormControlLabel
-                            control={
-                                <Checkbox onChange={onChange} size="small" checked={checked} />
-                            }
-                            label={
-                                <Typography variant="subtitle2">
-                                    Includes deleted permissions
-                                </Typography>
-                            }
-                        />
-                    </Box>
-                </Stack>
-                <Box>{loading && <AutorenewIcon className="animate-spin" />}</Box>
-            </Stack>
-        </TableCell>
-    );
-}
-
-interface IPropsTooltipAvatar {
-    data: IPermission;
-}
-
-function TitleTooltipAvatar({ data }: IPropsTooltipAvatar) {
-    return (
-        <Stack direction={'column'} spacing={2} padding={1}>
-            {/* Created by */}
-            <CreatedInfoAction createdBy={data?.createdBy?.email} createdAt={data?.createdAt} />
-
-            {/* Updated by */}
-            <UpdatedInfoAction updatedBy={data?.createdBy?.email} updatedAt={data?.createdAt} />
-
-            {/* Deleted by */}
-            <DeletedInfoAction deletedBy={data?.createdBy?.email} deletedAt={data?.createdAt} />
-        </Stack>
-    );
-}
