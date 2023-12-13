@@ -5,11 +5,13 @@ import NavButton from '@/components/common/button/NavButton';
 import { TEXT } from '@/constant/text.contants';
 import { ROUTES } from '@/constant/routes.contants';
 import { getListCompanies } from '../companies/action';
-import { buildOptionsAutocomplete } from '@/helpers/function.helper';
+import { buildOptionsAutocomplete, checkData } from '@/helpers/function.helper';
 import { ICompany } from '@/interface/company';
-import { getListRole } from '../roles/action';
+import { getListRoleAction } from '../roles/action';
 import { IRole } from '@/interface/role';
 import AlertError from '@/components/common/alert/AlertError';
+import { IUser } from '@/interface/user';
+import { Stack } from '@mui/material';
 
 interface IProps {
     params: { slug: string };
@@ -28,17 +30,19 @@ const UsersPage = async ({ searchParams }: IProps) => {
     const dataCompanies = await getListCompanies({
         searchParams: { limit: '999', fields: 'name' },
     });
-    const dataRole = await getListRole({
+    const dataRole = await getListRoleAction({
         searchParams: { limit: '999', fields: 'name' },
     });
 
+    const {success, messages} = checkData(dataUser, dataCompanies, dataRole)
+
     const initialCompaies = buildOptionsAutocomplete<ICompany>({
-        list: dataCompanies.data?.result || [],
+        list: dataCompanies.data?.data?.result || [],
         keyId: '_id',
         keyLabel: 'name',
     });
     const initialRole = buildOptionsAutocomplete<IRole>({
-        list: dataRole.data?.result || [],
+        list: dataRole.data?.data?.result || [],
         keyId: '_id',
         keyLabel: 'name',
     });
@@ -56,15 +60,17 @@ const UsersPage = async ({ searchParams }: IProps) => {
                 }
             />
             <ContentBody>
-                {dataUser.success && dataUser.data ? (
+                {success ? (
                     <ListUser
-                        dataUser={dataUser.data}
+                        dataUser={dataUser.data as IModelPaginate<IUser[]>}
                         initialCompaies={initialCompaies}
                         initialRole={initialRole}
                         initialGender={initialGender}
                     />
                 ) : (
-                    <AlertError message={dataUser.message} />
+                    <Stack spacing={2}>
+                        {messages.map((message, index) => <AlertError message={message} key={index} />)}
+                    </Stack>
                 )}
             </ContentBody>
         </Content>

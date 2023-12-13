@@ -19,6 +19,10 @@ export const getListPermissionsAction = async ({ searchParams }: IProps) => {
         const limit = searchParams.limit || 10;
 
         const query: string[] = [];
+        if (searchParams.fields) query.push(`fields=${searchParams.fields.trim()}`);
+        if (searchParams.populate) query.push(`populate=${searchParams.populate.trim()}`);
+        if (searchParams.sort) query.push(`sort=${searchParams.sort.trim()}`);
+
         if (searchParams.name) query.push(`name=/${searchParams.name.trim()}/i`);
         if (searchParams.apiPath) query.push(`apiPath=${searchParams.apiPath.trim()}`);
         if (searchParams.method) query.push(`method=/${searchParams.method.trim()}/i`);
@@ -27,7 +31,7 @@ export const getListPermissionsAction = async ({ searchParams }: IProps) => {
         if (searchParams.isDeleted === 'false') query.push(`isDeleted!=true`);
 
         const data = await sendRequestAction<IModelPaginate<IPermission[]>>({
-            url: `permissions?currentPage=${currentPage}&limit=${limit}&sort=-createdAt&${query.join(
+            url: `permissions?currentPage=${currentPage}&limit=${limit}&${query.join(
                 '&',
             )}`,
             method: 'GET',

@@ -49,6 +49,7 @@ import {
 } from '@/components/common/infoAction/InfoAction';
 import { ROLE_ADMIN, ROLE_HR, ROLE_USER } from '@/constant/role.constant';
 import Autocomplete from '@/components/common/autocomplete/Autocomplete';
+import TableCellNote from '@/components/common/table/TableCellNote';
 
 interface IProps {
     dataUser: IModelPaginate<IUser[]>;
@@ -234,7 +235,7 @@ function ListUser({ dataUser, initialCompaies, initialRole, initialGender }: IPr
                             <TableHead>
                                 <TableRow>
                                     <TableCellNote
-                                        dataUser={dataUser}
+                                        total={dataUser.data?.meta?.totalItems || 0}
                                         onChange={handleCheckBox}
                                         checked={searchForm.values.isDeleted}
                                         loading={true}
@@ -346,41 +347,6 @@ function ListUser({ dataUser, initialCompaies, initialRole, initialGender }: IPr
     );
 }
 export default ListUser;
-
-interface IPropsTableCellNote {
-    dataUser: IModelPaginate<IUser[]>;
-    onChange: (_: any, value: boolean) => void;
-    checked: boolean;
-    loading?: boolean;
-}
-
-function TableCellNote({ dataUser, onChange, checked, loading }: IPropsTableCellNote) {
-    return (
-        <TableCell colSpan={9} sx={{ borderBottom: 'none', paddingBottom: '0 !important' }}>
-            <Stack
-                direction="row"
-                justifyContent="space-between"
-                alignItems="center"
-                width={'100%'}
-            >
-                <Stack direction="row" justifyContent="flex-start" alignItems="center" spacing={3}>
-                    <Box sx={{ fontSize: '1rem' }}>Total: {dataUser.data?.meta?.totalItems}</Box>
-                    <Box>
-                        <FormControlLabel
-                            control={
-                                <Checkbox onChange={onChange} size="small" checked={checked} />
-                            }
-                            label={
-                                <Typography variant="subtitle2">Includes deleted users</Typography>
-                            }
-                        />
-                    </Box>
-                </Stack>
-                <Box>{loading && <AutorenewIcon className="animate-spin" />}</Box>
-            </Stack>
-        </TableCell>
-    );
-}
 
 interface IPropsTooltipAvatar {
     user: IUser;

@@ -4,13 +4,16 @@ export interface IRole {
     description: string;
     isActive: boolean;
     permissions: string[];
+
     isDeleted: boolean;
+    deletedBy: ActionBy;
     deletedAt: any;
-    __v: number;
+
+    createdBy: ActionBy;
     createdAt: string;
+
+    updatedBy: ActionBy;
     updatedAt: string;
-    updatedBy: {
-        _id: string;
-        email: string;
-    };
+
+    __v: number;
 }

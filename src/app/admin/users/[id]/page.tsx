@@ -7,7 +7,7 @@ import { getListCompanies } from '../../companies/action';
 import { buildOptionsAutocomplete, roleOptionsAutocomplete } from '@/helpers/function.helper';
 import { ICompany } from '@/interface/company';
 import { ROLE_ADMIN } from '@/constant/role.constant';
-import { getListRole } from '../../roles/action';
+import { getListRoleAction } from '../../roles/action';
 import { IRole } from '@/interface/role';
 
 interface IProps {
@@ -21,7 +21,7 @@ async function EditUserPage({ params }: IProps) {
     const dataCompanies = await getListCompanies({
         searchParams: { limit: '999', fields: 'name' },
     });
-    const dataRole = await getListRole({
+    const dataRole = await getListRoleAction({
         searchParams: { limit: '999', fields: 'name' },
     });
 
