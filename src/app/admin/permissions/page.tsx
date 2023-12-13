@@ -12,7 +12,12 @@ interface IProps {
 }
 
 async function PermissionsPage({ searchParams }: IProps) {
-    const dataPermission = await getListPermissionsAction({ searchParams });
+    const dataPermission = await getListPermissionsAction({
+        searchParams: {
+            sort: '-createdAt',
+            ...searchParams,
+        },
+    });
     const initialMethods = TEXT.AUTOCOMPLETE.METHODS.map((method, index) => {
         return { label: method, id: `${index}` };
     });

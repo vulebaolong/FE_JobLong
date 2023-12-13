@@ -22,6 +22,9 @@ export const TEXT = {
         PERMISSION: 'Permission',
         PERMISSION_CREATE: 'Create Permission',
         PERMISSION_EDIT: 'Edit Permission',
+        ROLE: 'Role',
+        ROLE_CREATE: 'Create Role',
+        ROLE_EDIT: 'Edit Role',
     },
     AUTOCOMPLETE: {
         MALE: 'Male',

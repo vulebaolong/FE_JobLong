@@ -50,27 +50,28 @@ import {
     deletePermissionByIdAction,
     restorePermissionByIdAction,
 } from '@/app/admin/permissions/action';
+import { IRole } from '@/interface/role';
 import TableCellNote from '@/components/common/table/TableCellNote';
 import TooltipRowTable from '@/components/common/table/TooltipRowTable';
 
 interface IProps {
-    dataPermission: IModelPaginate<IPermission[]>;
-    initialMethods: IOptionAutocomplete[];
+    dataRole: IModelPaginate<IRole[]>
+    initialActives: IOptionAutocomplete[];
 }
 
-function ListPermissions({ dataPermission, initialMethods }: IProps) {
+function ListRole({ dataRole, initialActives }: IProps) {
     const router = useRouter();
     const pathname = usePathname();
     const searchParams = useSearchParams();
 
-    const [methodList] = useState<IOptionAutocomplete[]>(initialMethods);
+    const [activeList] = useState<IOptionAutocomplete[]>(initialActives);
 
     const searchForm = useFormik({
         initialValues: {
             name: searchParams.get('name') || '',
-            apiPath: searchParams.get('apiPath') || '',
-            method: initValueFormik('method', methodList, searchParams),
-            module: searchParams.get('module') || '',
+            description: searchParams.get('description') || '',
+            isActive: initValueFormik('isActive', activeList, searchParams),
+
             currentPage: searchParams.get('currentPage') || 1,
             isDeleted: searchParams.get('isDeleted')
                 ? convertStringToBoolean(searchParams.get('isDeleted'))
@@ -83,7 +84,7 @@ function ListPermissions({ dataPermission, initialMethods }: IProps) {
                 searchParams,
                 newSearchParams: {
                     ...values,
-                    method: values.method.label || '',
+                    isActive: values.isActive.id || '',
                     isDeleted: values.isDeleted,
                 },
             });
@@ -102,9 +103,7 @@ function ListPermissions({ dataPermission, initialMethods }: IProps) {
 
     const onResetSearch = () => {
         searchForm.setFieldValue('name', '');
-        searchForm.setFieldValue('apiPath', '');
-        searchForm.setFieldValue('method', { label: '', id: '' });
-        searchForm.setFieldValue('module', '');
+        searchForm.setFieldValue('description', '');
         searchForm.submitForm();
     };
 
@@ -114,13 +113,15 @@ function ListPermissions({ dataPermission, initialMethods }: IProps) {
     };
 
     const handleDelete = async (id: string) => {
-        const dataDelete = await deletePermissionByIdAction(id);
-        return dataDelete.success;
+        // const dataDelete = await deletePermissionByIdAction(id);
+        // return dataDelete.success;
+        return true
     };
 
     const handleRestore = async (id: string) => {
-        const dataRestore = await restorePermissionByIdAction(id);
-        return dataRestore.success;
+        // const dataRestore = await restorePermissionByIdAction(id);
+        // return dataRestore.success;
+        return true
     };
 
     return (
@@ -138,34 +139,25 @@ function ListPermissions({ dataPermission, initialMethods }: IProps) {
                             onChange={searchForm.handleChange}
                         />
 
-                        {/* Path */}
+                        {/* Description */}
                         <TextField
                             sx={{ width: '300px' }}
-                            label="Path"
-                            name="apiPath"
-                            value={searchForm.values.apiPath}
+                            label="Description"
+                            name="description"
+                            value={searchForm.values.description}
                             onChange={searchForm.handleChange}
                         />
 
-                        {/* Method */}
+                        {/* Active */}
                         <Autocomplete
                             sx={{ width: '300px' }}
                             size="small"
-                            options={methodList}
-                            value={searchForm.values.method}
-                            renderInput={(params) => <TextField {...params} label="Method" />}
+                            options={activeList}
+                            value={searchForm.values.isActive}
+                            renderInput={(params) => <TextField {...params} label="Status" />}
                             onChange={(_, value) => {
-                                searchForm.setFieldValue('method', value || { label: '', id: '' });
+                                searchForm.setFieldValue('isActive', value || { label: '', id: '' });
                             }}
-                        />
-
-                        {/* Module */}
-                        <TextField
-                            sx={{ width: '300px' }}
-                            label="Module"
-                            name="module"
-                            value={searchForm.values.module}
-                            onChange={searchForm.handleChange}
                         />
                     </Stack>
                 </CardContent>
@@ -186,7 +178,7 @@ function ListPermissions({ dataPermission, initialMethods }: IProps) {
                             <TableHead>
                                 <TableRow>
                                     <TableCellNote
-                                        total={dataPermission.data?.meta?.totalItems || 0}
+                                        total={dataRole.data?.meta?.totalItems || 0}
                                         onChange={handleCheckBox}
                                         checked={searchForm.values.isDeleted}
                                         loading={true}
@@ -195,74 +187,62 @@ function ListPermissions({ dataPermission, initialMethods }: IProps) {
 
                                 <TableRow>
                                     <TableCell>Name</TableCell>
-                                    <TableCell>Path</TableCell>
-                                    <TableCell>Method</TableCell>
-                                    <TableCell>Module</TableCell>
+                                    <TableCell>description</TableCell>
+                                    <TableCell>Status</TableCell>
                                     <TableCell>Deleted</TableCell>
                                     <TableCell>Action</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {dataPermission.data?.result?.map((permission) => (
-                                    <TableRow key={permission._id}>
+                                {dataRole.data?.result?.map((role) => (
+                                    <TableRow key={role._id}>
                                         <TableCell>
                                             <Tooltip
-                                                title={<TooltipRowTable data={permission} />}
+                                                title={<TooltipRowTable data={role} />}
                                                 placement="top"
                                             >
-                                                <div>{permission.name}</div>
+                                                <div>{role.name}</div>
                                             </Tooltip>
                                         </TableCell>
-                                        <TableCell>{permission.apiPath}</TableCell>
+                                        <TableCell>{role.description}</TableCell>
                                         <TableCell>
                                             <Chip
                                                 variant="outlined"
-                                                color={
-                                                    permission.method === 'GET'
-                                                        ? 'success'
-                                                        : permission.method === 'POST'
-                                                          ? 'warning'
-                                                          : permission.method === 'PATCH'
-                                                            ? 'info'
-                                                            : permission.method === 'DELETE'
-                                                              ? 'error'
-                                                              : 'default'
-                                                }
+                                                color={ role.isActive ? 'success' : 'error'}
                                                 size="small"
-                                                label={permission.method}
+                                                label={role.isActive ? 'active' : 'not'}
                                             />
                                         </TableCell>
-                                        <TableCell>{permission.module}</TableCell>
                                         <TableCell>
-                                            {permission.isDeleted ? (
+                                            {role.isDeleted ? (
                                                 <ThumbDownIcon fontSize="small" color="error" />
                                             ) : (
                                                 <ThumbUpIcon fontSize="small" color="primary" />
                                             )}
                                         </TableCell>
                                         <TableCell>
-                                            {permission.isDeleted ? (
+                                            {role.isDeleted ? (
                                                 <>
                                                     <EditButton
-                                                        href={ROUTES.ADMIN.PERMISSION.DETAIL(
-                                                            permission._id,
+                                                        href={ROUTES.ADMIN.ROLE.DETAIL(
+                                                            role._id,
                                                         )}
                                                     />
                                                     <RestoreButton
                                                         onClick={() =>
-                                                            handleRestore(permission._id)
+                                                            handleRestore(role._id)
                                                         }
                                                     />
                                                 </>
                                             ) : (
                                                 <>
                                                     <EditButton
-                                                        href={ROUTES.ADMIN.PERMISSION.DETAIL(
-                                                            permission._id,
+                                                        href={ROUTES.ADMIN.ROLE.DETAIL(
+                                                            role._id,
                                                         )}
                                                     />
                                                     <DeleteButton
-                                                        onClick={() => handleDelete(permission._id)}
+                                                        onClick={() => handleDelete(role._id)}
                                                     />
                                                 </>
                                             )}
@@ -276,8 +256,8 @@ function ListPermissions({ dataPermission, initialMethods }: IProps) {
                 <Divider />
                 <CardActions>
                     <MPagination
-                        totalPages={dataPermission.data?.meta?.totalPages}
-                        currentPage={dataPermission.data?.meta?.currentPage}
+                        totalPages={dataRole.data?.meta?.totalPages}
+                        currentPage={dataRole.data?.meta?.currentPage}
                         onChange={onPageChange}
                     />
                 </CardActions>
@@ -285,6 +265,4 @@ function ListPermissions({ dataPermission, initialMethods }: IProps) {
         </Stack>
     );
 }
-export default ListPermissions;
-
-
+export default ListRole;

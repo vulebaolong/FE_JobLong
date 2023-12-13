@@ -30,13 +30,13 @@ export const getListUserAction = async ({ searchParams }: IProps) => {
         if (searchParams.email) query.push(`email=${searchParams.email.trim()}`);
         if (searchParams.gender) query.push(`gender=${searchParams.gender.trim()}`);
         if (searchParams.role) query.push(`role=${searchParams.role.trim()}`);
-        console.log(searchParams.isDeleted);
+
         if (searchParams.isDeleted === 'false') query.push(`isDeleted!=true`);
 
         // console.log(query);
 
         const data = await sendRequestAction<IModelPaginate<IUser[]>>({
-            url: `users?currentPage=${currentPage}&limit=${limit}&sort=-createdAt&${query.join(
+            url: `users?currentPage=${currentPage}&limit=${limit}&${query.join(
                 '&',
             )}`,
             method: 'GET',

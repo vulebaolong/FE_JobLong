@@ -44,3 +44,28 @@ export const roleOptionsAutocomplete = <T extends { [key: string]: any }>({
             };
         });
 };
+
+export const checkData = (...datas: any[]) => {
+    const result = {
+        success: true,
+        messages: [''],
+    };
+
+    const datasError = datas.filter((data) => {
+        return !data.success;
+    });
+
+    if (datasError.length > 0) {
+        const messageError = datasError
+            .map((dataError) => {
+                return dataError.message;
+            })
+        result.success = false;
+        result.messages = messageError;
+        return result;
+    }
+
+    result.success = true;
+    result.messages = [''];
+    return result;
+};
