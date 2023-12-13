@@ -1,3 +1,4 @@
+import { IPermission } from '@/interface/permission';
 import { ReadonlyURLSearchParams } from 'next/navigation';
 
 export interface IOptionAutocomplete {

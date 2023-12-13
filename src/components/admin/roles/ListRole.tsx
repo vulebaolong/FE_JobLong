@@ -55,7 +55,7 @@ import TableCellNote from '@/components/common/table/TableCellNote';
 import TooltipRowTable from '@/components/common/table/TooltipRowTable';
 
 interface IProps {
-    dataRole: IModelPaginate<IRole[]>
+    dataRole: IModelPaginate<IRole[]>;
     initialActives: IOptionAutocomplete[];
 }
 
@@ -115,13 +115,13 @@ function ListRole({ dataRole, initialActives }: IProps) {
     const handleDelete = async (id: string) => {
         // const dataDelete = await deletePermissionByIdAction(id);
         // return dataDelete.success;
-        return true
+        return true;
     };
 
     const handleRestore = async (id: string) => {
         // const dataRestore = await restorePermissionByIdAction(id);
         // return dataRestore.success;
-        return true
+        return true;
     };
 
     return (
@@ -156,7 +156,10 @@ function ListRole({ dataRole, initialActives }: IProps) {
                             value={searchForm.values.isActive}
                             renderInput={(params) => <TextField {...params} label="Status" />}
                             onChange={(_, value) => {
-                                searchForm.setFieldValue('isActive', value || { label: '', id: '' });
+                                searchForm.setFieldValue(
+                                    'isActive',
+                                    value || { label: '', id: '' },
+                                );
                             }}
                         />
                     </Stack>
@@ -208,7 +211,7 @@ function ListRole({ dataRole, initialActives }: IProps) {
                                         <TableCell>
                                             <Chip
                                                 variant="outlined"
-                                                color={ role.isActive ? 'success' : 'error'}
+                                                color={role.isActive ? 'success' : 'error'}
                                                 size="small"
                                                 label={role.isActive ? 'active' : 'not'}
                                             />
@@ -224,22 +227,16 @@ function ListRole({ dataRole, initialActives }: IProps) {
                                             {role.isDeleted ? (
                                                 <>
                                                     <EditButton
-                                                        href={ROUTES.ADMIN.ROLE.DETAIL(
-                                                            role._id,
-                                                        )}
+                                                        href={ROUTES.ADMIN.ROLE.DETAIL(role._id)}
                                                     />
                                                     <RestoreButton
-                                                        onClick={() =>
-                                                            handleRestore(role._id)
-                                                        }
+                                                        onClick={() => handleRestore(role._id)}
                                                     />
                                                 </>
                                             ) : (
                                                 <>
                                                     <EditButton
-                                                        href={ROUTES.ADMIN.ROLE.DETAIL(
-                                                            role._id,
-                                                        )}
+                                                        href={ROUTES.ADMIN.ROLE.DETAIL(role._id)}
                                                     />
                                                     <DeleteButton
                                                         onClick={() => handleDelete(role._id)}

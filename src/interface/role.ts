@@ -17,3 +17,10 @@ export interface IRole {
 
     __v: number;
 }
+
+export interface ICreateRole {
+    name: string;
+    description: string;
+    isActive: boolean;
+    permissions: string[];
+}

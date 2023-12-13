@@ -15,7 +15,7 @@ const UserCreatePage = async () => {
         { label: TEXT.AUTOCOMPLETE.FEMALE, id: '2' },
     ];
     const initialCompaies = buildOptionsAutocomplete<ICompany>({
-        list: dataCompanies.data?.result || [],
+        list: dataCompanies.data?.data?.result || [],
         keyId: '_id',
         keyLabel: 'name',
     });

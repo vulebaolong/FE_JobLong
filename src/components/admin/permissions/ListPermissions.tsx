@@ -286,5 +286,3 @@ function ListPermissions({ dataPermission, initialMethods }: IProps) {
     );
 }
 export default ListPermissions;
-
-

@@ -1,4 +1,4 @@
-import { Box, Checkbox, FormControlLabel, Stack, TableCell, Typography } from "@mui/material";
+import { Box, Checkbox, FormControlLabel, Stack, TableCell, Typography } from '@mui/material';
 import AutorenewIcon from '@mui/icons-material/Autorenew';
 
 interface IPropsTableCellNote {
@@ -36,4 +36,4 @@ function TableCellNote({ total, onChange, checked, loading }: IPropsTableCellNot
     );
 }
 
-export default TableCellNote
+export default TableCellNote;

@@ -16,7 +16,7 @@ export interface IUser {
         name: string;
     };
     role: { _id: string; name: string };
-    
+
     isDeleted: boolean;
     deletedBy: ActionBy;
     deletedAt: any;
