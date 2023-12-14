@@ -72,33 +72,11 @@ export const ListSkeleton = ({ rowsNum }: IProps) => {
                                 <Table sx={{ minWidth: 650 }} size="small">
                                     <TableHead>
                                         <TableRow>
-                                            <TableCell>
-                                                <Skeleton animation="wave" variant="text" />
-                                            </TableCell>
-                                            <TableCell>
-                                                <Skeleton animation="wave" variant="text" />
-                                            </TableCell>
-                                            <TableCell>
-                                                <Skeleton animation="wave" variant="text" />
-                                            </TableCell>
-                                            <TableCell>
-                                                <Skeleton animation="wave" variant="text" />
-                                            </TableCell>
-                                            <TableCell>
-                                                <Skeleton animation="wave" variant="text" />
-                                            </TableCell>
-                                            <TableCell>
-                                                <Skeleton animation="wave" variant="text" />
-                                            </TableCell>
-                                            <TableCell>
-                                                <Skeleton animation="wave" variant="text" />
-                                            </TableCell>
-                                            <TableCell>
-                                                <Skeleton animation="wave" variant="text" />
-                                            </TableCell>
-                                            <TableCell>
-                                                <Skeleton animation="wave" variant="text" />
-                                            </TableCell>
+                                            {[...Array(10)].map((user, index) => (
+                                                <TableCell>
+                                                    <Skeleton animation="wave" variant="text" />
+                                                </TableCell>
+                                            ))}
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>

@@ -1,31 +1,47 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 interface IInitialState {
-    listPermissionSelected: string[];
-    switchModule: boolean;
+    listPermissionSelectedCreate: string[];
+    listPermissionSelectedEdit: string[];
 }
 
 const initialState: IInitialState = {
-    listPermissionSelected: [],
-    switchModule: false,
+    listPermissionSelectedCreate: [],
+    listPermissionSelectedEdit: [],
 };
 
 const roleSlice = createSlice({
     name: 'roleSlice',
     initialState,
     reducers: {
-        addPermissionSelected: (state, { payload }: { payload: string }) => {
-            state.listPermissionSelected.push(payload);
-            state.switchModule = true;
+        addPermissionSelectedCreate: (state, { payload }: { payload: string }) => {
+            state.listPermissionSelectedCreate.push(payload);
         },
-        removePermissionSelected: (state, { payload }: { payload: string }) => {
-            state.listPermissionSelected = state.listPermissionSelected.filter(
+        removePermissionSelectedCreate: (state, { payload }: { payload: string }) => {
+            state.listPermissionSelectedCreate = state.listPermissionSelectedCreate.filter(
                 (item) => item !== payload,
             );
+        },
+        addPermissionSelectedEdit: (state, { payload }) => {
+            state.listPermissionSelectedEdit.push(payload);
+        },
+        removePermissionSelectedEdit: (state, { payload }) => {
+            state.listPermissionSelectedEdit = state.listPermissionSelectedEdit.filter(
+                (item) => item !== payload,
+            );
+        },
+        setInitPermissionSelectedEdit: (state, { payload }) => {
+            state.listPermissionSelectedEdit = payload;
         },
     },
 });
 
-export const { addPermissionSelected, removePermissionSelected } = roleSlice.actions;
+export const {
+    addPermissionSelectedCreate,
+    removePermissionSelectedCreate,
+    addPermissionSelectedEdit,
+    removePermissionSelectedEdit,
+    setInitPermissionSelectedEdit,
+} = roleSlice.actions;
 
 export default roleSlice.reducer;

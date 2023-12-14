@@ -1,9 +1,11 @@
+import { IItemPermission } from './permission';
+
 export interface IRole {
     _id: string;
     name: string;
     description: string;
     isActive: boolean;
-    permissions: string[];
+    permissions: IItemPermission[];
 
     isDeleted: boolean;
     deletedBy: ActionBy;
@@ -19,6 +21,13 @@ export interface IRole {
 }
 
 export interface ICreateRole {
+    name: string;
+    description: string;
+    isActive: boolean;
+    permissions: string[];
+}
+
+export interface IUpdateRole extends ICreateRole {
     name: string;
     description: string;
     isActive: boolean;

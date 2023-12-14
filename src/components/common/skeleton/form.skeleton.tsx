@@ -1,5 +1,4 @@
 import { Box, Card, CardActions, CardContent, Divider, Grid, Skeleton, Stack } from '@mui/material';
-import { TEXT } from '@/constant/text.contants';
 import Content, { ContentBody, ContentHeader } from '../content/Content';
 
 interface IProps {}
@@ -7,7 +6,7 @@ interface IProps {}
 export const FormSkeleton = ({}: IProps) => {
     return (
         <Content>
-            <ContentHeader title={TEXT.TITLE.USER} backButton />
+            <ContentHeader title={"TITLE"} backButton />
             <ContentBody>
                 <Stack gap={3} sx={{ maxWidth: 'sm' }}>
                     <Box component={'form'}>

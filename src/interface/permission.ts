@@ -32,3 +32,7 @@ export interface ICreatePermission {
 }
 
 export interface IUpdatePermission extends ICreatePermission {}
+
+export interface IItemPermission extends ICreatePermission {
+    _id: string;
+}

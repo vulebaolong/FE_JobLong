@@ -1,40 +1,53 @@
 'use client';
 
+import { IDataEditRole, updateRoleAction } from '@/app/admin/roles/action';
+import AlertError from '@/components/common/alert/AlertError';
+import Autocomplete from '@/components/common/autocomplete/Autocomplete';
+import TextField from '@/components/common/textField/TextField';
+import { TEXT } from '@/constant/text.contants';
+import { IOptionAutocomplete, convertStringToBoolean } from '@/helpers/formik.helper';
+import { IRole, IUpdateRole } from '@/interface/role';
+import { toastSuccess } from '@/provider/ToastProvider';
+import { LoadingButton } from '@mui/lab';
 import { Box, Button, Card, CardActions, CardContent, Divider, Grid, Stack } from '@mui/material';
 import { useFormik } from 'formik';
-import { useState } from 'react';
-import * as Yup from 'yup';
-import { LoadingButton } from '@mui/lab';
-import { TEXT } from '@/constant/text.contants';
-import AlertError from '@/components/common/alert/AlertError';
 import { useRouter } from 'next/navigation';
-import TextField from '@/components/common/textField/TextField';
-import { IOptionAutocomplete, convertStringToBoolean } from '@/helpers/formik.helper';
-import Autocomplete from '@/components/common/autocomplete/Autocomplete';
-import { permissionModule } from '@/helpers/function.helper';
+import { useEffect, useState } from 'react';
+import * as Yup from 'yup';
 import ModulePermission from './ModulePermission/ModulePermission';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/redux/store';
-import { createRoleAction } from '@/app/admin/roles/action';
-import { toastSuccess } from '@/provider/ToastProvider';
+import { DispatchType, RootState } from '@/redux/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { setInitPermissionSelectedEdit } from '@/redux/slices/roleSlice';
+import { permissionModule } from '@/helpers/function.helper';
 
 interface IProps {
+    dataEdit: IDataEditRole;
     initialActives: IOptionAutocomplete[];
     permissionModule: permissionModule[];
 }
 
-const CreateRole = ({ initialActives, permissionModule }: IProps) => {
+function EditRole({ dataEdit, permissionModule, initialActives }: IProps) {
+    const { dataRole, dataPermissionSelected } = dataEdit;
+
     const router = useRouter();
-    const { listPermissionSelectedCreate } = useSelector((state: RootState) => state.roleSlice);
+    const dispatch: DispatchType = useDispatch();
     const [errMessage, setErrMessage] = useState<string | undefined>(undefined);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [activeList] = useState<IOptionAutocomplete[]>(initialActives);
 
-    const createForm = useFormik({
+    useEffect(() => {
+        dispatch(setInitPermissionSelectedEdit(dataPermissionSelected));
+    }, []);
+    const { listPermissionSelectedEdit } = useSelector((state: RootState) => state.roleSlice);
+
+    const editForm = useFormik({
         initialValues: {
-            name: '',
-            description: '',
-            isActive: { label: '', id: '' },
+            name: dataRole.name || '',
+            description: dataRole.description || '',
+            isActive: activeList.find((isActive) => isActive.id === `${dataRole.isActive}`) || {
+                label: '',
+                id: '',
+            },
         },
         validationSchema: Yup.object().shape({
             name: Yup.string().required(TEXT.MESSAGE.REQUIRED_FIELD('Name')),
@@ -44,21 +57,22 @@ const CreateRole = ({ initialActives, permissionModule }: IProps) => {
             }),
         }),
         onSubmit: async (valuesRaw) => {
-            setErrMessage(undefined);
-            setIsLoading(true);
-
             const values = {
                 ...valuesRaw,
                 isActive: convertStringToBoolean(valuesRaw.isActive.id),
-                permissions: listPermissionSelectedCreate,
+                permissions: listPermissionSelectedEdit,
             };
+            setErrMessage(undefined);
+            setIsLoading(true);
 
-            const dataCreateRole = await createRoleAction(values);
+            const result = await updateRoleAction(dataRole._id, values as IUpdateRole);
             setIsLoading(false);
 
-            if (!dataCreateRole.success) return setErrMessage(dataCreateRole.message);
+            if (!result.success) return setErrMessage(result.message);
 
-            toastSuccess(TEXT.MESSAGE.CREATE_SUCCESS);
+            setTimeout(() => {
+                toastSuccess(TEXT.MESSAGE.CREATE_SUCCESS);
+            }, 200);
             router.back();
         },
     });
@@ -66,7 +80,7 @@ const CreateRole = ({ initialActives, permissionModule }: IProps) => {
     return (
         <Stack gap={3}>
             {errMessage && <AlertError message={errMessage} />}
-            <Box component={'form'} onSubmit={createForm.handleSubmit}>
+            <Box component={'form'} onSubmit={editForm.handleSubmit}>
                 <Card variant="outlined">
                     <CardContent>
                         <Stack gap={3}>
@@ -78,15 +92,13 @@ const CreateRole = ({ initialActives, permissionModule }: IProps) => {
                                         fullWidth
                                         label="Name"
                                         name="name"
-                                        value={createForm.values.name}
-                                        onChange={createForm.handleChange}
+                                        value={editForm.values.name}
+                                        onChange={editForm.handleChange}
                                         error={
-                                            createForm.touched.name &&
-                                            createForm.errors.name !== undefined
+                                            editForm.touched.name &&
+                                            editForm.errors.name !== undefined
                                         }
-                                        helperText={
-                                            createForm.touched.name && createForm.errors.name
-                                        }
+                                        helperText={editForm.touched.name && editForm.errors.name}
                                     />
                                 </Grid>
 
@@ -95,27 +107,27 @@ const CreateRole = ({ initialActives, permissionModule }: IProps) => {
                                     <Autocomplete
                                         fullWidth
                                         options={activeList}
-                                        value={createForm.values.isActive}
+                                        value={editForm.values.isActive}
                                         renderInput={(params) => {
                                             return (
                                                 <TextField
                                                     {...params}
                                                     label="Status"
                                                     error={
-                                                        createForm.touched.isActive &&
-                                                        Boolean(createForm.errors.isActive)
+                                                        editForm.touched.isActive &&
+                                                        Boolean(editForm.errors.isActive)
                                                     }
                                                     helperText={
-                                                        createForm.touched.isActive &&
-                                                        createForm.errors.isActive
-                                                            ? createForm.errors.isActive.label
+                                                        editForm.touched.isActive &&
+                                                        editForm.errors.isActive
+                                                            ? editForm.errors.isActive.label
                                                             : ''
                                                     }
                                                 />
                                             );
                                         }}
                                         onChange={(_, value) => {
-                                            createForm.setFieldValue(
+                                            editForm.setFieldValue(
                                                 'isActive',
                                                 value || { label: '', id: '' },
                                             );
@@ -129,20 +141,20 @@ const CreateRole = ({ initialActives, permissionModule }: IProps) => {
                                 fullWidth
                                 label="Description"
                                 name="description"
-                                value={createForm.values.description}
-                                onChange={createForm.handleChange}
+                                value={editForm.values.description}
+                                onChange={editForm.handleChange}
                                 error={
-                                    createForm.touched.description &&
-                                    createForm.errors.description !== undefined
+                                    editForm.touched.description &&
+                                    editForm.errors.description !== undefined
                                 }
                                 helperText={
-                                    createForm.touched.description && createForm.errors.description
+                                    editForm.touched.description && editForm.errors.description
                                 }
                             />
 
                             {/* Accordion */}
                             <ModulePermission
-                                type="createRole"
+                                type={'editRole'}
                                 permissionModule={permissionModule}
                             />
                         </Stack>
@@ -155,7 +167,7 @@ const CreateRole = ({ initialActives, permissionModule }: IProps) => {
                             color="primary"
                             loading={isLoading}
                         >
-                            {TEXT.BUTTON_TEXT.ADD}
+                            {TEXT.BUTTON_TEXT.EDIT}
                         </LoadingButton>
                         <Button onClick={() => router.back()} disabled={isLoading}>
                             {TEXT.BUTTON_TEXT.CANCEL}
@@ -165,6 +177,5 @@ const CreateRole = ({ initialActives, permissionModule }: IProps) => {
             </Box>
         </Stack>
     );
-};
-
-export default CreateRole;
+}
+export default EditRole;

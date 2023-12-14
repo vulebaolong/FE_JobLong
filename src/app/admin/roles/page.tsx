@@ -38,7 +38,10 @@ async function RolesPage({ searchParams }: IProps) {
             />
             <ContentBody>
                 {success ? (
-                    <ListRole dataRole={dataRole.data as IModelPaginate<IRole[]>} initialActives={initialActives} />
+                    <ListRole
+                        dataRole={dataRole.data as IModelPaginate<IRole[]>}
+                        initialActives={initialActives}
+                    />
                 ) : (
                     <Stack spacing={2}>
                         {messages.map((message, index) => (
