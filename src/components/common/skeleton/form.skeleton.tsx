@@ -6,7 +6,7 @@ interface IProps {}
 export const FormSkeleton = ({}: IProps) => {
     return (
         <Content>
-            <ContentHeader title={"TITLE"} backButton />
+            <ContentHeader title={'TITLE'} backButton />
             <ContentBody>
                 <Stack gap={3} sx={{ maxWidth: 'sm' }}>
                     <Box component={'form'}>

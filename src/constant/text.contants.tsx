@@ -25,6 +25,9 @@ export const TEXT = {
         ROLE: 'Role',
         ROLE_CREATE: 'Create Role',
         ROLE_EDIT: 'Edit Role',
+        JOB: 'Job',
+        JOB_CREATE: 'Create Job',
+        JOB_EDIT: 'Edit Job',
     },
     AUTOCOMPLETE: {
         MALE: 'Male',

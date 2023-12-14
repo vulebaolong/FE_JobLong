@@ -274,7 +274,7 @@ export const deleteRoleByIdAction = async (id: string) => {
         reuslt.message = error.message;
         return reuslt;
     }
-}
+};
 
 export const restoreRoleByIdAction = async (id: string) => {
     const reuslt: IResult<IResponseUpdate> = {

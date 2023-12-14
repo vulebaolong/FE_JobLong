@@ -25,7 +25,7 @@ export const ListSkeleton = ({ rowsNum }: IProps) => {
     return (
         <Content>
             <ContentHeader
-                title={TEXT.TITLE.USER}
+                title={"TITLE"}
                 rightContent={
                     <NavButton href={ROUTES.ADMIN.USERS.CREATE} text={TEXT.BUTTON_TEXT.ADD} />
                 }

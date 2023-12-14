@@ -3,12 +3,10 @@ import {
     IDataEditRole,
     getDataPermissionProcessed,
     getDataRoleProcessed,
-    getRoleByIdAction,
 } from '../action';
 import { TEXT } from '@/constant/text.contants';
 import Content, { ContentBody, ContentHeader } from '@/components/common/content/Content';
 import EditRole from '@/components/admin/roles/EditRole';
-import { IRole } from '@/interface/role';
 import { Stack } from '@mui/material';
 import AlertError from '@/components/common/alert/AlertError';
 

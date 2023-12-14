@@ -1,4 +1,15 @@
-import { Box, Card, CardActions, CardContent, CardHeader, Divider, Grid, Skeleton, Stack, Typography } from '@mui/material';
+import {
+    Box,
+    Card,
+    CardActions,
+    CardContent,
+    CardHeader,
+    Divider,
+    Grid,
+    Skeleton,
+    Stack,
+    Typography,
+} from '@mui/material';
 import Content, { ContentBody, ContentHeader } from '../content/Content';
 
 function ModulePermissionSkeleton() {
@@ -31,19 +42,22 @@ function ModulePermissionSkeleton() {
                                     <Card variant="outlined">
                                         <CardHeader
                                             title={
-                                                <Typography variant="subtitle1">
-                                                    Title
-                                                </Typography>
+                                                <Typography variant="subtitle1">Title</Typography>
                                             }
                                             subheader={
-                                                <Typography variant="body2">
-                                                    Description
-                                                </Typography>
+                                                <Typography variant="body2">Description</Typography>
                                             }
                                         />
                                         <CardContent>
                                             {[...Array(10)].map((_, index) => {
-                                                return <Skeleton animation="wave" variant="text" height={52} key={index}/>
+                                                return (
+                                                    <Skeleton
+                                                        animation="wave"
+                                                        variant="text"
+                                                        height={52}
+                                                        key={index}
+                                                    />
+                                                );
                                             })}
                                         </CardContent>
                                     </Card>
