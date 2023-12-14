@@ -1,12 +1,12 @@
 'use client';
 
-import { Ijob } from '@/interface/job';
+import { IJob } from '@/interface/job';
 import ItemJob from './ItemJob';
 import { Button } from '@mui/material';
 import { getListJobsAction } from '@/app/(customer)/job/actions';
 
 interface IProps {
-    dataJob?: IModelPaginate<Ijob[]>;
+    dataJob?: IModelPaginate<IJob[]>;
 }
 
 function ListJob({ dataJob }: IProps) {

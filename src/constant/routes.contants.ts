@@ -17,5 +17,9 @@ export const ROUTES = {
             CREATE: `${ROUTE_BASE}roles/create`,
             DETAIL: (id: string) => `${ROUTE_BASE}roles/${id}`,
         },
+        JOB: {
+            CREATE: `${ROUTE_BASE}jobs/create`,
+            DETAIL: (id: string) => `${ROUTE_BASE}jobs/${id}`,
+        },
     },
 };

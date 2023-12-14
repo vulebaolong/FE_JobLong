@@ -1,6 +1,6 @@
 'use client';
 import { BASE_URL_SERVER, FOLDER_IMAGE_COMPANY } from '@/constant/apiContants';
-import { Ijob } from '@/interface/job';
+import { IJob } from '@/interface/job';
 import { Card, CardActionArea } from '@mui/material';
 import Image from 'next/image';
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
@@ -11,7 +11,7 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import { useRouter } from 'next/navigation';
 dayjs.extend(relativeTime);
 
-function ItemJob({ job }: { job: Ijob }) {
+function ItemJob({ job }: { job: IJob }) {
     const router = useRouter();
     const handleClick = (id: string) => {
         router.push(`/job/${id}`);

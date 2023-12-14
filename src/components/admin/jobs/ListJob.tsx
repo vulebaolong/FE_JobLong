@@ -17,6 +17,7 @@ import {
     Tooltip,
 } from '@mui/material';
 import MPagination from '@/components/common/pagination/MPagination';
+import EditButton from '@/components/common/button/EditButton';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { routerReplace } from '@/helpers/router.helper';
 import { TEXT } from '@/constant/text.contants';
@@ -28,34 +29,37 @@ import {
     convertStringToBoolean,
     initValueFormik,
 } from '@/helpers/formik.helper';
-import Autocomplete from '@/components/common/autocomplete/Autocomplete';
 import { ROUTES } from '@/constant/routes.contants';
+import DeleteButton from '@/components/common/button/DeleteButton';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
-import EditButton from '@/components/common/button/EditButton';
 import RestoreButton from '@/components/common/button/RestoreButton';
-import DeleteButton from '@/components/common/button/DeleteButton';
-import { IRole } from '@/interface/role';
+import Autocomplete from '@/components/common/autocomplete/Autocomplete';
 import TableCellNote from '@/components/common/table/TableCellNote';
+import { IJob } from '@/interface/job';
 import TooltipRowTable from '@/components/common/table/TooltipRowTable';
-import { deleteRoleByIdAction, restoreRoleByIdAction } from '@/app/admin/roles/action';
 
 interface IProps {
-    dataRole: IModelPaginate<IRole[]>;
+    dataJob: IModelPaginate<IJob[]>;
     initialActives: IOptionAutocomplete[];
+    initialCompaies: IOptionAutocomplete[];
 }
 
-function ListRole({ dataRole, initialActives }: IProps) {
+function ListJob({ dataJob, initialActives, initialCompaies }: IProps) {
     const router = useRouter();
     const pathname = usePathname();
     const searchParams = useSearchParams();
-
     const [activeList] = useState<IOptionAutocomplete[]>(initialActives);
+    const [companiesList] = useState<IOptionAutocomplete[]>(initialCompaies);
 
     const searchForm = useFormik({
         initialValues: {
             name: searchParams.get('name') || '',
-            description: searchParams.get('description') || '',
+            salary: searchParams.get('salary') || '',
+            skills: searchParams.get('skills') || '',
+            company: initValueFormik('company', companiesList, searchParams),
+            location: searchParams.get('location') || '',
+            level: searchParams.get('level') || '',
             isActive: initValueFormik('isActive', activeList, searchParams),
 
             currentPage: searchParams.get('currentPage') || 1,
@@ -70,6 +74,7 @@ function ListRole({ dataRole, initialActives }: IProps) {
                 searchParams,
                 newSearchParams: {
                     ...values,
+                    company: values.company.id || '',
                     isActive: values.isActive.id || '',
                     isDeleted: values.isDeleted,
                 },
@@ -89,8 +94,13 @@ function ListRole({ dataRole, initialActives }: IProps) {
 
     const onResetSearch = () => {
         searchForm.setFieldValue('name', '');
-        searchForm.setFieldValue('description', '');
+        searchForm.setFieldValue('salary', '');
+        searchForm.setFieldValue('skills', '');
+        searchForm.setFieldValue('company', { label: '', id: '' });
+        searchForm.setFieldValue('location', '');
+        searchForm.setFieldValue('level', '');
         searchForm.setFieldValue('isActive', { label: '', id: '' });
+        searchForm.setFieldValue('currentPage', 1);
         searchForm.submitForm();
     };
 
@@ -100,13 +110,15 @@ function ListRole({ dataRole, initialActives }: IProps) {
     };
 
     const handleDelete = async (id: string) => {
-        const dataDelete = await deleteRoleByIdAction(id);
-        return dataDelete.success;
+        // const dataDeleteUser = await deleteUserByIdAction(id);
+        // return dataDeleteUser.success;
+        return true;
     };
 
     const handleRestore = async (id: string) => {
-        const dataRestore = await restoreRoleByIdAction(id);
-        return dataRestore.success;
+        // const dataRestoreUser = await restoreUserByIdAction(id);
+        // return dataRestoreUser.success;
+        return true;
     };
 
     return (
@@ -124,12 +136,51 @@ function ListRole({ dataRole, initialActives }: IProps) {
                             onChange={searchForm.handleChange}
                         />
 
-                        {/* Description */}
+                        {/* Salary */}
                         <TextField
                             sx={{ width: '300px' }}
-                            label="Description"
-                            name="description"
-                            value={searchForm.values.description}
+                            label="Salary"
+                            name="salary"
+                            value={searchForm.values.salary}
+                            onChange={searchForm.handleChange}
+                        />
+
+                        {/* Skills */}
+                        <TextField
+                            sx={{ width: '300px' }}
+                            label="Skills"
+                            name="skills"
+                            value={searchForm.values.skills}
+                            onChange={searchForm.handleChange}
+                        />
+
+                        {/* Company */}
+                        <Autocomplete
+                            sx={{ width: '300px' }}
+                            size="small"
+                            options={companiesList}
+                            value={searchForm.values.company}
+                            renderInput={(params) => <TextField {...params} label="Company" />}
+                            onChange={(_, value) => {
+                                searchForm.setFieldValue('company', value || { label: '', id: '' });
+                            }}
+                        />
+
+                        {/* Location */}
+                        <TextField
+                            sx={{ width: '300px' }}
+                            label="Location"
+                            name="location"
+                            value={searchForm.values.location}
+                            onChange={searchForm.handleChange}
+                        />
+
+                        {/* Level */}
+                        <TextField
+                            sx={{ width: '300px' }}
+                            label="Level"
+                            name="level"
+                            value={searchForm.values.level}
                             onChange={searchForm.handleChange}
                         />
 
@@ -166,7 +217,7 @@ function ListRole({ dataRole, initialActives }: IProps) {
                             <TableHead>
                                 <TableRow>
                                     <TableCellNote
-                                        total={dataRole.data?.meta?.totalItems || 0}
+                                        total={dataJob.data?.meta?.totalItems || 0}
                                         onChange={handleCheckBox}
                                         checked={searchForm.values.isDeleted}
                                         loading={true}
@@ -175,56 +226,65 @@ function ListRole({ dataRole, initialActives }: IProps) {
 
                                 <TableRow>
                                     <TableCell>Name</TableCell>
-                                    <TableCell>description</TableCell>
+                                    <TableCell>Salary</TableCell>
+                                    <TableCell>Skills</TableCell>
+                                    <TableCell>Company</TableCell>
+                                    <TableCell>Location</TableCell>
+                                    <TableCell>Level</TableCell>
                                     <TableCell>Status</TableCell>
                                     <TableCell>Deleted</TableCell>
                                     <TableCell>Action</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {dataRole.data?.result?.map((role) => (
-                                    <TableRow key={role._id}>
+                                {dataJob.data?.result?.map((job) => (
+                                    <TableRow key={job._id}>
                                         <TableCell>
                                             <Tooltip
-                                                title={<TooltipRowTable data={role} />}
+                                                title={<TooltipRowTable data={job} />}
                                                 placement="top"
                                             >
-                                                <div>{role.name}</div>
+                                                <div>{job.name}</div>
                                             </Tooltip>
                                         </TableCell>
-                                        <TableCell>{role.description}</TableCell>
+                                        <TableCell>{job.salary}</TableCell>
+                                        <TableCell>{job.skills}</TableCell>
+                                        <TableCell>{job.company.name}</TableCell>
+                                        <TableCell>{job.location}</TableCell>
+                                        <TableCell>{job.level}</TableCell>
                                         <TableCell>
                                             <Chip
                                                 variant="outlined"
-                                                color={role.isActive ? 'success' : 'error'}
+                                                color={job.isActive ? 'success' : 'error'}
                                                 size="small"
-                                                label={role.isActive ? 'active' : 'not'}
+                                                label={job.isActive ? 'active' : 'not'}
                                             />
                                         </TableCell>
+
                                         <TableCell>
-                                            {role.isDeleted ? (
+                                            {job.isDeleted ? (
                                                 <ThumbDownIcon fontSize="small" color="error" />
                                             ) : (
                                                 <ThumbUpIcon fontSize="small" color="primary" />
                                             )}
                                         </TableCell>
                                         <TableCell>
-                                            {role.isDeleted ? (
+                                            {job.isDeleted ? (
                                                 <>
                                                     <EditButton
-                                                        href={ROUTES.ADMIN.ROLE.DETAIL(role._id)}
+                                                        href={ROUTES.ADMIN.JOB.DETAIL(job._id)}
                                                     />
                                                     <RestoreButton
-                                                        onClick={() => handleRestore(role._id)}
+                                                        onClick={() => handleRestore(job._id)}
                                                     />
                                                 </>
                                             ) : (
                                                 <>
                                                     <EditButton
-                                                        href={ROUTES.ADMIN.ROLE.DETAIL(role._id)}
+                                                        href={ROUTES.ADMIN.JOB.DETAIL(job._id)}
                                                     />
                                                     <DeleteButton
-                                                        onClick={() => handleDelete(role._id)}
+                                                        onClick={() => handleDelete(job._id)}
                                                     />
                                                 </>
                                             )}
@@ -238,8 +298,8 @@ function ListRole({ dataRole, initialActives }: IProps) {
                 <Divider />
                 <CardActions>
                     <MPagination
-                        totalPages={dataRole.data?.meta?.totalPages}
-                        currentPage={dataRole.data?.meta?.currentPage}
+                        totalPages={dataJob.data?.meta?.totalPages}
+                        currentPage={dataJob.data?.meta?.currentPage}
                         onChange={onPageChange}
                     />
                 </CardActions>
@@ -247,4 +307,4 @@ function ListRole({ dataRole, initialActives }: IProps) {
         </Stack>
     );
 }
-export default ListRole;
+export default ListJob;

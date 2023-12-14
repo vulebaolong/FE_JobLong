@@ -1,6 +1,6 @@
 'use client';
 
-import { Ijob } from '@/interface/job';
+import { IJob } from '@/interface/job';
 import { Button, Chip } from '@mui/material';
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import PaidOutlinedIcon from '@mui/icons-material/PaidOutlined';
@@ -13,7 +13,7 @@ import DOMPurify from 'isomorphic-dompurify';
 import { useRouter } from 'next/navigation';
 
 interface IProps {
-    dataJob?: IBackendRes<Ijob>;
+    dataJob?: IBackendRes<IJob>;
 }
 
 function DetailJob({ dataJob }: IProps) {

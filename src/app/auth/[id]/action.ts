@@ -1,13 +1,8 @@
 'use server';
 
 import { sendRequestAction } from '@/app/action';
-import {
-    deleteSessionUser,
-    getSessionUser,
-    parserCookies,
-    setSessionUser,
-} from '@/helpers/cookies';
-import { ILoginRequest, ISessionUser, IUserLogin } from '@/interface/auth';
+import { deleteSessionUser, parserCookies, setSessionUser } from '@/helpers/cookies';
+import { ILoginRequest, ISessionUser } from '@/interface/auth';
 
 export const loginAction = async (value: ILoginRequest) => {
     const resultRaw = await sendRequestAction<IBackendRes<ISessionUser>>({
