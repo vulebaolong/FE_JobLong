@@ -90,6 +90,7 @@ function ListRole({ dataRole, initialActives }: IProps) {
     const onResetSearch = () => {
         searchForm.setFieldValue('name', '');
         searchForm.setFieldValue('description', '');
+        searchForm.setFieldValue('isActive', { label: '', id: '' });
         searchForm.submitForm();
     };
 

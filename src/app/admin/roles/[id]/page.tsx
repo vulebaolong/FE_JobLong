@@ -1,9 +1,5 @@
 import { checkData, permissionModule } from '@/helpers/function.helper';
-import {
-    IDataEditRole,
-    getDataPermissionProcessed,
-    getDataRoleProcessed,
-} from '../action';
+import { IDataEditRole, getDataPermissionProcessed, getDataRoleProcessed } from '../action';
 import { TEXT } from '@/constant/text.contants';
 import Content, { ContentBody, ContentHeader } from '@/components/common/content/Content';
 import EditRole from '@/components/admin/roles/EditRole';

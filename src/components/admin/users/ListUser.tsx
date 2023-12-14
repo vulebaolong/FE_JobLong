@@ -7,10 +7,8 @@ import {
     Card,
     CardActions,
     CardContent,
-    Checkbox,
     Chip,
     Divider,
-    FormControlLabel,
     Stack,
     Table,
     TableBody,
@@ -19,7 +17,6 @@ import {
     TableHead,
     TableRow,
     Tooltip,
-    Typography,
 } from '@mui/material';
 import MPagination from '@/components/common/pagination/MPagination';
 import EditButton from '@/components/common/button/EditButton';
@@ -39,14 +36,8 @@ import { ROUTES } from '@/constant/routes.contants';
 import DeleteButton from '@/components/common/button/DeleteButton';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
-import AutorenewIcon from '@mui/icons-material/Autorenew';
 import RestoreButton from '@/components/common/button/RestoreButton';
 import { deleteUserByIdAction, restoreUserByIdAction } from '@/app/admin/users/action';
-import {
-    CreatedInfoAction,
-    DeletedInfoAction,
-    UpdatedInfoAction,
-} from '@/components/common/infoAction/InfoAction';
 import { ROLE_ADMIN, ROLE_HR, ROLE_USER } from '@/constant/role.constant';
 import Autocomplete from '@/components/common/autocomplete/Autocomplete';
 import TableCellNote from '@/components/common/table/TableCellNote';
@@ -98,12 +89,8 @@ function ListUser({ dataUser, initialCompaies, initialRole, initialGender }: IPr
     });
 
     const onPageChange = (_: any, currentPage: number) => {
-        routerReplace({
-            router,
-            pathname,
-            searchParams,
-            newSearchParams: { currentPage: currentPage },
-        });
+        searchForm.setFieldValue('currentPage', currentPage);
+        searchForm.submitForm();
     };
 
     const onSearch = () => {
@@ -282,7 +269,7 @@ function ListUser({ dataUser, initialCompaies, initialRole, initialGender }: IPr
                                         </TableCell>
                                         <TableCell>{user.address}</TableCell>
                                         <TableCell>{user.age}</TableCell>
-                                        <TableCell>{user?.company?.name}</TableCell>
+                                        <TableCell>{user.company?.name}</TableCell>
                                         <TableCell>{user.email}</TableCell>
                                         <TableCell>{user.gender}</TableCell>
                                         <TableCell>

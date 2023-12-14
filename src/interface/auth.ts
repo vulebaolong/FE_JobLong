@@ -1,4 +1,4 @@
-import { User } from 'next-auth';
+// import { User } from 'next-auth';
 
 export interface ILoginRequest {
     username: string;
@@ -13,7 +13,7 @@ export interface IUserLogin {
     role: string;
 }
 
-export interface ISessionUser extends User {
+export interface ISessionUser {
     user: IUserLogin;
     access_token: string;
     refresh_token: string;

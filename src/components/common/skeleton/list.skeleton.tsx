@@ -25,7 +25,7 @@ export const ListSkeleton = ({ rowsNum }: IProps) => {
     return (
         <Content>
             <ContentHeader
-                title={"TITLE"}
+                title={'TITLE'}
                 rightContent={
                     <NavButton href={ROUTES.ADMIN.USERS.CREATE} text={TEXT.BUTTON_TEXT.ADD} />
                 }
@@ -72,8 +72,8 @@ export const ListSkeleton = ({ rowsNum }: IProps) => {
                                 <Table sx={{ minWidth: 650 }} size="small">
                                     <TableHead>
                                         <TableRow>
-                                            {[...Array(10)].map((user, index) => (
-                                                <TableCell>
+                                            {[...Array(5)].map((user, index) => (
+                                                <TableCell key={index}>
                                                     <Skeleton animation="wave" variant="text" />
                                                 </TableCell>
                                             ))}
@@ -82,18 +82,6 @@ export const ListSkeleton = ({ rowsNum }: IProps) => {
                                     <TableBody>
                                         {[...Array(10)].map((user, index) => (
                                             <TableRow key={index}>
-                                                <TableCell>
-                                                    <Skeleton animation="wave" variant="text" />
-                                                </TableCell>
-                                                <TableCell>
-                                                    <Skeleton animation="wave" variant="text" />
-                                                </TableCell>
-                                                <TableCell>
-                                                    <Skeleton animation="wave" variant="text" />
-                                                </TableCell>
-                                                <TableCell>
-                                                    <Skeleton animation="wave" variant="text" />
-                                                </TableCell>
                                                 <TableCell>
                                                     <Skeleton animation="wave" variant="text" />
                                                 </TableCell>

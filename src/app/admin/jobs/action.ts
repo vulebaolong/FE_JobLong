@@ -1,7 +1,7 @@
-'use server'
+'use server';
 
-import { sendRequestAction } from "@/app/action";
-import { IJob } from "@/interface/job";
+import { sendRequestAction } from '@/app/action';
+import { IJob } from '@/interface/job';
 
 interface IProps {
     searchParams: { [key: string]: string | undefined };
