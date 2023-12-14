@@ -1,32 +1,39 @@
 import { IPermission } from '@/interface/permission';
-import { addPermissionSelected, removePermissionSelected } from '@/redux/slices/roleSlice';
-import { DispatchType } from '@/redux/store';
+import {
+    addPermissionSelectedCreate,
+    removePermissionSelectedCreate,
+} from '@/redux/slices/roleSlice';
+import { DispatchType, RootState } from '@/redux/store';
 import { Box, Card, Chip, Grid, Stack, Switch, Typography } from '@mui/material';
-import { ChangeEvent } from 'react';
-import { useDispatch } from 'react-redux';
+import { ChangeEvent, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 interface IProps {
     permission: IPermission;
 }
 
-function ItemPermission({ permission }: IProps) {
+function ItemPermissionCreate({ permission }: IProps) {
     const dispatch: DispatchType = useDispatch();
+    const { listPermissionSelectedCreate } = useSelector((state: RootState) => state.roleSlice);
+    const [checked, setChecked] = useState(listPermissionSelectedCreate.includes(permission._id));
 
     const handleChangeSwitch = (e: ChangeEvent<HTMLInputElement>, id: string) => {
         const isChecked = e.target.checked;
+        setChecked(isChecked);
 
         if (isChecked) {
-            dispatch(addPermissionSelected(id));
+            dispatch(addPermissionSelectedCreate(id));
         } else {
-            dispatch(removePermissionSelected(id));
+            dispatch(removePermissionSelectedCreate(id));
         }
     };
+
     return (
-        <Grid item xs={6} key={permission._id}>
+        <Grid item xs={6}>
             <Card variant="outlined">
                 <Stack padding={2} direction={'row'} gap={2}>
                     <Switch
-                        defaultChecked={false}
+                        checked={checked}
                         onChange={(e) => handleChangeSwitch(e, permission._id)}
                     />
                     <Box>
@@ -62,4 +69,4 @@ function ItemPermission({ permission }: IProps) {
         </Grid>
     );
 }
-export default ItemPermission;
+export default ItemPermissionCreate;

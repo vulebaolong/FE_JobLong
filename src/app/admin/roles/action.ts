@@ -1,17 +1,16 @@
 'use server';
 
 import { sendRequestAction } from '@/app/action';
-import { ICreateRole, IRole } from '@/interface/role';
+import { ICreateRole, IRole, IUpdateRole } from '@/interface/role';
 import { getListPermissionsAction } from '../permissions/action';
 import { permissionModule, filterAndGroupArrayPermission } from '@/helpers/function.helper';
 import { IPermission } from '@/interface/permission';
 import { revalidateTag } from 'next/cache';
 
-interface IProps {
+interface IPropsListRoleAction {
     searchParams: { [key: string]: string | undefined };
 }
-
-export const getListRoleAction = async ({ searchParams }: IProps) => {
+export const getListRoleAction = async ({ searchParams }: IPropsListRoleAction) => {
     const reuslt: IResult<IModelPaginate<IRole[]>> = {
         success: true,
         data: null,
@@ -104,7 +103,6 @@ export const createRoleAction = async (body: ICreateRole) => {
         data: null,
         message: '',
     };
-
     try {
         const data = await sendRequestAction<IBackendRes<IRole[]>>({
             url: `roles`,
@@ -123,7 +121,7 @@ export const createRoleAction = async (body: ICreateRole) => {
         reuslt.data = data;
         reuslt.message = data.message;
 
-        revalidateTag('getListPermissionsAction');
+        revalidateTag('getListRoleAction');
 
         return reuslt;
     } catch (error: any) {
@@ -156,6 +154,84 @@ export const getRoleByIdAction = async (id: string) => {
         reuslt.success = true;
         reuslt.data = data.data;
         reuslt.message = data.message;
+
+        return reuslt;
+    } catch (error: any) {
+        reuslt.success = false;
+        reuslt.data = null;
+        reuslt.message = error.message;
+        return reuslt;
+    }
+};
+
+export interface IDataEditRole {
+    dataRole: IRole;
+    dataPermissionSelected: string[];
+}
+export const getDataRoleProcessed = async (id: string) => {
+    const reuslt: IResult<IDataEditRole> = {
+        success: true,
+        data: null,
+        message: '',
+    };
+    try {
+        const data = await getRoleByIdAction(id);
+
+        if (!data.success) {
+            reuslt.success = false;
+            reuslt.data = null;
+            reuslt.message = data.message;
+            return reuslt;
+        }
+
+        const resultData = {
+            dataRole: {
+                _id: data.data?._id,
+                name: data.data?.name,
+                description: data.data?.description,
+                isActive: data.data?.isActive,
+            },
+            dataPermissionSelected: data.data?.permissions.map((permission) => permission._id),
+        };
+
+        reuslt.success = true;
+        reuslt.data = resultData as IDataEditRole;
+        reuslt.message = data.message;
+
+        return reuslt;
+    } catch (error: any) {
+        reuslt.success = false;
+        reuslt.data = null;
+        reuslt.message = error.message;
+        return reuslt;
+    }
+};
+
+export const updateRoleAction = async (id: string, body: IUpdateRole) => {
+    const reuslt: IResult<IResponseUpdate> = {
+        success: true,
+        data: null,
+        message: '',
+    };
+    try {
+        const data = await sendRequestAction<IBackendRes<IResponseUpdate>>({
+            url: `roles/${id}`,
+            method: 'PATCH',
+            body: body,
+        });
+
+        if (data.statusCode !== 200) {
+            reuslt.success = false;
+            reuslt.data = null;
+            reuslt.message = data.message;
+            return reuslt;
+        }
+
+        reuslt.success = true;
+        reuslt.data = data.data;
+        reuslt.message = data.message;
+
+        revalidateTag('getListRoleAction');
 
         return reuslt;
     } catch (error: any) {

@@ -25,12 +25,9 @@ interface IProps {
 
 const CreateRole = ({ initialActives, permissionModule }: IProps) => {
     const router = useRouter();
-
-    const { listPermissionSelected } = useSelector((state: RootState) => state.roleSlice);
-
+    const { listPermissionSelectedCreate } = useSelector((state: RootState) => state.roleSlice);
     const [errMessage, setErrMessage] = useState<string | undefined>(undefined);
     const [isLoading, setIsLoading] = useState<boolean>(false);
-
     const [activeList] = useState<IOptionAutocomplete[]>(initialActives);
 
     const createForm = useFormik({
@@ -53,7 +50,7 @@ const CreateRole = ({ initialActives, permissionModule }: IProps) => {
             const values = {
                 ...valuesRaw,
                 isActive: convertStringToBoolean(valuesRaw.isActive.id),
-                permissions: listPermissionSelected,
+                permissions: listPermissionSelectedCreate,
             };
 
             const dataCreateRole = await createRoleAction(values);
@@ -144,7 +141,10 @@ const CreateRole = ({ initialActives, permissionModule }: IProps) => {
                             />
 
                             {/* Accordion */}
-                            <ModulePermission permissionModule={permissionModule} />
+                            <ModulePermission
+                                type="createRole"
+                                permissionModule={permissionModule}
+                            />
                         </Stack>
                     </CardContent>
                     <Divider />

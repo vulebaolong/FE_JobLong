@@ -1,5 +1,10 @@
-import { checkData } from '@/helpers/function.helper';
-import { getRoleByIdAction } from '../action';
+import { checkData, permissionModule } from '@/helpers/function.helper';
+import {
+    IDataEditRole,
+    getDataPermissionProcessed,
+    getDataRoleProcessed,
+    getRoleByIdAction,
+} from '../action';
 import { TEXT } from '@/constant/text.contants';
 import Content, { ContentBody, ContentHeader } from '@/components/common/content/Content';
 import EditRole from '@/components/admin/roles/EditRole';
@@ -13,9 +18,12 @@ interface IProps {
 
 async function RoleEditPage({ params }: IProps) {
     const { id } = params;
-    const dataRole = await getRoleByIdAction(id);
 
-    const { success, messages } = checkData(dataRole);
+    const dataEdit = await getDataRoleProcessed(id);
+
+    const permissionModule = await getDataPermissionProcessed();
+
+    const { success, messages } = checkData(dataEdit, permissionModule);
 
     const initialActives = [
         { label: 'Active', id: `true` },
@@ -26,7 +34,11 @@ async function RoleEditPage({ params }: IProps) {
             <ContentHeader title={TEXT.TITLE.ROLE_EDIT} backButton />
             <ContentBody>
                 {success ? (
-                    <EditRole dataRole={dataRole.data as IRole} initialActives={initialActives} />
+                    <EditRole
+                        dataEdit={dataEdit.data as IDataEditRole}
+                        permissionModule={permissionModule.data as permissionModule[]}
+                        initialActives={initialActives}
+                    />
                 ) : (
                     <Stack spacing={2}>
                         {messages.map((message, index) => (

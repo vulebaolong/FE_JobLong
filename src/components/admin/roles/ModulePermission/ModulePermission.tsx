@@ -5,9 +5,10 @@ import { memo } from 'react';
 
 interface IProps {
     permissionModule: permissionModule[];
+    type: 'editRole' | 'createRole';
 }
 
-function ModulePermission({ permissionModule }: IProps) {
+function ModulePermission({ permissionModule, type }: IProps) {
     return (
         <Card variant="outlined">
             <CardHeader
@@ -18,7 +19,7 @@ function ModulePermission({ permissionModule }: IProps) {
             />
             <CardContent>
                 {permissionModule.map((module, index) => {
-                    return <AccordionModule module={module} key={index} />;
+                    return <AccordionModule type={type} module={module} key={index} />;
                 })}
             </CardContent>
         </Card>

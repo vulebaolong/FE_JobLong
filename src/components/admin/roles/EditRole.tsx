@@ -1,31 +1,44 @@
 'use client';
 
+import { IDataEditRole, updateRoleAction } from '@/app/admin/roles/action';
 import AlertError from '@/components/common/alert/AlertError';
 import Autocomplete from '@/components/common/autocomplete/Autocomplete';
 import TextField from '@/components/common/textField/TextField';
 import { TEXT } from '@/constant/text.contants';
 import { IOptionAutocomplete, convertStringToBoolean } from '@/helpers/formik.helper';
-import { IRole } from '@/interface/role';
+import { IRole, IUpdateRole } from '@/interface/role';
 import { toastSuccess } from '@/provider/ToastProvider';
 import { LoadingButton } from '@mui/lab';
-import {  Box, Button, Card, CardActions, CardContent, Divider, Grid, Stack } from '@mui/material';
+import { Box, Button, Card, CardActions, CardContent, Divider, Grid, Stack } from '@mui/material';
 import { useFormik } from 'formik';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import * as Yup from 'yup';
+import ModulePermission from './ModulePermission/ModulePermission';
+import { DispatchType, RootState } from '@/redux/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { setInitPermissionSelectedEdit } from '@/redux/slices/roleSlice';
+import { permissionModule } from '@/helpers/function.helper';
 
 interface IProps {
-    dataRole: IRole;
+    dataEdit: IDataEditRole;
     initialActives: IOptionAutocomplete[];
+    permissionModule: permissionModule[];
 }
 
-function EditRole({ dataRole, initialActives }: IProps) {
-    const router = useRouter();
+function EditRole({ dataEdit, permissionModule, initialActives }: IProps) {
+    const { dataRole, dataPermissionSelected } = dataEdit;
 
+    const router = useRouter();
+    const dispatch: DispatchType = useDispatch();
     const [errMessage, setErrMessage] = useState<string | undefined>(undefined);
     const [isLoading, setIsLoading] = useState<boolean>(false);
-
     const [activeList] = useState<IOptionAutocomplete[]>(initialActives);
+
+    useEffect(() => {
+        dispatch(setInitPermissionSelectedEdit(dataPermissionSelected));
+    }, []);
+    const { listPermissionSelectedEdit } = useSelector((state: RootState) => state.roleSlice);
 
     const editForm = useFormik({
         initialValues: {
@@ -47,15 +60,16 @@ function EditRole({ dataRole, initialActives }: IProps) {
             const values = {
                 ...valuesRaw,
                 isActive: convertStringToBoolean(valuesRaw.isActive.id),
+                permissions: listPermissionSelectedEdit,
             };
-
+            console.log(values);
             setErrMessage(undefined);
             setIsLoading(true);
 
-            // const result = await updatePermissionByIdAction(permission._id, values);
+            const result = await updateRoleAction(dataRole._id, values as IUpdateRole);
             setIsLoading(false);
 
-            // if (!result.success) return setErrMessage(result.message);
+            if (!result.success) return setErrMessage(result.message);
 
             toastSuccess(TEXT.MESSAGE.CREATE_SUCCESS);
             router.back();
@@ -63,7 +77,7 @@ function EditRole({ dataRole, initialActives }: IProps) {
     });
 
     return (
-        <Stack gap={3} >
+        <Stack gap={3}>
             {errMessage && <AlertError message={errMessage} />}
             <Box component={'form'} onSubmit={editForm.handleSubmit}>
                 <Card variant="outlined">
@@ -135,6 +149,12 @@ function EditRole({ dataRole, initialActives }: IProps) {
                                 helperText={
                                     editForm.touched.description && editForm.errors.description
                                 }
+                            />
+
+                            {/* Accordion */}
+                            <ModulePermission
+                                type={'editRole'}
+                                permissionModule={permissionModule}
                             />
                         </Stack>
                     </CardContent>
