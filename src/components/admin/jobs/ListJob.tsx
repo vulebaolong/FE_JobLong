@@ -38,6 +38,8 @@ import Autocomplete from '@/components/common/autocomplete/Autocomplete';
 import TableCellNote from '@/components/common/table/TableCellNote';
 import { IJob } from '@/interface/job';
 import TooltipRowTable from '@/components/common/table/TooltipRowTable';
+import { deleteJobByIdAction, restoreJobByIdAction } from '@/app/admin/jobs/action';
+import { formatNumber } from '@/helpers/numericFormat.helper';
 
 interface IProps {
     dataJob: IModelPaginate<IJob[]>;
@@ -110,15 +112,13 @@ function ListJob({ dataJob, initialActives, initialCompaies }: IProps) {
     };
 
     const handleDelete = async (id: string) => {
-        // const dataDeleteUser = await deleteUserByIdAction(id);
-        // return dataDeleteUser.success;
-        return true;
+        const dataDeleteUser = await deleteJobByIdAction(id);
+        return dataDeleteUser.success;
     };
 
     const handleRestore = async (id: string) => {
-        // const dataRestoreUser = await restoreUserByIdAction(id);
-        // return dataRestoreUser.success;
-        return true;
+        const dataRestoreUser = await restoreJobByIdAction(id);
+        return dataRestoreUser.success;
     };
 
     return (
@@ -137,10 +137,11 @@ function ListJob({ dataJob, initialActives, initialCompaies }: IProps) {
                         />
 
                         {/* Salary */}
-                        <TextField
+                          <TextField
                             sx={{ width: '300px' }}
-                            label="Salary"
+                            type="number"
                             name="salary"
+                            label="Salary"
                             value={searchForm.values.salary}
                             onChange={searchForm.handleChange}
                         />
@@ -247,8 +248,8 @@ function ListJob({ dataJob, initialActives, initialCompaies }: IProps) {
                                                 <div>{job.name}</div>
                                             </Tooltip>
                                         </TableCell>
-                                        <TableCell>{job.salary}</TableCell>
-                                        <TableCell>{job.skills}</TableCell>
+                                        <TableCell>{formatNumber(job.salary)}</TableCell>
+                                        <TableCell>{job.skills.join(', ')}</TableCell>
                                         <TableCell>{job.company.name}</TableCell>
                                         <TableCell>{job.location}</TableCell>
                                         <TableCell>{job.level}</TableCell>
