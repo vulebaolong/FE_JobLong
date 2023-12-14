@@ -1,15 +1,12 @@
 'use client';
 
 import {
-    Box,
     Button,
     Card,
     CardActions,
     CardContent,
-    Checkbox,
     Chip,
     Divider,
-    FormControlLabel,
     Stack,
     Table,
     TableBody,
@@ -18,7 +15,6 @@ import {
     TableHead,
     TableRow,
     Tooltip,
-    Typography,
 } from '@mui/material';
 import MPagination from '@/components/common/pagination/MPagination';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
@@ -32,27 +28,17 @@ import {
     convertStringToBoolean,
     initValueFormik,
 } from '@/helpers/formik.helper';
-import AutorenewIcon from '@mui/icons-material/Autorenew';
-import {
-    CreatedInfoAction,
-    DeletedInfoAction,
-    UpdatedInfoAction,
-} from '@/components/common/infoAction/InfoAction';
 import Autocomplete from '@/components/common/autocomplete/Autocomplete';
-import { IPermission } from '@/interface/permission';
 import { ROUTES } from '@/constant/routes.contants';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import EditButton from '@/components/common/button/EditButton';
 import RestoreButton from '@/components/common/button/RestoreButton';
 import DeleteButton from '@/components/common/button/DeleteButton';
-import {
-    deletePermissionByIdAction,
-    restorePermissionByIdAction,
-} from '@/app/admin/permissions/action';
 import { IRole } from '@/interface/role';
 import TableCellNote from '@/components/common/table/TableCellNote';
 import TooltipRowTable from '@/components/common/table/TooltipRowTable';
+import { deleteRoleByIdAction, restoreRoleByIdAction } from '@/app/admin/roles/action';
 
 interface IProps {
     dataRole: IModelPaginate<IRole[]>;
@@ -113,15 +99,13 @@ function ListRole({ dataRole, initialActives }: IProps) {
     };
 
     const handleDelete = async (id: string) => {
-        // const dataDelete = await deletePermissionByIdAction(id);
-        // return dataDelete.success;
-        return true;
+        const dataDelete = await deleteRoleByIdAction(id);
+        return dataDelete.success;
     };
 
     const handleRestore = async (id: string) => {
-        // const dataRestore = await restorePermissionByIdAction(id);
-        // return dataRestore.success;
-        return true;
+        const dataRestore = await restoreRoleByIdAction(id);
+        return dataRestore.success;
     };
 
     return (

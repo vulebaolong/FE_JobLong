@@ -241,3 +241,71 @@ export const updateRoleAction = async (id: string, body: IUpdateRole) => {
         return reuslt;
     }
 };
+
+export const deleteRoleByIdAction = async (id: string) => {
+    const reuslt: IResult<IResponseUpdate> = {
+        success: true,
+        data: null,
+        message: '',
+    };
+    try {
+        const data = await sendRequestAction<IBackendRes<IResponseUpdate>>({
+            url: `roles/${id}`,
+            method: 'DELETE',
+        });
+
+        if (data.data.modifiedCount !== 1) {
+            reuslt.success = false;
+            reuslt.data = null;
+            reuslt.message = data.message;
+            return reuslt;
+        }
+
+        reuslt.success = true;
+        reuslt.data = data.data;
+        reuslt.message = data.message;
+
+        revalidateTag('getListRoleAction');
+
+        return reuslt;
+    } catch (error: any) {
+        reuslt.success = false;
+        reuslt.data = null;
+        reuslt.message = error.message;
+        return reuslt;
+    }
+}
+
+export const restoreRoleByIdAction = async (id: string) => {
+    const reuslt: IResult<IResponseUpdate> = {
+        success: true,
+        data: null,
+        message: '',
+    };
+    try {
+        const data = await sendRequestAction<IBackendRes<IResponseUpdate>>({
+            url: `roles/restore/${id}`,
+            method: 'PATCH',
+        });
+
+        if (data.data.modifiedCount !== 1) {
+            reuslt.success = false;
+            reuslt.data = null;
+            reuslt.message = data.message;
+            return reuslt;
+        }
+
+        reuslt.success = true;
+        reuslt.data = data.data;
+        reuslt.message = data.message;
+
+        revalidateTag('getListRoleAction');
+
+        return reuslt;
+    } catch (error: any) {
+        reuslt.success = false;
+        reuslt.data = null;
+        reuslt.message = error.message;
+        return reuslt;
+    }
+};

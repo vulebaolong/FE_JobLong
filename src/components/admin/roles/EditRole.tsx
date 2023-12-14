@@ -62,7 +62,6 @@ function EditRole({ dataEdit, permissionModule, initialActives }: IProps) {
                 isActive: convertStringToBoolean(valuesRaw.isActive.id),
                 permissions: listPermissionSelectedEdit,
             };
-            console.log(values);
             setErrMessage(undefined);
             setIsLoading(true);
 
@@ -71,7 +70,9 @@ function EditRole({ dataEdit, permissionModule, initialActives }: IProps) {
 
             if (!result.success) return setErrMessage(result.message);
 
-            toastSuccess(TEXT.MESSAGE.CREATE_SUCCESS);
+            setTimeout(() => {
+                toastSuccess(TEXT.MESSAGE.CREATE_SUCCESS);
+            }, 200);
             router.back();
         },
     });

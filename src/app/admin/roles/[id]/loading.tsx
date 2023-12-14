@@ -1,5 +1,5 @@
-import { FormSkeleton } from '@/components/common/skeleton/form.skeleton';
+import ModulePermissionSkeleton from '@/components/common/skeleton/modulePermission.skeleton';
 
 export default function Loading() {
-    return <FormSkeleton />;
+    return <ModulePermissionSkeleton />;
 }
