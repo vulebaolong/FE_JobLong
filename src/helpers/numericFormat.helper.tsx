@@ -30,3 +30,5 @@ export const NumericFormatCustom = React.forwardRef<NumericFormatProps, CustomPr
         );
     },
 );
+
+export const formatNumber = (value: number) => value.toLocaleString('en-US')
