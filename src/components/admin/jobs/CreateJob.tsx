@@ -2,17 +2,21 @@
 
 import { Box, Button, Card, CardActions, CardContent, Divider, Grid, Stack } from '@mui/material';
 import { useFormik } from 'formik';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import * as Yup from 'yup';
 import { LoadingButton } from '@mui/lab';
 import { TEXT } from '@/constant/text.contants';
 import AlertError from '@/components/common/alert/AlertError';
 import { useRouter } from 'next/navigation';
 import TextField from '@/components/common/textField/TextField';
-import { IOptionAutocomplete } from '@/helpers/formik.helper';
+import { IOptionAutocomplete, convertStringToBoolean } from '@/helpers/formik.helper';
 import Autocomplete from '@/components/common/autocomplete/Autocomplete';
-import { createPermissionAction } from '@/app/admin/permissions/action';
-import { toastSuccess } from '@/provider/ToastProvider';
+import { toastSuccess, toastWarning } from '@/provider/ToastProvider';
+import MUIRichTextEditor from 'mui-rte';
+import { EditorState, convertToRaw } from 'draft-js';
+import DatePicker from '@/components/common/datepicker/DatePicker';
+import dayjs from 'dayjs';
+import { createJobAction } from '@/app/admin/jobs/action';
 
 interface IProps {
     initialCompaies: IOptionAutocomplete[];
@@ -24,6 +28,11 @@ const CreateJob = ({ initialCompaies, initialActives }: IProps) => {
 
     const [errMessage, setErrMessage] = useState<string | undefined>(undefined);
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [isClient, setIsClient] = useState(false);
+
+    useEffect(() => {
+        setIsClient(true);
+    }, []);
 
     const [activeList] = useState<IOptionAutocomplete[]>(initialActives);
     const [companiesList] = useState<IOptionAutocomplete[]>(initialCompaies);
@@ -58,22 +67,43 @@ const CreateJob = ({ initialCompaies, initialActives }: IProps) => {
         onSubmit: async (valuesRaw) => {
             const values = {
                 ...valuesRaw,
-                company: valuesRaw.company.label,
+                isActive: convertStringToBoolean(valuesRaw.isActive.id),
+                salary: +valuesRaw.salary,
+                quantity: +valuesRaw.quantity,
+                skills: valuesRaw.skills.split(', '),
+                company: valuesRaw.company.id,
+                startDate: dayjs(valuesRaw.startDate).format(),
+                endDate: dayjs(valuesRaw.endDate).format(),
             };
+            if (!values.description || values.description === '') {
+                const btnSave = document.querySelector('#mui-rte-Save-button') as HTMLElement;
+                if (btnSave) {
+                    btnSave.style.backgroundColor = 'red';
+                    setTimeout(() => {
+                        btnSave.style.backgroundColor = 'transparent';
+                    }, 5000);
+                }
 
-            // setErrMessage(undefined);
-            // setIsLoading(true);
+                toastWarning('Please press the save button before sending');
+                return;
+            }
 
-            console.log(values);
-            // const result = await createPermissionAction(values);
-            // setIsLoading(false);
+            setErrMessage(undefined);
+            setIsLoading(true);
 
-            // if (!result.success) return setErrMessage(result.message);
+            const result = await createJobAction(values);
+            setIsLoading(false);
 
-            // toastSuccess(TEXT.MESSAGE.CREATE_SUCCESS);
-            // router.back();
+            if (!result.success) return setErrMessage(result.message);
+
+            toastSuccess(TEXT.MESSAGE.CREATE_SUCCESS);
+            router.back();
         },
     });
+
+    const handleSave = (value: string) => {
+        createForm.setFieldValue('description', value);
+    };
 
     return (
         <Stack gap={3}>
@@ -276,57 +306,52 @@ const CreateJob = ({ initialCompaies, initialActives }: IProps) => {
                             <Grid container spacing={2}>
                                 {/* startDate */}
                                 <Grid item xs={6}>
-                                    <TextField
-                                        fullWidth
-                                        label="StartDate"
-                                        name="startDate"
+                                    <DatePicker
+                                        label="startDate"
                                         value={createForm.values.startDate}
-                                        onChange={createForm.handleChange}
+                                        onChange={(value) =>
+                                            createForm.setFieldValue('startDate', value)
+                                        }
                                         error={
                                             createForm.touched.startDate &&
                                             createForm.errors.startDate !== undefined
                                         }
                                         helperText={
-                                            createForm.touched.startDate && createForm.errors.startDate
+                                            createForm.touched.startDate &&
+                                            createForm.errors.startDate
                                         }
                                     />
                                 </Grid>
 
                                 {/* endDate */}
                                 <Grid item xs={6}>
-                                    <TextField
-                                        fullWidth
-                                        name="endDate"
-                                        label="EndDate"
+                                    <DatePicker
+                                        label="endDate"
                                         value={createForm.values.endDate}
-                                        onChange={createForm.handleChange}
+                                        onChange={(a) => {
+                                            createForm.setFieldValue('endDate', a);
+                                        }}
                                         error={
                                             createForm.touched.endDate &&
                                             createForm.errors.endDate !== undefined
                                         }
                                         helperText={
-                                            createForm.touched.endDate &&
-                                            createForm.errors.endDate
+                                            createForm.touched.endDate && createForm.errors.endDate
                                         }
                                     />
                                 </Grid>
                             </Grid>
 
                             {/* Description */}
-                            <TextField
-                                fullWidth
-                                label="Description"
-                                name="description"
-                                value={createForm.values.description}
-                                onChange={createForm.handleChange}
-                                error={
-                                    createForm.touched.description &&
-                                    createForm.errors.description !== undefined
-                                }
-                                helperText={
-                                    createForm.touched.description && createForm.errors.description
-                                }
-                            />
+                            {isClient && (
+                                <Card variant="outlined" sx={{ height: '500px', padding: '10px' }}>
+                                    <MUIRichTextEditor
+                                        label="Start typing..."
+                                        defaultValue={createForm.values.description}
+                                        onSave={handleSave}
+                                    />
+                                </Card>
+                            )}
                         </Stack>
                     </CardContent>
                     <Divider />
