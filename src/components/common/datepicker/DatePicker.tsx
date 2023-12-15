@@ -1,19 +1,15 @@
 'use client';
 
-import {
-    DatePicker as DatePickerMui,
-    DateValidationError,
-    PickerChangeHandlerContext,
-} from '@mui/x-date-pickers';
-import dayjs from 'dayjs';
+import { DatePicker as DatePickerMui } from '@mui/x-date-pickers';
+import { Dayjs } from 'dayjs';
 
 interface IProps {
     label?: string;
     size?: 'small' | 'medium';
     format?: string;
     width?: string | number;
-    value: string;
-    helperText?: string | false | undefined;
+    value: string | Dayjs | any;
+    helperText?: any;
     error?: boolean;
     onChange: (value: string | null) => void;
 }
@@ -21,7 +17,6 @@ interface IProps {
 const DatePicker = ({
     label = '',
     size = 'small',
-    format = 'YYYY/MM/DD',
     width = '100%',
     error = false,
     helperText = '',
@@ -36,7 +31,7 @@ const DatePicker = ({
                 textField: {
                     size,
                     helperText: helperText,
-                    error: error
+                    error: error,
                 },
             }}
             value={value}

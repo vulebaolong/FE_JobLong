@@ -163,3 +163,35 @@ export const createJobAction = async (body: any) => {
         return reuslt;
     }
  }
+
+ export const getJobByIdAction = async (id: string) => {
+    const reuslt: IResult<IJob> = {
+        success: true,
+        data: null,
+        message: '',
+    };
+    try {
+        const data = await sendRequestAction<IBackendRes<IJob>>({
+            url: `jobs/${id}?populate=company&fields=company.logo`,
+            method: 'GET',
+        });
+
+        if (data.statusCode !== 200) {
+            reuslt.success = false;
+            reuslt.data = null;
+            reuslt.message = data.message;
+            return reuslt;
+        }
+
+        reuslt.success = true;
+        reuslt.data = data.data;
+        reuslt.message = data.message;
+
+        return reuslt;
+    } catch (error: any) {
+        reuslt.success = false;
+        reuslt.data = null;
+        reuslt.message = error.message;
+        return reuslt;
+    }
+};
