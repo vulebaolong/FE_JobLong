@@ -33,3 +33,20 @@ export interface IJob {
 
     __v: number;
 }
+
+export interface ICreateJob {
+    name: string;
+    skills: string[];
+    company: {
+        _id: string;
+        name: string;
+    };
+    location: string;
+    salary: number;
+    quantity: number;
+    level: string;
+    description: string;
+    startDate: string;
+    endDate: string;
+    isActive: boolean;
+}

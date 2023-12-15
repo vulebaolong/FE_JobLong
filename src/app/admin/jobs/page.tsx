@@ -46,7 +46,7 @@ async function JobsPage({ searchParams }: IProps) {
             <ContentHeader
                 title={TEXT.TITLE.JOB}
                 rightContent={
-                    <NavButton href={ROUTES.ADMIN.ROLE.CREATE} text={TEXT.BUTTON_TEXT.ADD} />
+                    <NavButton href={ROUTES.ADMIN.JOB.CREATE} text={TEXT.BUTTON_TEXT.ADD} />
                 }
             />
             <ContentBody>

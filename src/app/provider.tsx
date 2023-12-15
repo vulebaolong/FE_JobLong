@@ -1,5 +1,6 @@
 'use client';
 
+import { LocalizationProvider } from '@/provider/LocalizationProvider';
 import { ReduxProvider } from '@/provider/ReduxProvider';
 import ThemeRegistry from '@/provider/ThemeRegistry';
 import ToastProvider from '@/provider/ToastProvider';
@@ -10,8 +11,10 @@ function Provider({ children }: { children: ReactNode }) {
     return (
         <ReduxProvider>
             {/* <SessionProvider> */}
-            <ToastProvider />
-            <ThemeRegistry options={{ key: 'mui' }}>{children}</ThemeRegistry>
+            <LocalizationProvider>
+                <ToastProvider />
+                <ThemeRegistry options={{ key: 'mui' }}>{children}</ThemeRegistry>
+            </LocalizationProvider>
             {/* </SessionProvider> */}
         </ReduxProvider>
     );

@@ -1,7 +1,7 @@
 'use server';
 
 import { sendRequestAction } from '@/app/action';
-import { IJob } from '@/interface/job';
+import { ICreateJob, IJob } from '@/interface/job';
 import { revalidateTag } from 'next/cache';
 
 interface IProps {
@@ -128,3 +128,38 @@ export const restoreJobByIdAction = async (id: string) => {
         return reuslt;
     }
 };
+
+export const createJobAction = async (body: any) => { 
+    const reuslt: IResult<IJob> = {
+        success: true,
+        data: null,
+        message: '',
+    };
+    try {
+        const data = await sendRequestAction<IBackendRes<IJob>>({
+            url: `jobs`,
+            method: 'POST',
+            body: body,
+        });
+
+        if (data.statusCode !== 201) {
+            reuslt.success = false;
+            reuslt.data = null;
+            reuslt.message = data.message;
+            return reuslt;
+        }
+
+        reuslt.success = true;
+        reuslt.data = data.data;
+        reuslt.message = data.message;
+
+        revalidateTag('getListJobAction');
+
+        return reuslt;
+    } catch (error: any) {
+        reuslt.success = false;
+        reuslt.data = null;
+        reuslt.message = error.message;
+        return reuslt;
+    }
+ }
