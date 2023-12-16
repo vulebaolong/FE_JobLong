@@ -8,7 +8,7 @@ import { buildOptionsAutocomplete, checkData } from '@/helpers/function.helper';
 import { Stack } from '@mui/material';
 import { IJob } from '@/interface/job';
 import ListJob from '@/components/admin/jobs/ListJob';
-import { getListCompanies } from '../companies/action';
+import { getListCompaniesAction } from '../companies/action';
 import { ICompany } from '@/interface/company';
 
 interface IProps {
@@ -26,7 +26,7 @@ async function JobsPage({ searchParams }: IProps) {
         },
     });
 
-    const dataCompanies = await getListCompanies({
+    const dataCompanies = await getListCompaniesAction({
         searchParams: { limit: '999', fields: 'name' },
     });
 

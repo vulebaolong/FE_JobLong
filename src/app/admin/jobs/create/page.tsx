@@ -1,7 +1,7 @@
 import CreatePermission from '@/components/admin/permissions/CreatePermission';
 import Content, { ContentBody, ContentHeader } from '@/components/common/content/Content';
 import { TEXT } from '@/constant/text.contants';
-import { getListCompanies } from '../../companies/action';
+import { getListCompaniesAction } from '../../companies/action';
 import { buildOptionsAutocomplete, checkData } from '@/helpers/function.helper';
 import CreateJob from '@/components/admin/jobs/CreateJob';
 import { ICompany } from '@/interface/company';
@@ -9,7 +9,7 @@ import { Stack } from '@mui/material';
 import AlertError from '@/components/common/alert/AlertError';
 
 async function CreateJobPage() {
-    const dataCompanies = await getListCompanies({
+    const dataCompanies = await getListCompaniesAction({
         searchParams: { limit: '999', fields: 'name' },
     });
 

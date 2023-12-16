@@ -28,6 +28,9 @@ export const TEXT = {
         JOB: 'Job',
         JOB_CREATE: 'Create Job',
         JOB_EDIT: 'Edit Job',
+        COMPANY: 'Company',
+        COMPANY_CREATE: 'Create Company',
+        COMPANY_EDIT: 'Edit Company',
     },
     AUTOCOMPLETE: {
         MALE: 'Male',

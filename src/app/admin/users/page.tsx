@@ -4,7 +4,7 @@ import Content, { ContentBody, ContentHeader } from '@/components/common/content
 import NavButton from '@/components/common/button/NavButton';
 import { TEXT } from '@/constant/text.contants';
 import { ROUTES } from '@/constant/routes.contants';
-import { getListCompanies } from '../companies/action';
+import { getListCompaniesAction } from '../companies/action';
 import { buildOptionsAutocomplete, checkData } from '@/helpers/function.helper';
 import { ICompany } from '@/interface/company';
 import { getListRoleAction } from '../roles/action';
@@ -27,7 +27,7 @@ const UsersPage = async ({ searchParams }: IProps) => {
             ...searchParams,
         },
     });
-    const dataCompanies = await getListCompanies({
+    const dataCompanies = await getListCompaniesAction({
         searchParams: { limit: '999', fields: 'name' },
     });
     const dataRole = await getListRoleAction({

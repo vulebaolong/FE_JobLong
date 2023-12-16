@@ -3,7 +3,7 @@ import { TEXT } from '@/constant/text.contants';
 import Content, { ContentBody, ContentHeader } from '@/components/common/content/Content';
 import { Stack } from '@mui/material';
 import AlertError from '@/components/common/alert/AlertError';
-import { getListCompanies } from '../../companies/action';
+import { getListCompaniesAction } from '../../companies/action';
 import { ICompany } from '@/interface/company';
 import EditJob from '@/components/admin/jobs/EditJob';
 import { getJobByIdAction } from '../action';
@@ -17,7 +17,7 @@ async function EditJobPage({ params }: IProps) {
     const { id } = params;
     const dataJob = await getJobByIdAction(id);
 
-    const dataCompanies = await getListCompanies({
+    const dataCompanies = await getListCompaniesAction({
         searchParams: { limit: '999', fields: 'name' },
     });
 
