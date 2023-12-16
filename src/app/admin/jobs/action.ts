@@ -129,7 +129,7 @@ export const restoreJobByIdAction = async (id: string) => {
     }
 };
 
-export const createJobAction = async (body: any) => { 
+export const createJobAction = async (body: any) => {
     const reuslt: IResult<IJob> = {
         success: true,
         data: null,
@@ -162,4 +162,36 @@ export const createJobAction = async (body: any) => {
         reuslt.message = error.message;
         return reuslt;
     }
- }
+};
+
+export const getJobByIdAction = async (id: string) => {
+    const reuslt: IResult<IJob> = {
+        success: true,
+        data: null,
+        message: '',
+    };
+    try {
+        const data = await sendRequestAction<IBackendRes<IJob>>({
+            url: `jobs/${id}?populate=company&fields=company.logo,company.name`,
+            method: 'GET',
+        });
+
+        if (data.statusCode !== 200) {
+            reuslt.success = false;
+            reuslt.data = null;
+            reuslt.message = data.message;
+            return reuslt;
+        }
+
+        reuslt.success = true;
+        reuslt.data = data.data;
+        reuslt.message = data.message;
+
+        return reuslt;
+    } catch (error: any) {
+        reuslt.success = false;
+        reuslt.data = null;
+        reuslt.message = error.message;
+        return reuslt;
+    }
+};

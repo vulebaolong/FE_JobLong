@@ -137,7 +137,7 @@ function ListJob({ dataJob, initialActives, initialCompaies }: IProps) {
                         />
 
                         {/* Salary */}
-                          <TextField
+                        <TextField
                             sx={{ width: '300px' }}
                             type="number"
                             name="salary"

@@ -1,56 +1,63 @@
 'use client';
 
+import AlertError from '@/components/common/alert/AlertError';
+import Autocomplete from '@/components/common/autocomplete/Autocomplete';
+import TextField from '@/components/common/textField/TextField';
+import { TEXT } from '@/constant/text.contants';
+import { IOptionAutocomplete, convertStringToBoolean } from '@/helpers/formik.helper';
+import { toastSuccess, toastWarning } from '@/provider/ToastProvider';
+import { LoadingButton } from '@mui/lab';
 import { Box, Button, Card, CardActions, CardContent, Divider, Grid, Stack } from '@mui/material';
 import { useFormik } from 'formik';
+import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import * as Yup from 'yup';
-import { LoadingButton } from '@mui/lab';
-import { TEXT } from '@/constant/text.contants';
-import AlertError from '@/components/common/alert/AlertError';
-import { useRouter } from 'next/navigation';
-import TextField from '@/components/common/textField/TextField';
-import { IOptionAutocomplete, convertStringToBoolean } from '@/helpers/formik.helper';
-import Autocomplete from '@/components/common/autocomplete/Autocomplete';
-import { toastSuccess, toastWarning } from '@/provider/ToastProvider';
-import DatePicker from '@/components/common/datepicker/DatePicker';
+import { IJob } from '@/interface/job';
 import dayjs from 'dayjs';
-import { createJobAction } from '@/app/admin/jobs/action';
-import { borderRadius } from '@/provider/ThemeRegistry';
+import DatePicker from '@/components/common/datepicker/DatePicker';
 import RichTextEditor from '@/components/common/richTextEditor/RichTextEditor';
 import { RichTextEditorRef } from 'mui-tiptap';
+import { createJobAction } from '@/app/admin/jobs/action';
 
 interface IProps {
     initialCompaies: IOptionAutocomplete[];
     initialActives: IOptionAutocomplete[];
+    dataJob: IJob;
 }
 
-const CreateJob = ({ initialCompaies, initialActives }: IProps) => {
+function EditJob({ initialCompaies, initialActives, dataJob }: IProps) {
     const rteRef = useRef<RichTextEditorRef>(null);
-    const router = useRouter();
 
+    const router = useRouter();
     const [errMessage, setErrMessage] = useState<string | undefined>(undefined);
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [activeList] = useState<IOptionAutocomplete[]>(initialActives);
+    const [companiesList] = useState<IOptionAutocomplete[]>(initialCompaies);
 
     const [isClient, setIsClient] = useState(false);
     useEffect(() => {
         setIsClient(true);
     }, []);
 
-    const [activeList] = useState<IOptionAutocomplete[]>(initialActives);
-    const [companiesList] = useState<IOptionAutocomplete[]>(initialCompaies);
-
-    const createForm = useFormik({
+    const editForm = useFormik({
         initialValues: {
-            name: '',
-            skills: '',
-            company: { label: '', id: '' },
-            location: '',
-            salary: '',
-            quantity: '',
-            level: '',
-            startDate: '',
-            endDate: '',
-            isActive: { label: '', id: '' },
+            name: dataJob.name || '',
+            // description: dataJob.description || '',
+            isActive: activeList.find((isActive) => isActive.id === `${dataJob.isActive}`) || {
+                label: '',
+                id: '',
+            },
+            skills: dataJob.skills.join(', ') || '',
+            company: companiesList.find((company) => company.label === dataJob.company?.name) || {
+                label: '',
+                id: '',
+            },
+            location: dataJob.location || '',
+            salary: dataJob.salary || '',
+            quantity: dataJob.quantity || '',
+            level: dataJob.level || '',
+            startDate: dayjs(dataJob.startDate) || '',
+            endDate: dayjs(dataJob.endDate) || '',
         },
         validationSchema: Yup.object().shape({
             name: Yup.string().required(TEXT.MESSAGE.REQUIRED_FIELD('Name')),
@@ -91,15 +98,10 @@ const CreateJob = ({ initialCompaies, initialActives }: IProps) => {
         },
     });
 
-    // const handleChange = (state: any) => {
-    //     const html = stateToHTML(state.getCurrentContent())
-    //     setValueEditor(html);
-    // };
-
     return (
         <Stack gap={3}>
             {errMessage && <AlertError message={errMessage} />}
-            <Box component={'form'} onSubmit={createForm.handleSubmit}>
+            <Box component={'form'} onSubmit={editForm.handleSubmit}>
                 <Card variant="outlined">
                     <CardContent>
                         <Stack gap={3}>
@@ -111,15 +113,13 @@ const CreateJob = ({ initialCompaies, initialActives }: IProps) => {
                                         fullWidth
                                         label="Name"
                                         name="name"
-                                        value={createForm.values.name}
-                                        onChange={createForm.handleChange}
+                                        value={editForm.values.name}
+                                        onChange={editForm.handleChange}
                                         error={
-                                            createForm.touched.name &&
-                                            createForm.errors.name !== undefined
+                                            editForm.touched.name &&
+                                            editForm.errors.name !== undefined
                                         }
-                                        helperText={
-                                            createForm.touched.name && createForm.errors.name
-                                        }
+                                        helperText={editForm.touched.name && editForm.errors.name}
                                     />
                                 </Grid>
 
@@ -130,14 +130,14 @@ const CreateJob = ({ initialCompaies, initialActives }: IProps) => {
                                         type="number"
                                         name="salary"
                                         label="Salary"
-                                        value={createForm.values.salary}
-                                        onChange={createForm.handleChange}
+                                        value={editForm.values.salary}
+                                        onChange={editForm.handleChange}
                                         error={
-                                            createForm.touched.salary &&
-                                            createForm.errors.salary !== undefined
+                                            editForm.touched.salary &&
+                                            editForm.errors.salary !== undefined
                                         }
                                         helperText={
-                                            createForm.touched.salary && createForm.errors.salary
+                                            editForm.touched.salary && editForm.errors.salary
                                         }
                                     />
                                 </Grid>
@@ -151,14 +151,14 @@ const CreateJob = ({ initialCompaies, initialActives }: IProps) => {
                                         fullWidth
                                         label="Skills"
                                         name="skills"
-                                        value={createForm.values.skills}
-                                        onChange={createForm.handleChange}
+                                        value={editForm.values.skills}
+                                        onChange={editForm.handleChange}
                                         error={
-                                            createForm.touched.skills &&
-                                            createForm.errors.skills !== undefined
+                                            editForm.touched.skills &&
+                                            editForm.errors.skills !== undefined
                                         }
                                         helperText={
-                                            createForm.touched.skills && createForm.errors.skills
+                                            editForm.touched.skills && editForm.errors.skills
                                         }
                                     />
                                 </Grid>
@@ -169,15 +169,14 @@ const CreateJob = ({ initialCompaies, initialActives }: IProps) => {
                                         fullWidth
                                         label="Location"
                                         name="location"
-                                        value={createForm.values.location}
-                                        onChange={createForm.handleChange}
+                                        value={editForm.values.location}
+                                        onChange={editForm.handleChange}
                                         error={
-                                            createForm.touched.location &&
-                                            createForm.errors.location !== undefined
+                                            editForm.touched.location &&
+                                            editForm.errors.location !== undefined
                                         }
                                         helperText={
-                                            createForm.touched.location &&
-                                            createForm.errors.location
+                                            editForm.touched.location && editForm.errors.location
                                         }
                                     />
                                 </Grid>
@@ -190,27 +189,27 @@ const CreateJob = ({ initialCompaies, initialActives }: IProps) => {
                                     <Autocomplete
                                         fullWidth
                                         options={companiesList}
-                                        value={createForm.values.company}
+                                        value={editForm.values.company}
                                         renderInput={(params) => {
                                             return (
                                                 <TextField
                                                     {...params}
                                                     label="Company"
                                                     error={
-                                                        createForm.touched.company &&
-                                                        Boolean(createForm.errors.company)
+                                                        editForm.touched.company &&
+                                                        Boolean(editForm.errors.company)
                                                     }
                                                     helperText={
-                                                        createForm.touched.company &&
-                                                        createForm.errors.company
-                                                            ? createForm.errors.company.label
+                                                        editForm.touched.company &&
+                                                        editForm.errors.company
+                                                            ? editForm.errors.company.label
                                                             : ''
                                                     }
                                                 />
                                             );
                                         }}
                                         onChange={(_, value) => {
-                                            createForm.setFieldValue(
+                                            editForm.setFieldValue(
                                                 'company',
                                                 value || { label: '', id: '' },
                                             );
@@ -223,27 +222,27 @@ const CreateJob = ({ initialCompaies, initialActives }: IProps) => {
                                     <Autocomplete
                                         fullWidth
                                         options={activeList}
-                                        value={createForm.values.isActive}
+                                        value={editForm.values.isActive}
                                         renderInput={(params) => {
                                             return (
                                                 <TextField
                                                     {...params}
                                                     label="Status"
                                                     error={
-                                                        createForm.touched.isActive &&
-                                                        Boolean(createForm.errors.isActive)
+                                                        editForm.touched.isActive &&
+                                                        Boolean(editForm.errors.isActive)
                                                     }
                                                     helperText={
-                                                        createForm.touched.isActive &&
-                                                        createForm.errors.isActive
-                                                            ? createForm.errors.isActive.label
+                                                        editForm.touched.isActive &&
+                                                        editForm.errors.isActive
+                                                            ? editForm.errors.isActive.label
                                                             : ''
                                                     }
                                                 />
                                             );
                                         }}
                                         onChange={(_, value) => {
-                                            createForm.setFieldValue(
+                                            editForm.setFieldValue(
                                                 'isActive',
                                                 value || { label: '', id: '' },
                                             );
@@ -260,15 +259,13 @@ const CreateJob = ({ initialCompaies, initialActives }: IProps) => {
                                         fullWidth
                                         label="Level"
                                         name="level"
-                                        value={createForm.values.level}
-                                        onChange={createForm.handleChange}
+                                        value={editForm.values.level}
+                                        onChange={editForm.handleChange}
                                         error={
-                                            createForm.touched.level &&
-                                            createForm.errors.level !== undefined
+                                            editForm.touched.level &&
+                                            editForm.errors.level !== undefined
                                         }
-                                        helperText={
-                                            createForm.touched.level && createForm.errors.level
-                                        }
+                                        helperText={editForm.touched.level && editForm.errors.level}
                                     />
                                 </Grid>
 
@@ -279,15 +276,14 @@ const CreateJob = ({ initialCompaies, initialActives }: IProps) => {
                                         type="number"
                                         name="quantity"
                                         label="Quantity"
-                                        value={createForm.values.quantity}
-                                        onChange={createForm.handleChange}
+                                        value={editForm.values.quantity}
+                                        onChange={editForm.handleChange}
                                         error={
-                                            createForm.touched.quantity &&
-                                            createForm.errors.quantity !== undefined
+                                            editForm.touched.quantity &&
+                                            editForm.errors.quantity !== undefined
                                         }
                                         helperText={
-                                            createForm.touched.quantity &&
-                                            createForm.errors.quantity
+                                            editForm.touched.quantity && editForm.errors.quantity
                                         }
                                     />
                                 </Grid>
@@ -299,17 +295,16 @@ const CreateJob = ({ initialCompaies, initialActives }: IProps) => {
                                 <Grid item xs={6}>
                                     <DatePicker
                                         label="startDate"
-                                        value={createForm.values.startDate}
+                                        value={editForm.values.startDate}
                                         onChange={(value) =>
-                                            createForm.setFieldValue('startDate', value)
+                                            editForm.setFieldValue('startDate', value)
                                         }
                                         error={
-                                            createForm.touched.startDate &&
-                                            createForm.errors.startDate !== undefined
+                                            editForm.touched.startDate &&
+                                            editForm.errors.startDate !== undefined
                                         }
                                         helperText={
-                                            createForm.touched.startDate &&
-                                            createForm.errors.startDate
+                                            editForm.touched.startDate && editForm.errors.startDate
                                         }
                                     />
                                 </Grid>
@@ -318,23 +313,25 @@ const CreateJob = ({ initialCompaies, initialActives }: IProps) => {
                                 <Grid item xs={6}>
                                     <DatePicker
                                         label="endDate"
-                                        value={createForm.values.endDate}
+                                        value={editForm.values.endDate}
                                         onChange={(a) => {
-                                            createForm.setFieldValue('endDate', a);
+                                            editForm.setFieldValue('endDate', a);
                                         }}
                                         error={
-                                            createForm.touched.endDate &&
-                                            createForm.errors.endDate !== undefined
+                                            editForm.touched.endDate &&
+                                            editForm.errors.endDate !== undefined
                                         }
                                         helperText={
-                                            createForm.touched.endDate && createForm.errors.endDate
+                                            editForm.touched.endDate && editForm.errors.endDate
                                         }
                                     />
                                 </Grid>
                             </Grid>
 
                             {/* Description */}
-                            {isClient && <RichTextEditor ref={rteRef} />}
+                            {isClient && (
+                                <RichTextEditor ref={rteRef} defaultValue={dataJob.description} />
+                            )}
                         </Stack>
                     </CardContent>
                     <Divider />
@@ -345,7 +342,7 @@ const CreateJob = ({ initialCompaies, initialActives }: IProps) => {
                             color="primary"
                             loading={isLoading}
                         >
-                            {TEXT.BUTTON_TEXT.ADD}
+                            {TEXT.BUTTON_TEXT.EDIT}
                         </LoadingButton>
                         <Button onClick={() => router.back()} disabled={isLoading}>
                             {TEXT.BUTTON_TEXT.CANCEL}
@@ -355,6 +352,5 @@ const CreateJob = ({ initialCompaies, initialActives }: IProps) => {
             </Box>
         </Stack>
     );
-};
-
-export default CreateJob;
+}
+export default EditJob;
