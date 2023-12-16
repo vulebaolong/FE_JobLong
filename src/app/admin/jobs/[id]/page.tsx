@@ -38,9 +38,9 @@ async function EditJobPage({ params }: IProps) {
             <ContentHeader title={TEXT.TITLE.ROLE_EDIT} backButton />
             <ContentBody>
                 {success ? (
-                    <EditJob 
-                        initialActives={initialActives} 
-                        initialCompaies={initialCompaies} 
+                    <EditJob
+                        initialActives={initialActives}
+                        initialCompaies={initialCompaies}
                         dataJob={dataJob.data as IJob}
                     />
                 ) : (

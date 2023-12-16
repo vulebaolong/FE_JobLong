@@ -10,13 +10,14 @@ import { LoadingButton } from '@mui/lab';
 import { Box, Button, Card, CardActions, CardContent, Divider, Grid, Stack } from '@mui/material';
 import { useFormik } from 'formik';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import * as Yup from 'yup';
 import { IJob } from '@/interface/job';
 import dayjs from 'dayjs';
 import DatePicker from '@/components/common/datepicker/DatePicker';
-import MUIRichTextEditor from 'mui-rte';
-import htmlToDraft from 'html-to-draftjs';
+import RichTextEditor from '@/components/common/richTextEditor/RichTextEditor';
+import { RichTextEditorRef } from 'mui-tiptap';
+import { createJobAction } from '@/app/admin/jobs/action';
 
 interface IProps {
     initialCompaies: IOptionAutocomplete[];
@@ -25,6 +26,8 @@ interface IProps {
 }
 
 function EditJob({ initialCompaies, initialActives, dataJob }: IProps) {
+    const rteRef = useRef<RichTextEditorRef>(null);
+
     const router = useRouter();
     const [errMessage, setErrMessage] = useState<string | undefined>(undefined);
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -53,8 +56,8 @@ function EditJob({ initialCompaies, initialActives, dataJob }: IProps) {
             salary: dataJob.salary || '',
             quantity: dataJob.quantity || '',
             level: dataJob.level || '',
-            startDate: dayjs(dataJob.startDate)  || '',
-            endDate: dayjs(dataJob.endDate)  || '',
+            startDate: dayjs(dataJob.startDate) || '',
+            endDate: dayjs(dataJob.endDate) || '',
         },
         validationSchema: Yup.object().shape({
             name: Yup.string().required(TEXT.MESSAGE.REQUIRED_FIELD('Name')),
@@ -79,36 +82,21 @@ function EditJob({ initialCompaies, initialActives, dataJob }: IProps) {
                 company: valuesRaw.company.id,
                 startDate: dayjs(valuesRaw.startDate).format(),
                 endDate: dayjs(valuesRaw.endDate).format(),
+                description: rteRef.current?.editor?.getHTML(),
             };
-            // if (!values.description || values.description === '') {
-            //     const btnSave = document.querySelector('#mui-rte-Save-button') as HTMLElement;
-            //     if (btnSave) {
-            //         btnSave.style.backgroundColor = 'red';
-            //         setTimeout(() => {
-            //             btnSave.style.backgroundColor = 'transparent';
-            //         }, 5000);
-            //     }
 
-            //     toastWarning('Please press the save button before sending');
-            //     return;
-            // }
+            setErrMessage(undefined);
+            setIsLoading(true);
 
-            // setErrMessage(undefined);
-            // setIsLoading(true);
+            const result = await createJobAction(values);
+            setIsLoading(false);
 
-            // const result = await createJobAction(values);
-            // setIsLoading(false);
+            if (!result.success) return setErrMessage(result.message);
 
-            // if (!result.success) return setErrMessage(result.message);
-
-            // toastSuccess(TEXT.MESSAGE.CREATE_SUCCESS);
-            // router.back();
+            toastSuccess(TEXT.MESSAGE.CREATE_SUCCESS);
+            router.back();
         },
     });
-
-    const handleSave = (value: string) => {
-        editForm.setFieldValue('description', value);
-    };
 
     return (
         <Stack gap={3}>
@@ -131,9 +119,7 @@ function EditJob({ initialCompaies, initialActives, dataJob }: IProps) {
                                             editForm.touched.name &&
                                             editForm.errors.name !== undefined
                                         }
-                                        helperText={
-                                            editForm.touched.name && editForm.errors.name
-                                        }
+                                        helperText={editForm.touched.name && editForm.errors.name}
                                     />
                                 </Grid>
 
@@ -190,8 +176,7 @@ function EditJob({ initialCompaies, initialActives, dataJob }: IProps) {
                                             editForm.errors.location !== undefined
                                         }
                                         helperText={
-                                            editForm.touched.location &&
-                                            editForm.errors.location
+                                            editForm.touched.location && editForm.errors.location
                                         }
                                     />
                                 </Grid>
@@ -280,9 +265,7 @@ function EditJob({ initialCompaies, initialActives, dataJob }: IProps) {
                                             editForm.touched.level &&
                                             editForm.errors.level !== undefined
                                         }
-                                        helperText={
-                                            editForm.touched.level && editForm.errors.level
-                                        }
+                                        helperText={editForm.touched.level && editForm.errors.level}
                                     />
                                 </Grid>
 
@@ -300,8 +283,7 @@ function EditJob({ initialCompaies, initialActives, dataJob }: IProps) {
                                             editForm.errors.quantity !== undefined
                                         }
                                         helperText={
-                                            editForm.touched.quantity &&
-                                            editForm.errors.quantity
+                                            editForm.touched.quantity && editForm.errors.quantity
                                         }
                                     />
                                 </Grid>
@@ -322,8 +304,7 @@ function EditJob({ initialCompaies, initialActives, dataJob }: IProps) {
                                             editForm.errors.startDate !== undefined
                                         }
                                         helperText={
-                                            editForm.touched.startDate &&
-                                            editForm.errors.startDate
+                                            editForm.touched.startDate && editForm.errors.startDate
                                         }
                                     />
                                 </Grid>
@@ -349,13 +330,7 @@ function EditJob({ initialCompaies, initialActives, dataJob }: IProps) {
 
                             {/* Description */}
                             {isClient && (
-                                <Card variant="outlined" sx={{ height: '500px', padding: '10px' }}>
-                                    <MUIRichTextEditor
-                                        label="Start typing..."
-                                        // defaultValue={editForm.values.description}
-                                        onSave={handleSave}
-                                    />
-                                </Card>
+                                <RichTextEditor ref={rteRef} defaultValue={dataJob.description} />
                             )}
                         </Stack>
                     </CardContent>
@@ -367,7 +342,7 @@ function EditJob({ initialCompaies, initialActives, dataJob }: IProps) {
                             color="primary"
                             loading={isLoading}
                         >
-                            {TEXT.BUTTON_TEXT.ADD}
+                            {TEXT.BUTTON_TEXT.EDIT}
                         </LoadingButton>
                         <Button onClick={() => router.back()} disabled={isLoading}>
                             {TEXT.BUTTON_TEXT.CANCEL}

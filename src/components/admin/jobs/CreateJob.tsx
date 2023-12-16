@@ -2,7 +2,7 @@
 
 import { Box, Button, Card, CardActions, CardContent, Divider, Grid, Stack } from '@mui/material';
 import { useFormik } from 'formik';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import * as Yup from 'yup';
 import { LoadingButton } from '@mui/lab';
 import { TEXT } from '@/constant/text.contants';
@@ -12,12 +12,12 @@ import TextField from '@/components/common/textField/TextField';
 import { IOptionAutocomplete, convertStringToBoolean } from '@/helpers/formik.helper';
 import Autocomplete from '@/components/common/autocomplete/Autocomplete';
 import { toastSuccess, toastWarning } from '@/provider/ToastProvider';
-import MUIRichTextEditor from 'mui-rte';
-import { EditorState, convertToRaw } from 'draft-js';
 import DatePicker from '@/components/common/datepicker/DatePicker';
 import dayjs from 'dayjs';
 import { createJobAction } from '@/app/admin/jobs/action';
-import {stateToHTML} from 'draft-js-export-html';
+import { borderRadius } from '@/provider/ThemeRegistry';
+import RichTextEditor from '@/components/common/richTextEditor/RichTextEditor';
+import { RichTextEditorRef } from 'mui-tiptap';
 
 interface IProps {
     initialCompaies: IOptionAutocomplete[];
@@ -25,13 +25,13 @@ interface IProps {
 }
 
 const CreateJob = ({ initialCompaies, initialActives }: IProps) => {
+    const rteRef = useRef<RichTextEditorRef>(null);
     const router = useRouter();
 
     const [errMessage, setErrMessage] = useState<string | undefined>(undefined);
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [isClient, setIsClient] = useState(false);
-    const [valueEditor, setValueEditor] = useState('');
 
+    const [isClient, setIsClient] = useState(false);
     useEffect(() => {
         setIsClient(true);
     }, []);
@@ -51,7 +51,6 @@ const CreateJob = ({ initialCompaies, initialActives }: IProps) => {
             startDate: '',
             endDate: '',
             isActive: { label: '', id: '' },
-            description: '',
         },
         validationSchema: Yup.object().shape({
             name: Yup.string().required(TEXT.MESSAGE.REQUIRED_FIELD('Name')),
@@ -76,7 +75,7 @@ const CreateJob = ({ initialCompaies, initialActives }: IProps) => {
                 company: valuesRaw.company.id,
                 startDate: dayjs(valuesRaw.startDate).format(),
                 endDate: dayjs(valuesRaw.endDate).format(),
-                description: valueEditor
+                description: rteRef.current?.editor?.getHTML(),
             };
 
             setErrMessage(undefined);
@@ -92,10 +91,10 @@ const CreateJob = ({ initialCompaies, initialActives }: IProps) => {
         },
     });
 
-    const handleChange = (state: any) => {
-        const html = stateToHTML(state.getCurrentContent())
-        setValueEditor(html);
-    };
+    // const handleChange = (state: any) => {
+    //     const html = stateToHTML(state.getCurrentContent())
+    //     setValueEditor(html);
+    // };
 
     return (
         <Stack gap={3}>
@@ -335,15 +334,7 @@ const CreateJob = ({ initialCompaies, initialActives }: IProps) => {
                             </Grid>
 
                             {/* Description */}
-                            {isClient && (
-                                <Card variant="outlined" sx={{ height: '500px', padding: '10px' }}>
-                                    <MUIRichTextEditor
-                                        label="Start typing..."
-                                        defaultValue={createForm.values.description}
-                                        onChange={handleChange}
-                                    />
-                                </Card>
-                            )}
+                            {isClient && <RichTextEditor ref={rteRef} />}
                         </Stack>
                     </CardContent>
                     <Divider />
