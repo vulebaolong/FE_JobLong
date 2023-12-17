@@ -2,8 +2,6 @@
 
 import { IJob } from '@/interface/job';
 import ItemJob from './ItemJob';
-import { Button } from '@mui/material';
-import { getListJobsAction } from '@/app/(customer)/job/actions';
 
 interface IProps {
     dataJob?: IModelPaginate<IJob[]>;

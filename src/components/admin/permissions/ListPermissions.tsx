@@ -184,6 +184,7 @@ function ListPermissions({ dataPermission, initialMethods }: IProps) {
                                         onChange={handleCheckBox}
                                         checked={searchForm.values.isDeleted}
                                         loading={true}
+                                        colSpan={6}
                                     />
                                 </TableRow>
 

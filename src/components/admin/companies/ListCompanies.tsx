@@ -34,7 +34,6 @@ import TableCellNote from '@/components/common/table/TableCellNote';
 import TooltipRowTable from '@/components/common/table/TooltipRowTable';
 import { ICompany } from '@/interface/company';
 import { deleteCompanyByIdAction, restoreCompanyByIdAction } from '@/app/admin/companies/action';
-import { useEffect, useState } from 'react';
 
 interface IProps {
     dataCompanies: IModelPaginate<ICompany[]>;
@@ -145,6 +144,7 @@ function ListCompanies({ dataCompanies }: IProps) {
                                         onChange={handleCheckBox}
                                         checked={searchForm.values.isDeleted}
                                         loading={true}
+                                        colSpan={4}
                                     />
                                 </TableRow>
 

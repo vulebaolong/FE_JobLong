@@ -2,7 +2,6 @@
 
 import { BASE_URL_API } from '@/constant/apiContants';
 import { getSessionUser } from '@/helpers/cookies';
-import { IPermissions } from '@/interface/auth';
 
 export const sendRequestAction = async <T>(props: IRequest) => {
     const session = getSessionUser();

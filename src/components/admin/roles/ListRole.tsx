@@ -170,6 +170,7 @@ function ListRole({ dataRole, initialActives }: IProps) {
                                         onChange={handleCheckBox}
                                         checked={searchForm.values.isDeleted}
                                         loading={true}
+                                        colSpan={5}
                                     />
                                 </TableRow>
 
