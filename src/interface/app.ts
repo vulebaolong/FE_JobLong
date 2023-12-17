@@ -10,6 +10,7 @@ declare global {
         headers?: object;
         nextOption?: object;
         isJsonParse?: boolean;
+        formData?: boolean
     }
 
     interface IBackendRes<Data> extends Response {

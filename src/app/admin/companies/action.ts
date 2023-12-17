@@ -125,3 +125,38 @@ export const restoreCompanyByIdAction = async (id: string) => {
         return reuslt;
     }
 };
+
+export const createCompanyAction = async (body: any) => {
+    const reuslt: IResult<ICompany> = {
+        success: true,
+        data: null,
+        message: '',
+    };
+    try {
+        const data = await sendRequestAction<IBackendRes<ICompany>>({
+            url: `companies`,
+            method: 'POST',
+            body: body,
+        });
+
+        if (data.statusCode !== 201) {
+            reuslt.success = false;
+            reuslt.data = null;
+            reuslt.message = data.message;
+            return reuslt;
+        }
+
+        reuslt.success = true;
+        reuslt.data = data.data;
+        reuslt.message = data.message;
+
+        revalidateTag('getListCompaniesAction');
+
+        return reuslt;
+    } catch (error: any) {
+        reuslt.success = false;
+        reuslt.data = null;
+        reuslt.message = error.message;
+        return reuslt;
+    }
+};
