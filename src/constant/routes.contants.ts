@@ -21,5 +21,9 @@ export const ROUTES = {
             CREATE: `${ROUTE_BASE}jobs/create`,
             DETAIL: (id: string) => `${ROUTE_BASE}jobs/${id}`,
         },
+        COMPANY: {
+            CREATE: `${ROUTE_BASE}companies/create`,
+            DETAIL: (id: string) => `${ROUTE_BASE}companies/${id}`,
+        },
     },
 };

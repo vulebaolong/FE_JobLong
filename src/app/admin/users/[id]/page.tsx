@@ -3,7 +3,7 @@ import Content, { ContentBody, ContentHeader } from '@/components/common/content
 import { TEXT } from '@/constant/text.contants';
 import { getUserByIdAction } from '../action';
 import AlertError from '@/components/common/alert/AlertError';
-import { getListCompanies } from '../../companies/action';
+import { getListCompaniesAction } from '../../companies/action';
 import { buildOptionsAutocomplete, roleOptionsAutocomplete } from '@/helpers/function.helper';
 import { ICompany } from '@/interface/company';
 import { getListRoleAction } from '../../roles/action';
@@ -17,7 +17,7 @@ async function EditUserPage({ params }: IProps) {
     const { id } = params;
     const dataUser = await getUserByIdAction(id);
 
-    const dataCompanies = await getListCompanies({
+    const dataCompanies = await getListCompaniesAction({
         searchParams: { limit: '999', fields: 'name' },
     });
     const dataRole = await getListRoleAction({

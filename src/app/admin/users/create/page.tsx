@@ -2,11 +2,11 @@ import CreateUser from '@/components/admin/users/CreateUser';
 import Content, { ContentBody, ContentHeader } from '@/components/common/content/Content';
 import { TEXT } from '@/constant/text.contants';
 import { buildOptionsAutocomplete } from '@/helpers/function.helper';
-import { getListCompanies } from '../../companies/action';
+import { getListCompaniesAction } from '../../companies/action';
 import { ICompany } from '@/interface/company';
 
 const UserCreatePage = async () => {
-    const dataCompanies = await getListCompanies({
+    const dataCompanies = await getListCompaniesAction({
         searchParams: { limit: '999', fields: 'name' },
     });
 

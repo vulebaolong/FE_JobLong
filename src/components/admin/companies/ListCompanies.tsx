@@ -1,15 +1,13 @@
 'use client';
 
 import {
+    Avatar,
     Box,
     Button,
     Card,
     CardActions,
     CardContent,
-    Checkbox,
-    Chip,
     Divider,
-    FormControlLabel,
     Stack,
     Table,
     TableBody,
@@ -18,53 +16,39 @@ import {
     TableHead,
     TableRow,
     Tooltip,
-    Typography,
 } from '@mui/material';
 import MPagination from '@/components/common/pagination/MPagination';
+import EditButton from '@/components/common/button/EditButton';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { routerReplace } from '@/helpers/router.helper';
 import { TEXT } from '@/constant/text.contants';
 import { useFormik } from 'formik';
 import TextField from '@/components/common/textField/TextField';
-import { useState } from 'react';
-import {
-    IOptionAutocomplete,
-    convertStringToBoolean,
-    initValueFormik,
-} from '@/helpers/formik.helper';
-import Autocomplete from '@/components/common/autocomplete/Autocomplete';
-import { IPermission } from '@/interface/permission';
+import { convertStringToBoolean } from '@/helpers/formik.helper';
 import { ROUTES } from '@/constant/routes.contants';
+import DeleteButton from '@/components/common/button/DeleteButton';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
-import EditButton from '@/components/common/button/EditButton';
 import RestoreButton from '@/components/common/button/RestoreButton';
-import DeleteButton from '@/components/common/button/DeleteButton';
-import {
-    deletePermissionByIdAction,
-    restorePermissionByIdAction,
-} from '@/app/admin/permissions/action';
 import TableCellNote from '@/components/common/table/TableCellNote';
 import TooltipRowTable from '@/components/common/table/TooltipRowTable';
+import { ICompany } from '@/interface/company';
+import { deleteCompanyByIdAction, restoreCompanyByIdAction } from '@/app/admin/companies/action';
 
 interface IProps {
-    dataPermission: IModelPaginate<IPermission[]>;
-    initialMethods: IOptionAutocomplete[];
+    dataCompanies: IModelPaginate<ICompany[]>;
 }
 
-function ListPermissions({ dataPermission, initialMethods }: IProps) {
+function ListCompanies({ dataCompanies }: IProps) {
     const router = useRouter();
     const pathname = usePathname();
     const searchParams = useSearchParams();
 
-    const [methodList] = useState<IOptionAutocomplete[]>(initialMethods);
-
     const searchForm = useFormik({
         initialValues: {
             name: searchParams.get('name') || '',
-            apiPath: searchParams.get('apiPath') || '',
-            method: initValueFormik('method', methodList, searchParams),
-            module: searchParams.get('module') || '',
+            address: searchParams.get('address') || '',
+
             currentPage: searchParams.get('currentPage') || 1,
             isDeleted: searchParams.get('isDeleted')
                 ? convertStringToBoolean(searchParams.get('isDeleted'))
@@ -77,7 +61,6 @@ function ListPermissions({ dataPermission, initialMethods }: IProps) {
                 searchParams,
                 newSearchParams: {
                     ...values,
-                    method: values.method.label || '',
                     isDeleted: values.isDeleted,
                 },
             });
@@ -96,9 +79,7 @@ function ListPermissions({ dataPermission, initialMethods }: IProps) {
 
     const onResetSearch = () => {
         searchForm.setFieldValue('name', '');
-        searchForm.setFieldValue('apiPath', '');
-        searchForm.setFieldValue('method', { label: '', id: '' });
-        searchForm.setFieldValue('module', '');
+        searchForm.setFieldValue('address', '');
         searchForm.submitForm();
     };
 
@@ -108,13 +89,13 @@ function ListPermissions({ dataPermission, initialMethods }: IProps) {
     };
 
     const handleDelete = async (id: string) => {
-        const dataDelete = await deletePermissionByIdAction(id);
-        return dataDelete.success;
+        const dataDeleteUser = await deleteCompanyByIdAction(id);
+        return dataDeleteUser.success;
     };
 
     const handleRestore = async (id: string) => {
-        const dataRestore = await restorePermissionByIdAction(id);
-        return dataRestore.success;
+        const dataRestoreUser = await restoreCompanyByIdAction(id);
+        return dataRestoreUser.success;
     };
 
     return (
@@ -132,33 +113,12 @@ function ListPermissions({ dataPermission, initialMethods }: IProps) {
                             onChange={searchForm.handleChange}
                         />
 
-                        {/* Path */}
+                        {/* Address */}
                         <TextField
                             sx={{ width: '300px' }}
-                            label="Path"
-                            name="apiPath"
-                            value={searchForm.values.apiPath}
-                            onChange={searchForm.handleChange}
-                        />
-
-                        {/* Method */}
-                        <Autocomplete
-                            sx={{ width: '300px' }}
-                            size="small"
-                            options={methodList}
-                            value={searchForm.values.method}
-                            renderInput={(params) => <TextField {...params} label="Method" />}
-                            onChange={(_, value) => {
-                                searchForm.setFieldValue('method', value || { label: '', id: '' });
-                            }}
-                        />
-
-                        {/* Module */}
-                        <TextField
-                            sx={{ width: '300px' }}
-                            label="Module"
-                            name="module"
-                            value={searchForm.values.module}
+                            name="address"
+                            label="Address"
+                            value={searchForm.values.address}
                             onChange={searchForm.handleChange}
                         />
                     </Stack>
@@ -180,84 +140,76 @@ function ListPermissions({ dataPermission, initialMethods }: IProps) {
                             <TableHead>
                                 <TableRow>
                                     <TableCellNote
-                                        total={dataPermission.data?.meta?.totalItems || 0}
+                                        total={dataCompanies.data?.meta?.totalItems || 0}
                                         onChange={handleCheckBox}
                                         checked={searchForm.values.isDeleted}
                                         loading={true}
-                                        colSpan={6}
+                                        colSpan={4}
                                     />
                                 </TableRow>
 
                                 <TableRow>
                                     <TableCell>Name</TableCell>
-                                    <TableCell>Path</TableCell>
-                                    <TableCell>Method</TableCell>
-                                    <TableCell>Module</TableCell>
+                                    <TableCell>Address</TableCell>
                                     <TableCell>Deleted</TableCell>
                                     <TableCell>Action</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {dataPermission.data?.result?.map((permission) => (
-                                    <TableRow key={permission._id}>
+                                {dataCompanies.data?.result?.map((company) => (
+                                    <TableRow key={company._id}>
                                         <TableCell>
-                                            <Tooltip
-                                                title={<TooltipRowTable data={permission} />}
-                                                placement="top"
+                                            <Stack
+                                                direction="row"
+                                                justifyContent="flex-start"
+                                                alignItems="center"
+                                                spacing={1}
                                             >
-                                                <div>{permission.name}</div>
-                                            </Tooltip>
+                                                <Tooltip
+                                                    title={<TooltipRowTable data={company} />}
+                                                    placement="right-end"
+                                                >
+                                                    <Avatar
+                                                        sx={{
+                                                            width: 30,
+                                                            height: 30,
+                                                        }}
+                                                        src={company.logo}
+                                                    />
+                                                </Tooltip>
+                                                <Box>{company.name}</Box>
+                                            </Stack>
                                         </TableCell>
-                                        <TableCell>{permission.apiPath}</TableCell>
+                                        <TableCell>{company.address}</TableCell>
+
                                         <TableCell>
-                                            <Chip
-                                                variant="outlined"
-                                                color={
-                                                    permission.method === 'GET'
-                                                        ? 'success'
-                                                        : permission.method === 'POST'
-                                                          ? 'warning'
-                                                          : permission.method === 'PATCH'
-                                                            ? 'info'
-                                                            : permission.method === 'DELETE'
-                                                              ? 'error'
-                                                              : 'default'
-                                                }
-                                                size="small"
-                                                label={permission.method}
-                                            />
-                                        </TableCell>
-                                        <TableCell>{permission.module}</TableCell>
-                                        <TableCell>
-                                            {permission.isDeleted ? (
+                                            {company.isDeleted ? (
                                                 <ThumbDownIcon fontSize="small" color="error" />
                                             ) : (
                                                 <ThumbUpIcon fontSize="small" color="primary" />
                                             )}
                                         </TableCell>
                                         <TableCell>
-                                            {permission.isDeleted ? (
+                                            {company.isDeleted ? (
                                                 <>
                                                     <EditButton
-                                                        href={ROUTES.ADMIN.PERMISSION.DETAIL(
-                                                            permission._id,
+                                                        href={ROUTES.ADMIN.COMPANY.DETAIL(
+                                                            company._id,
                                                         )}
                                                     />
                                                     <RestoreButton
-                                                        onClick={() =>
-                                                            handleRestore(permission._id)
-                                                        }
+                                                        onClick={() => handleRestore(company._id)}
                                                     />
                                                 </>
                                             ) : (
                                                 <>
                                                     <EditButton
-                                                        href={ROUTES.ADMIN.PERMISSION.DETAIL(
-                                                            permission._id,
+                                                        href={ROUTES.ADMIN.COMPANY.DETAIL(
+                                                            company._id,
                                                         )}
                                                     />
                                                     <DeleteButton
-                                                        onClick={() => handleDelete(permission._id)}
+                                                        onClick={() => handleDelete(company._id)}
                                                     />
                                                 </>
                                             )}
@@ -271,8 +223,8 @@ function ListPermissions({ dataPermission, initialMethods }: IProps) {
                 <Divider />
                 <CardActions>
                     <MPagination
-                        totalPages={dataPermission.data?.meta?.totalPages}
-                        currentPage={dataPermission.data?.meta?.currentPage}
+                        totalPages={dataCompanies.data?.meta?.totalPages}
+                        currentPage={dataCompanies.data?.meta?.currentPage}
                         onChange={onPageChange}
                     />
                 </CardActions>
@@ -280,4 +232,4 @@ function ListPermissions({ dataPermission, initialMethods }: IProps) {
         </Stack>
     );
 }
-export default ListPermissions;
+export default ListCompanies;

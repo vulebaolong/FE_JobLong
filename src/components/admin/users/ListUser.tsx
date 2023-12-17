@@ -227,6 +227,7 @@ function ListUser({ dataUser, initialCompaies, initialRole, initialGender }: IPr
                                         onChange={handleCheckBox}
                                         checked={searchForm.values.isDeleted}
                                         loading={true}
+                                        colSpan={9}
                                     />
                                 </TableRow>
 
