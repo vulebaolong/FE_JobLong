@@ -112,13 +112,13 @@ function ListJob({ dataJob, initialActives, initialCompaies }: IProps) {
     };
 
     const handleDelete = async (id: string) => {
-        const dataDeleteUser = await deleteJobByIdAction(id);
-        return dataDeleteUser.success;
+        const dataDelete = await deleteJobByIdAction(id);
+        return dataDelete.success;
     };
 
     const handleRestore = async (id: string) => {
-        const dataRestoreUser = await restoreJobByIdAction(id);
-        return dataRestoreUser.success;
+        const dataRestore = await restoreJobByIdAction(id);
+        return dataRestore.success;
     };
 
     return (

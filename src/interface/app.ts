@@ -10,6 +10,7 @@ declare global {
         headers?: object;
         nextOption?: object;
         isJsonParse?: boolean;
+        formData?: boolean;
     }
 
     interface IBackendRes<Data> extends Response {
@@ -42,6 +43,11 @@ declare global {
         upsertedId: number | null;
         upsertedCount: number;
         matchedCount: number;
+    }
+
+    interface IResponseDeleleHard {
+        acknowledged: boolean;
+        deletedCount: number;
     }
 
     interface ActionBy {

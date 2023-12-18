@@ -116,13 +116,13 @@ function ListUser({ dataUser, initialCompaies, initialRole, initialGender }: IPr
     };
 
     const handleDelete = async (id: string) => {
-        const dataDeleteUser = await deleteUserByIdAction(id);
-        return dataDeleteUser.success;
+        const dataDelete = await deleteUserByIdAction(id);
+        return dataDelete.success;
     };
 
     const handleRestore = async (id: string) => {
-        const dataRestoreUser = await restoreUserByIdAction(id);
-        return dataRestoreUser.success;
+        const dataRestore = await restoreUserByIdAction(id);
+        return dataRestore.success;
     };
 
     return (

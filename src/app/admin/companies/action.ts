@@ -92,6 +92,40 @@ export const deleteCompanyByIdAction = async (id: string) => {
     }
 };
 
+export const deleteHardCompanyByIdAction = async (id: string) => {
+    const reuslt: IResult<IResponseDeleleHard> = {
+        success: true,
+        data: null,
+        message: '',
+    };
+    try {
+        const data = await sendRequestAction<IBackendRes<IResponseDeleleHard>>({
+            url: `companies/hard/${id}`,
+            method: 'DELETE',
+        });
+
+        if (data.data.deletedCount !== 1) {
+            reuslt.success = false;
+            reuslt.data = null;
+            reuslt.message = data.message;
+            return reuslt;
+        }
+
+        reuslt.success = true;
+        reuslt.data = data.data;
+        reuslt.message = data.message;
+
+        revalidateTag('getListCompaniesAction');
+
+        return reuslt;
+    } catch (error: any) {
+        reuslt.success = false;
+        reuslt.data = null;
+        reuslt.message = error.message;
+        return reuslt;
+    }
+};
+
 export const restoreCompanyByIdAction = async (id: string) => {
     const reuslt: IResult<IResponseUpdate> = {
         success: true,
@@ -105,6 +139,41 @@ export const restoreCompanyByIdAction = async (id: string) => {
         });
 
         if (data.data.modifiedCount !== 1) {
+            reuslt.success = false;
+            reuslt.data = null;
+            reuslt.message = data.message;
+            return reuslt;
+        }
+
+        reuslt.success = true;
+        reuslt.data = data.data;
+        reuslt.message = data.message;
+
+        revalidateTag('getListCompaniesAction');
+
+        return reuslt;
+    } catch (error: any) {
+        reuslt.success = false;
+        reuslt.data = null;
+        reuslt.message = error.message;
+        return reuslt;
+    }
+};
+
+export const createCompanyAction = async (body: any) => {
+    const reuslt: IResult<ICompany> = {
+        success: true,
+        data: null,
+        message: '',
+    };
+    try {
+        const data = await sendRequestAction<IBackendRes<ICompany>>({
+            url: `companies`,
+            method: 'POST',
+            body: body,
+        });
+
+        if (data.statusCode !== 201) {
             reuslt.success = false;
             reuslt.data = null;
             reuslt.message = data.message;
