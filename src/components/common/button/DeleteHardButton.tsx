@@ -4,6 +4,7 @@ import React from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Box, Divider, IconButton, ListItemText, Menu, Stack, Tooltip } from '@mui/material';
 import InfoIcon from '@mui/icons-material/Info';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import { Button } from '@mui/material';
 import { toastError, toastSuccess } from '@/provider/ToastProvider';
 
@@ -11,7 +12,7 @@ interface IProps {
     onClick: () => Promise<boolean>;
 }
 
-const DeleteButton = ({ onClick }: IProps) => {
+const DeleteHardButton = ({ onClick }: IProps) => {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -25,7 +26,7 @@ const DeleteButton = ({ onClick }: IProps) => {
         const isClose = await onClick();
         if (isClose) {
             handleClose();
-            toastSuccess('Deleted successfully');
+            toastSuccess('Deleted hard successfully');
             return;
         }
 
@@ -35,7 +36,7 @@ const DeleteButton = ({ onClick }: IProps) => {
         <>
             <Tooltip title="Delete" placement="top">
                 <IconButton size="small" id="delete-button" onClick={handleClick}>
-                    <DeleteIcon color="error" fontSize="small" />
+                    <HighlightOffIcon color="error" fontSize="small" />
                 </IconButton>
             </Tooltip>
             <Menu
@@ -57,7 +58,7 @@ const DeleteButton = ({ onClick }: IProps) => {
                         paddingRight={1}
                     >
                         <InfoIcon fontSize="small" color="warning" />
-                        <ListItemText>Sure to delete?</ListItemText>
+                        <ListItemText>Sure to delete hard?</ListItemText>
                     </Stack>
                     <Divider sx={{ margin: '10px' }} />
                     <Stack
@@ -80,4 +81,4 @@ const DeleteButton = ({ onClick }: IProps) => {
     );
 };
 
-export default DeleteButton;
+export default DeleteHardButton;

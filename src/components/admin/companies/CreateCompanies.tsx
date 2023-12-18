@@ -27,10 +27,6 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import PreviewImage from './PreviewImage';
 import { imgUploadAction } from '@/app/action';
 import { FOLDER_IMAGE_COMPANY } from '@/constant/image.contants';
-import axios from 'axios';
-import { BASE_URL_API } from '@/constant/apiContants';
-import { lcStorage } from '@/helpers/localStorage';
-import { ACCESS_TOKEN } from '@/constant/userContants';
 
 const CreateCompanies = () => {
     const rteRef = useRef<RichTextEditorRef>(null);
@@ -56,6 +52,9 @@ const CreateCompanies = () => {
             address: Yup.string().required(TEXT.MESSAGE.REQUIRED_FIELD('Address')),
         }),
         onSubmit: async (valuesRaw) => {
+            setErrMessage(undefined);
+            setIsLoading(true);
+            
             const formData = new FormData();
             if (!fileImg) return toastWarning(TEXT.MESSAGE.CREATE_SUCCESS);
 
@@ -74,8 +73,7 @@ const CreateCompanies = () => {
 
             // console.log(values);
 
-            setErrMessage(undefined);
-            setIsLoading(true);
+          
 
             const result = await createCompanyAction(values);
             setIsLoading(false);

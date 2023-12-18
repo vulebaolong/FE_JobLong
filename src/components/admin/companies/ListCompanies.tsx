@@ -33,7 +33,8 @@ import RestoreButton from '@/components/common/button/RestoreButton';
 import TableCellNote from '@/components/common/table/TableCellNote';
 import TooltipRowTable from '@/components/common/table/TooltipRowTable';
 import { ICompany } from '@/interface/company';
-import { deleteCompanyByIdAction, restoreCompanyByIdAction } from '@/app/admin/companies/action';
+import { deleteCompanyByIdAction, deleteHardCompanyByIdAction, restoreCompanyByIdAction } from '@/app/admin/companies/action';
+import DeleteHardButton from '@/components/common/button/DeleteHardButton';
 
 interface IProps {
     dataCompanies: IModelPaginate<ICompany[]>;
@@ -89,13 +90,18 @@ function ListCompanies({ dataCompanies }: IProps) {
     };
 
     const handleDelete = async (id: string) => {
-        const dataDeleteUser = await deleteCompanyByIdAction(id);
-        return dataDeleteUser.success;
+        const dataDelete = await deleteCompanyByIdAction(id);
+        return dataDelete.success;
+    };
+
+    const handleDeleteHard = async (id: string) => {
+        const dataDelete = await deleteHardCompanyByIdAction(id);
+        return dataDelete.success;
     };
 
     const handleRestore = async (id: string) => {
-        const dataRestoreUser = await restoreCompanyByIdAction(id);
-        return dataRestoreUser.success;
+        const dataRestore = await restoreCompanyByIdAction(id);
+        return dataRestore.success;
     };
 
     return (
@@ -213,6 +219,9 @@ function ListCompanies({ dataCompanies }: IProps) {
                                                     />
                                                 </>
                                             )}
+                                            <DeleteHardButton
+                                                onClick={() => handleDeleteHard(company._id)}
+                                            />
                                         </TableCell>
                                     </TableRow>
                                 ))}
