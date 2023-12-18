@@ -54,7 +54,7 @@ const CreateCompanies = () => {
         onSubmit: async (valuesRaw) => {
             setErrMessage(undefined);
             setIsLoading(true);
-            
+
             const formData = new FormData();
             if (!fileImg) return toastWarning(TEXT.MESSAGE.CREATE_SUCCESS);
 
@@ -72,8 +72,6 @@ const CreateCompanies = () => {
             };
 
             // console.log(values);
-
-          
 
             const result = await createCompanyAction(values);
             setIsLoading(false);

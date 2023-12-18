@@ -1,6 +1,4 @@
 function EditCompanyPage() {
-  return (
-    <div>EditCompanyPage</div>
-  )
+    return <div>EditCompanyPage</div>;
 }
-export default EditCompanyPage
+export default EditCompanyPage;

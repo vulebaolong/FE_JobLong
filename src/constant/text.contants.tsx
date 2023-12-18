@@ -31,6 +31,9 @@ export const TEXT = {
         COMPANY: 'Company',
         COMPANY_CREATE: 'Create Company',
         COMPANY_EDIT: 'Edit Company',
+        RESUME: 'Resume',
+        RESUME_CREATE: 'Create Resume',
+        RESUME_EDIT: 'Edit Resume',
     },
     AUTOCOMPLETE: {
         MALE: 'Male',

@@ -13,7 +13,7 @@ function PreviewImage({ file }: { file: File }) {
             setPreview(result);
         }
     };
-    
+
     return (
         <>
             {preview ? (
