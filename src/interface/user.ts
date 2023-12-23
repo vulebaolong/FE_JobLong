@@ -35,7 +35,7 @@ export interface ICreateUser {
     email: string;
     password: string;
     address: string;
-    age: string;
+    age: number;
     gender: string;
 }
 

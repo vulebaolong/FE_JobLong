@@ -25,7 +25,7 @@ export const getListUserAction = async ({ searchParams }: IProps) => {
 
         if (searchParams.name) query.push(`name=/${searchParams.name.trim()}/i`);
         if (searchParams.address) query.push(`address=/${searchParams.address.trim()}/i`);
-        if (searchParams.age) query.push(`age=/${searchParams.age.trim()}/i`);
+        if (searchParams.age) query.push(`age=${searchParams.age.trim()}`);
         if (searchParams.company) query.push(`company=${searchParams.company.trim()}`);
         if (searchParams.email) query.push(`email=${searchParams.email.trim()}`);
         if (searchParams.gender) query.push(`gender=${searchParams.gender.trim()}`);

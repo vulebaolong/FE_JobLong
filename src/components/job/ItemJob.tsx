@@ -1,5 +1,4 @@
 'use client';
-import { BASE_URL_SERVER, FOLDER_IMAGE_COMPANY } from '@/constant/apiContants';
 import { IJob } from '@/interface/job';
 import { Card, CardActionArea } from '@mui/material';
 import Image from 'next/image';

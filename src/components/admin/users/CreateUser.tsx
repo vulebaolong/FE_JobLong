@@ -102,7 +102,7 @@ const CreateUser = ({ initialGender, initialCompaies }: IProps) => {
                     email: values.email,
                     password: values.password,
                     address: values.address,
-                    age: values.age,
+                    age: +values.age,
                     gender: values.gender.label,
                 };
                 const dataCreateUser = await createUserAction(data);

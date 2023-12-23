@@ -6,7 +6,7 @@ import Autocomplete from '@/components/common/autocomplete/Autocomplete';
 import TextField from '@/components/common/textField/TextField';
 import { TEXT } from '@/constant/text.contants';
 import { IOptionAutocomplete, convertStringToBoolean } from '@/helpers/formik.helper';
-import { IRole, IUpdateRole } from '@/interface/role';
+import { IUpdateRole } from '@/interface/role';
 import { toastSuccess } from '@/provider/ToastProvider';
 import { LoadingButton } from '@mui/lab';
 import { Box, Button, Card, CardActions, CardContent, Divider, Grid, Stack } from '@mui/material';

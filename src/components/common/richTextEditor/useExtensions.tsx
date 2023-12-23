@@ -9,7 +9,6 @@ import { Dropcursor } from '@tiptap/extension-dropcursor';
 import { Gapcursor } from '@tiptap/extension-gapcursor';
 import { HardBreak } from '@tiptap/extension-hard-break';
 import { History } from '@tiptap/extension-history';
-import { HorizontalRule } from '@tiptap/extension-horizontal-rule';
 import { Italic } from '@tiptap/extension-italic';
 import { ListItem } from '@tiptap/extension-list-item';
 import { OrderedList } from '@tiptap/extension-ordered-list';
@@ -27,7 +26,6 @@ import {
     HeadingWithAnchor,
     LinkBubbleMenuHandler,
     ResizableImage,
-    TableImproved,
 } from 'mui-tiptap';
 
 export type UseExtensionsOptions = {

@@ -22,7 +22,7 @@ import TextField from '@/components/common/textField/TextField';
 import { toastSuccess, toastWarning } from '@/provider/ToastProvider';
 import RichTextEditor from '@/components/common/richTextEditor/RichTextEditor';
 import { RichTextEditorRef } from 'mui-tiptap';
-import { createCompanyAction, updateCompanyByIdAction } from '@/app/admin/companies/action';
+import { updateCompanyByIdAction } from '@/app/admin/companies/action';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import PreviewImage from './PreviewImage';
 import { imgDeleteAction, imgUploadAction } from '@/app/action';

@@ -74,6 +74,7 @@ const EditUser = ({ initialGender, initialCompaies, initialRole, user }: IProps)
             }
             values.role = values.role.id;
             values.gender = values.gender.label;
+            values.age = +values.age;
 
             setErrMessage(undefined);
             setIsLoading(true);
