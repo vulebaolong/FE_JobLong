@@ -21,7 +21,6 @@ export const loginAction = async (value: ILoginRequest) => {
     if (result.statusCode === 201) {
         result.data.refresh_token = refresh_token;
         setSessionUser(result.data);
-        // console.log("loginAction:::>>",getSessionUser());
     }
 
     return result;

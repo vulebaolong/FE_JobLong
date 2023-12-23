@@ -251,7 +251,7 @@ function ListJob({ dataJob, initialActives, initialCompaies }: IProps) {
                                         </TableCell>
                                         <TableCell>{formatNumber(job.salary)}</TableCell>
                                         <TableCell>{job.skills.join(', ')}</TableCell>
-                                        <TableCell>{job.company.name}</TableCell>
+                                        <TableCell>{job.company?.name}</TableCell>
                                         <TableCell>{job.location}</TableCell>
                                         <TableCell>{job.level}</TableCell>
                                         <TableCell>

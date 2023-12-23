@@ -2,6 +2,8 @@
 
 import { ICompany } from '@/interface/company';
 import ItemCompany from './ItemCompany';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 interface IProps {
     dataCompany: IModelPaginate<ICompany[]>;
@@ -9,6 +11,12 @@ interface IProps {
 
 function ListCompany({ dataCompany }: IProps) {
     const companies = dataCompany?.data?.result || [];
+    const router = useRouter();
+
+    useEffect(() => {
+        router.push('/admin')
+    }, [])
+    
 
     return (
         <div className="container">

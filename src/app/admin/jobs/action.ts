@@ -19,8 +19,8 @@ export const getListJobAction = async ({ searchParams }: IProps) => {
         const limit = searchParams.limit || 10;
 
         const query: string[] = [];
-        if (searchParams.fields) query.push(`fields=${searchParams.fields.trim()}`);
         if (searchParams.populate) query.push(`populate=${searchParams.populate.trim()}`);
+        if (searchParams.fields) query.push(`fields=${searchParams.fields.trim()}`);
         if (searchParams.sort) query.push(`sort=${searchParams.sort.trim()}`);
 
         if (searchParams.name) query.push(`name=/${searchParams.name.trim()}/i`);
