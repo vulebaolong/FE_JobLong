@@ -3,7 +3,7 @@
 import { sendRequestAction } from '@/app/action';
 import { IPermissions } from '@/interface/auth';
 import { ICreatePermission, IPermission, IUpdatePermission } from '@/interface/permission';
-import { ICreateResume, IResListResume } from '@/interface/resumes';
+import { ICreateResume, IResListResume, IResume, IUpdateResume } from '@/interface/resumes';
 import { revalidateTag } from 'next/cache';
 
 interface IProps {
@@ -169,14 +169,14 @@ export const createResumeAction = async (body: ICreateResume) => {
 };
 
 export const getResumeByIdAction = async (id: string) => {
-    const reuslt: IResult<IPermission> = {
+    const reuslt: IResult<IResume> = {
         success: true,
         data: null,
         message: '',
     };
     try {
-        const data = await sendRequestAction<IBackendRes<IPermission>>({
-            url: `permissions/${id}`,
+        const data = await sendRequestAction<IBackendRes<IResume>>({
+            url: `resumes/${id}`,
             method: 'GET',
         });
 
@@ -200,15 +200,15 @@ export const getResumeByIdAction = async (id: string) => {
     }
 };
 
-export const updateResumeByIdAction = async (id: string, body: IUpdatePermission) => {
-    const reuslt: IResult<IPermission> = {
+export const updateResumeByIdAction = async (id: string, body: IUpdateResume) => {
+    const reuslt: IResult<IUpdateResume> = {
         success: true,
         data: null,
         message: '',
     };
     try {
-        const data = await sendRequestAction<IBackendRes<IPermission>>({
-            url: `permissions/${id}`,
+        const data = await sendRequestAction<IBackendRes<IResume>>({
+            url: `resumes/${id}`,
             method: 'PATCH',
             body: body,
         });
@@ -224,7 +224,7 @@ export const updateResumeByIdAction = async (id: string, body: IUpdatePermission
         reuslt.data = data.data;
         reuslt.message = data.message;
 
-        revalidateTag('getListPermissionsAction');
+        revalidateTag('getListResumesAction');
 
         return reuslt;
     } catch (error: any) {
