@@ -1,10 +1,13 @@
 'use client';
 
 import { getListPermissionsByUserAction } from '@/app/admin/permissions/action';
+import { logoutAction } from '@/app/auth/[id]/action';
 import SlidebarSkeleton from '@/components/common/skeleton/slidebar.skeleton';
 import { rootSidebarMenus, sidebarActiveModule } from '@/configs/sidebar.config';
 import { ROUTES } from '@/constant/routes.contants';
+import { ACCESS_TOKEN, USER_LOGIN } from '@/constant/userContants';
 import { extractUniqueModules } from '@/helpers/function.helper';
+import { lcStorage } from '@/helpers/localStorage';
 import { IPermissions } from '@/interface/auth';
 import { RootState } from '@/redux/store';
 import {
@@ -64,10 +67,6 @@ const Drawer = styled(MuiDrawer, {
     }),
 }));
 
-interface IProps {
-    dataPermission: IBackendRes<IPermissions[]>;
-}
-
 function Sidebar() {
     const pathname = usePathname();
     const router = useRouter();
@@ -93,6 +92,13 @@ function Sidebar() {
             setLoading(true);
             const dataPermission = await getListPermissionsByUserAction();
             setLoading(false);
+
+            if (dataPermission.statusCode === 401) {
+                await logoutAction();
+                lcStorage.remove(USER_LOGIN);
+                lcStorage.remove(ACCESS_TOKEN);
+                router.push(ROUTES.ADMIN.DASHBOARD.INDEX);
+            }
 
             if (dataPermission.error) router.push(ROUTES.ADMIN.DASHBOARD.INDEX);
             setPermission(dataPermission.data);

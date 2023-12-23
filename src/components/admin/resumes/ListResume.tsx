@@ -228,7 +228,7 @@ function ListResumes({ dataResume, initialStatus, initialCompaies, initialJob }:
                                             {resume.isDeleted ? (
                                                 <>
                                                     <EditButton
-                                                        href={ROUTES.ADMIN.COMPANY.DETAIL(
+                                                        href={ROUTES.ADMIN.RESUME.DETAIL(
                                                             resume._id,
                                                         )}
                                                     />
@@ -239,7 +239,7 @@ function ListResumes({ dataResume, initialStatus, initialCompaies, initialJob }:
                                             ) : (
                                                 <>
                                                     <EditButton
-                                                        href={ROUTES.ADMIN.COMPANY.DETAIL(
+                                                        href={ROUTES.ADMIN.RESUME.DETAIL(
                                                             resume._id,
                                                         )}
                                                     />

@@ -7,7 +7,7 @@ import axios from 'axios';
 
 export const sendRequestAction = async <T>(props: IRequest) => {
     const session = getSessionUser();
-    // console.log('sendRequestAction :::>>>', session);
+    console.log('sendRequestAction :::>>>', session);
 
     let { url, method, body, headers = {}, nextOption = {}, isJsonParse = true, formData } = props;
 
@@ -24,8 +24,6 @@ export const sendRequestAction = async <T>(props: IRequest) => {
         body: body ? JSON.stringify(body) : null,
         ...nextOption,
     };
-
-    console.log(options.headers);
 
     try {
         const res = await fetch(`${BASE_URL_API}/${url}`, options);

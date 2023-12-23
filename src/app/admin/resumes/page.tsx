@@ -62,7 +62,7 @@ async function ResumesPage({ searchParams }: IProps) {
             <ContentHeader
                 title={TEXT.TITLE.RESUME}
                 rightContent={
-                    <NavButton href={ROUTES.ADMIN.PERMISSION.CREATE} text={TEXT.BUTTON_TEXT.ADD} />
+                    <NavButton href={ROUTES.ADMIN.RESUME.CREATE} text={TEXT.BUTTON_TEXT.ADD} />
                 }
             />
             <ContentBody>
