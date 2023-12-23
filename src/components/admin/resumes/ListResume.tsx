@@ -1,8 +1,6 @@
 'use client';
 
 import {
-    Avatar,
-    Box,
     Button,
     Card,
     CardActions,
@@ -15,7 +13,6 @@ import {
     TableContainer,
     TableHead,
     TableRow,
-    Tooltip,
 } from '@mui/material';
 import MPagination from '@/components/common/pagination/MPagination';
 import EditButton from '@/components/common/button/EditButton';
@@ -24,35 +21,44 @@ import { routerReplace } from '@/helpers/router.helper';
 import { TEXT } from '@/constant/text.contants';
 import { useFormik } from 'formik';
 import TextField from '@/components/common/textField/TextField';
-import { convertStringToBoolean } from '@/helpers/formik.helper';
+import {
+    IOptionAutocomplete,
+    convertStringToBoolean,
+    initValueFormik,
+} from '@/helpers/formik.helper';
 import { ROUTES } from '@/constant/routes.contants';
 import DeleteButton from '@/components/common/button/DeleteButton';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import RestoreButton from '@/components/common/button/RestoreButton';
 import TableCellNote from '@/components/common/table/TableCellNote';
-import TooltipRowTable from '@/components/common/table/TooltipRowTable';
-import { ICompany } from '@/interface/company';
-import {
-    deleteCompanyByIdAction,
-    deleteHardCompanyByIdAction,
-    restoreCompanyByIdAction,
-} from '@/app/admin/companies/action';
-import DeleteHardButton from '@/components/common/button/DeleteHardButton';
+import { IResListResume } from '@/interface/resumes';
+import { useState } from 'react';
+import Autocomplete from '@/components/common/autocomplete/Autocomplete';
+import TruncatedText from '@/components/common/truncatedText/TruncatedText';
+import { deleteResumeByIdAction, restoreResumeByIdAction } from '@/app/admin/resumes/actions';
 
 interface IProps {
-    dataCompanies: IModelPaginate<ICompany[]>;
+    dataResume: IModelPaginate<IResListResume[]>;
+    initialStatus: IOptionAutocomplete[];
+    initialCompaies: IOptionAutocomplete[];
+    initialJob: IOptionAutocomplete[];
 }
 
-function ListCompanies({ dataCompanies }: IProps) {
+function ListResumes({ dataResume, initialStatus, initialCompaies, initialJob }: IProps) {
     const router = useRouter();
     const pathname = usePathname();
     const searchParams = useSearchParams();
 
+    const [statusList] = useState<IOptionAutocomplete[]>(initialStatus);
+    const [companiesList] = useState<IOptionAutocomplete[]>(initialCompaies);
+    const [jobList] = useState<IOptionAutocomplete[]>(initialJob);
+
     const searchForm = useFormik({
         initialValues: {
-            name: searchParams.get('name') || '',
-            address: searchParams.get('address') || '',
+            status: initValueFormik('status', statusList, searchParams),
+            company: initValueFormik('company', companiesList, searchParams),
+            job: initValueFormik('job', jobList, searchParams),
 
             currentPage: searchParams.get('currentPage') || 1,
             isDeleted: searchParams.get('isDeleted')
@@ -66,6 +72,9 @@ function ListCompanies({ dataCompanies }: IProps) {
                 searchParams,
                 newSearchParams: {
                     ...values,
+                    status: values.status.label || '',
+                    company: values.company.id || '',
+                    job: values.job.id || '',
                     isDeleted: values.isDeleted,
                 },
             });
@@ -94,17 +103,12 @@ function ListCompanies({ dataCompanies }: IProps) {
     };
 
     const handleDelete = async (id: string) => {
-        const dataDelete = await deleteCompanyByIdAction(id);
-        return dataDelete.success;
-    };
-
-    const handleDeleteHard = async (id: string) => {
-        const dataDelete = await deleteHardCompanyByIdAction(id);
+        const dataDelete = await deleteResumeByIdAction(id);
         return dataDelete.success;
     };
 
     const handleRestore = async (id: string) => {
-        const dataRestore = await restoreCompanyByIdAction(id);
+        const dataRestore = await restoreResumeByIdAction(id);
         return dataRestore.success;
     };
 
@@ -114,22 +118,40 @@ function ListCompanies({ dataCompanies }: IProps) {
             <Card variant="outlined">
                 <CardContent>
                     <Stack direction={'row'} flexWrap="wrap" gap={2}>
-                        {/* Name */}
-                        <TextField
+                        {/* Status */}
+                        <Autocomplete
                             sx={{ width: '300px' }}
-                            label="Name"
-                            name="name"
-                            value={searchForm.values.name}
-                            onChange={searchForm.handleChange}
+                            size="small"
+                            options={statusList}
+                            value={searchForm.values.status}
+                            renderInput={(params) => <TextField {...params} label="Status" />}
+                            onChange={(_, value) => {
+                                searchForm.setFieldValue('status', value || { label: '', id: '' });
+                            }}
                         />
 
-                        {/* Address */}
-                        <TextField
+                        {/* Company */}
+                        <Autocomplete
                             sx={{ width: '300px' }}
-                            name="address"
-                            label="Address"
-                            value={searchForm.values.address}
-                            onChange={searchForm.handleChange}
+                            size="small"
+                            options={companiesList}
+                            value={searchForm.values.company}
+                            renderInput={(params) => <TextField {...params} label="Company" />}
+                            onChange={(_, value) => {
+                                searchForm.setFieldValue('company', value || { label: '', id: '' });
+                            }}
+                        />
+
+                        {/* Job */}
+                        <Autocomplete
+                            sx={{ width: '300px' }}
+                            size="small"
+                            options={jobList}
+                            value={searchForm.values.job}
+                            renderInput={(params) => <TextField {...params} label="Job" />}
+                            onChange={(_, value) => {
+                                searchForm.setFieldValue('job', value || { label: '', id: '' });
+                            }}
                         />
                     </Stack>
                 </CardContent>
@@ -141,7 +163,6 @@ function ListCompanies({ dataCompanies }: IProps) {
                     <Button onClick={onResetSearch}>{TEXT.BUTTON_TEXT.RESET}</Button>
                 </CardActions>
             </Card>
-
             {/* TABLE */}
             <Card variant="outlined">
                 <CardContent sx={{ padding: 0 }}>
@@ -150,82 +171,83 @@ function ListCompanies({ dataCompanies }: IProps) {
                             <TableHead>
                                 <TableRow>
                                     <TableCellNote
-                                        total={dataCompanies.data?.meta?.totalItems || 0}
+                                        total={dataResume.data?.meta?.totalItems || 0}
                                         onChange={handleCheckBox}
                                         checked={searchForm.values.isDeleted}
                                         loading={true}
-                                        colSpan={4}
+                                        colSpan={7}
                                     />
                                 </TableRow>
 
                                 <TableRow>
-                                    <TableCell>Name</TableCell>
-                                    <TableCell>Address</TableCell>
+                                    <TableCell>Email</TableCell>
+                                    <TableCell>Url</TableCell>
+                                    <TableCell>Status</TableCell>
+                                    <TableCell>Company</TableCell>
+                                    <TableCell>Job</TableCell>
+
                                     <TableCell>Deleted</TableCell>
                                     <TableCell>Action</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {dataCompanies.data?.result?.map((company) => (
-                                    <TableRow key={company._id}>
+                                {dataResume.data?.result?.map((resume) => (
+                                    <TableRow key={resume._id}>
                                         <TableCell>
-                                            <Stack
-                                                direction="row"
-                                                justifyContent="flex-start"
-                                                alignItems="center"
-                                                spacing={1}
-                                            >
-                                                <Tooltip
-                                                    title={<TooltipRowTable data={company} />}
-                                                    placement="right-end"
-                                                >
-                                                    <Avatar
-                                                        sx={{
-                                                            width: 30,
-                                                            height: 30,
-                                                        }}
-                                                        src={company.logo}
-                                                    />
-                                                </Tooltip>
-                                                <Box>{company.name}</Box>
-                                            </Stack>
+                                            <TruncatedText maxWidth="100px">
+                                                {resume.user.email}
+                                            </TruncatedText>
                                         </TableCell>
-                                        <TableCell>{company.address}</TableCell>
+                                        <TableCell>
+                                            <TruncatedText maxWidth="100px">
+                                                <a href={resume.url} target="_blank">
+                                                    {resume.url}
+                                                </a>
+                                            </TruncatedText>
+                                        </TableCell>
+                                        <TableCell>{resume.status}</TableCell>
+                                        <TableCell>
+                                            <TruncatedText maxWidth="100px">
+                                                {resume.company.name}
+                                            </TruncatedText>
+                                        </TableCell>
+                                        <TableCell>
+                                            <TruncatedText maxWidth="100px">
+                                                {resume.job.name}
+                                            </TruncatedText>
+                                        </TableCell>
 
                                         <TableCell>
-                                            {company.isDeleted ? (
+                                            {resume.isDeleted ? (
                                                 <ThumbDownIcon fontSize="small" color="error" />
                                             ) : (
                                                 <ThumbUpIcon fontSize="small" color="primary" />
                                             )}
                                         </TableCell>
                                         <TableCell>
-                                            {company.isDeleted ? (
+                                            {resume.isDeleted ? (
                                                 <>
                                                     <EditButton
-                                                        href={ROUTES.ADMIN.COMPANY.DETAIL(
-                                                            company._id,
+                                                        href={ROUTES.ADMIN.RESUME.DETAIL(
+                                                            resume._id,
                                                         )}
                                                     />
                                                     <RestoreButton
-                                                        onClick={() => handleRestore(company._id)}
+                                                        onClick={() => handleRestore(resume._id)}
                                                     />
                                                 </>
                                             ) : (
                                                 <>
                                                     <EditButton
-                                                        href={ROUTES.ADMIN.COMPANY.DETAIL(
-                                                            company._id,
+                                                        href={ROUTES.ADMIN.RESUME.DETAIL(
+                                                            resume._id,
                                                         )}
                                                     />
                                                     <DeleteButton
-                                                        onClick={() => handleDelete(company._id)}
+                                                        onClick={() => handleDelete(resume._id)}
                                                     />
                                                 </>
                                             )}
-                                            <DeleteHardButton
-                                                onClick={() => handleDeleteHard(company._id)}
-                                            />
                                         </TableCell>
                                     </TableRow>
                                 ))}
@@ -236,8 +258,8 @@ function ListCompanies({ dataCompanies }: IProps) {
                 <Divider />
                 <CardActions>
                     <MPagination
-                        totalPages={dataCompanies.data?.meta?.totalPages}
-                        currentPage={dataCompanies.data?.meta?.currentPage}
+                        totalPages={dataResume.data?.meta?.totalPages}
+                        currentPage={dataResume.data?.meta?.currentPage}
                         onChange={onPageChange}
                     />
                 </CardActions>
@@ -245,4 +267,4 @@ function ListCompanies({ dataCompanies }: IProps) {
         </Stack>
     );
 }
-export default ListCompanies;
+export default ListResumes;

@@ -21,7 +21,6 @@ export interface IPermission {
     updatedAt: string;
 
     __v: number;
-    refreshToken: string;
 }
 
 export interface ICreatePermission {

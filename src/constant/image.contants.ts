@@ -1,1 +1,1 @@
-export const FOLDER_IMAGE_COMPANY = 'companies'
+export const FOLDER_IMAGE_COMPANY = 'companies';
