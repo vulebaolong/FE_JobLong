@@ -4,6 +4,7 @@ export interface ICompany {
     address: string;
     description: string;
     logo: string;
+    logoName: string;
     createdBy: ActionBy;
     isDeleted: boolean;
     deletedAt: any;

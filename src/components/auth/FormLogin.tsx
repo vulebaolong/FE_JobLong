@@ -58,8 +58,6 @@ function FormLogin() {
             };
 
             const result = await loginAction(loginRequest);
-            console.log(result);
-
             if (result.statusCode !== 201) return toastError('Đăng nhập không thành công');
 
             dispatch(

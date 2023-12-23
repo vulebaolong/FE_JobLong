@@ -17,11 +17,11 @@ interface IProps {
 }
 
 async function JobsPage({ searchParams }: IProps) {
-    const dataRole = await getListJobAction({
+    const dataJob = await getListJobAction({
         searchParams: {
             sort: '-createdAt',
             populate: 'company',
-            fields: 'company.logo,-description',
+            fields: 'company.name,name,salary,skills,location,level,isActive,isDeleted,createdAt,updatedAt,deletedAt,createdBy,updatedBy,deletedBy',
             ...searchParams,
         },
     });
@@ -30,7 +30,7 @@ async function JobsPage({ searchParams }: IProps) {
         searchParams: { limit: '999', fields: 'name' },
     });
 
-    const { success, messages } = checkData(dataRole, dataCompanies);
+    const { success, messages } = checkData(dataJob, dataCompanies);
 
     const initialCompaies = buildOptionsAutocomplete<ICompany>({
         list: dataCompanies.data?.data?.result || [],
@@ -52,7 +52,7 @@ async function JobsPage({ searchParams }: IProps) {
             <ContentBody>
                 {success ? (
                     <ListJob
-                        dataJob={dataRole.data as IModelPaginate<IJob[]>}
+                        dataJob={dataJob.data as IModelPaginate<IJob[]>}
                         initialActives={initialActives}
                         initialCompaies={initialCompaies}
                     />

@@ -7,7 +7,7 @@ import axios from 'axios';
 
 export const sendRequestAction = async <T>(props: IRequest) => {
     const session = getSessionUser();
-    console.log('sendRequestAction :::>>>', session);
+    // console.log('sendRequestAction :::>>>', session);
 
     let { url, method, body, headers = {}, nextOption = {}, isJsonParse = true, formData } = props;
 
@@ -60,6 +60,42 @@ export const imgUploadAction = async (body: FormData) => {
 
         reuslt.success = true;
         reuslt.data = data;
+        reuslt.message = data.message;
+
+        return reuslt;
+    } catch (error: any) {
+        reuslt.success = false;
+        reuslt.data = null;
+        reuslt.message = error.message;
+        return reuslt;
+    }
+};
+
+interface IDeleteImg {
+    name: string;
+}
+export const imgDeleteAction = async (body: IDeleteImg) => {
+    const reuslt: IResult<string> = {
+        success: true,
+        data: null,
+        message: '',
+    };
+    try {
+        const data = await sendRequestAction<IBackendRes<string>>({
+            url: `files`,
+            method: 'DELETE',
+            body: body,
+        });
+
+        if (data.statusCode !== 200) {
+            reuslt.success = false;
+            reuslt.data = null;
+            reuslt.message = data.message;
+            return reuslt;
+        }
+
+        reuslt.success = true;
+        reuslt.data = data.data;
         reuslt.message = data.message;
 
         return reuslt;

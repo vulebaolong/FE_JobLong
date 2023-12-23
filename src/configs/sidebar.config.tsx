@@ -1,4 +1,13 @@
-import { BiCategory, BiDevices } from 'react-icons/bi';
+import {
+    BiCategory,
+    BiUser,
+    BiShield,
+    BiShieldQuarter,
+    BiBookAlt,
+    BiFoodMenu,
+    BiHomeCircle,
+    BiMailSend,
+} from 'react-icons/bi';
 
 interface ISidebarMenus {
     title: string;
@@ -19,49 +28,49 @@ export const rootSidebarMenus: ISidebarMenus[] = [
     {
         title: 'Users',
         module: 'USERS',
-        icon: <BiCategory size="1.25em" />,
+        icon: <BiUser size="1.25em" />,
         url: '/admin/users',
         role: 'admin',
     },
     {
         title: 'Permissions',
         module: 'PERMISSIONS',
-        icon: <BiCategory size="1.25em" />,
+        icon: <BiShield size="1.25em" />,
         url: '/admin/permissions',
         role: 'admin',
     },
     {
         title: 'Roles',
         module: 'ROLES',
-        icon: <BiCategory size="1.25em" />,
+        icon: <BiShieldQuarter size="1.25em" />,
         url: '/admin/roles',
         role: 'admin',
     },
     {
         title: 'Jobs',
         module: 'JOBS',
-        icon: <BiCategory size="1.25em" />,
+        icon: <BiFoodMenu size="1.25em" />,
         url: '/admin/jobs',
         role: 'admin',
     },
     {
         title: 'Companies',
         module: 'COMPANIES',
-        icon: <BiCategory size="1.25em" />,
+        icon: <BiHomeCircle size="1.25em" />,
         url: '/admin/companies',
         role: 'admin',
     },
     {
         title: 'Resumes',
         module: 'RESUMES',
-        icon: <BiCategory size="1.25em" />,
+        icon: <BiBookAlt size="1.25em" />,
         url: '/admin/resumes',
         role: 'admin',
     },
     {
         title: 'Subscribers',
         module: 'SUBSCRIBERS',
-        icon: <BiCategory size="1.25em" />,
+        icon: <BiMailSend size="1.25em" />,
         url: '/admin/subscribers',
         role: 'admin',
     },

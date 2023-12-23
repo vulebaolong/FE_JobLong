@@ -192,3 +192,70 @@ export const createCompanyAction = async (body: any) => {
         return reuslt;
     }
 };
+
+export const getCompanyByIdAction = async (id: string) => {
+    const reuslt: IResult<ICompany> = {
+        success: true,
+        data: null,
+        message: '',
+    };
+    try {
+        const data = await sendRequestAction<IBackendRes<ICompany>>({
+            url: `companies/${id}`,
+            method: 'GET',
+        });
+
+        if (data.statusCode !== 200) {
+            reuslt.success = false;
+            reuslt.data = null;
+            reuslt.message = data.message;
+            return reuslt;
+        }
+
+        reuslt.success = true;
+        reuslt.data = data.data;
+        reuslt.message = data.message;
+
+        return reuslt;
+    } catch (error: any) {
+        reuslt.success = false;
+        reuslt.data = null;
+        reuslt.message = error.message;
+        return reuslt;
+    }
+};
+
+export const updateCompanyByIdAction = async (id: string, body: ICompany) => {
+    const reuslt: IResult<ICompany> = {
+        success: true,
+        data: null,
+        message: '',
+    };
+    try {
+        const data = await sendRequestAction<IBackendRes<ICompany>>({
+            url: `companies/${id}`,
+            method: 'PATCH',
+            body: body,
+        });
+
+        if (data.statusCode !== 200) {
+            reuslt.success = false;
+            reuslt.data = null;
+            reuslt.message = data.message;
+            return reuslt;
+        }
+
+        reuslt.success = true;
+        reuslt.data = data.data;
+        reuslt.message = data.message;
+
+        revalidateTag('getListCompaniesAction');
+
+        return reuslt;
+    } catch (error: any) {
+        reuslt.success = false;
+        reuslt.data = null;
+        reuslt.message = error.message;
+        return reuslt;
+    }
+};
