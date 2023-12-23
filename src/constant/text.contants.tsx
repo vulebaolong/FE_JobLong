@@ -39,5 +39,6 @@ export const TEXT = {
         MALE: 'Male',
         FEMALE: 'Female',
         METHODS: ['GET', 'POST', 'PATCH', 'DELETE'],
+        STATUS: ['PENDING', 'REVIEWING', 'APPROVED', 'REJECTED'],
     },
 };
