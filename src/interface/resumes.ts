@@ -28,3 +28,10 @@ export interface IResListResume {
 
     __v: number;
 }
+
+export interface ICreateResume {
+    url: string
+    company: string
+    job: string
+  }
+  
