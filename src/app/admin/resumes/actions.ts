@@ -3,7 +3,7 @@
 import { sendRequestAction } from '@/app/action';
 import { IPermissions } from '@/interface/auth';
 import { ICreatePermission, IPermission, IUpdatePermission } from '@/interface/permission';
-import { IResListResume } from '@/interface/resumes';
+import { ICreateResume, IResListResume } from '@/interface/resumes';
 import { revalidateTag } from 'next/cache';
 
 interface IProps {
@@ -133,15 +133,15 @@ export const restoreResumeByIdAction = async (id: string) => {
     }
 };
 
-export const createResumeAction = async (body: ICreatePermission) => {
-    const reuslt: IResult<ICreatePermission> = {
+export const createResumeAction = async (body: ICreateResume) => {
+    const reuslt: IResult<ICreateResume> = {
         success: true,
         data: null,
         message: '',
     };
     try {
-        const data = await sendRequestAction<IBackendRes<IPermission>>({
-            url: `permissions`,
+        const data = await sendRequestAction<IBackendRes<ICreateResume>>({
+            url: `resumes`,
             method: 'POST',
             body: body,
         });
@@ -157,7 +157,7 @@ export const createResumeAction = async (body: ICreatePermission) => {
         reuslt.data = data.data;
         reuslt.message = data.message;
 
-        revalidateTag('getListPermissionsAction');
+        revalidateTag('getListResumesAction');
 
         return reuslt;
     } catch (error: any) {
